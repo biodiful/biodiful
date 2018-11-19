@@ -33,6 +33,8 @@
     "jhiPrefix": "jhi",
     "jhipsterVersion": "5.7.0",
     "jwtSecretKey": "MDhkODA5MzEyNGI0YjgwNDU0Mzc2MjkwNGM5NmExMDJjODUwNzA5NmQzNDIxZmMwYjczNWRjZjQzMzNhZTgyYTY5M2E1ZThhMjhjMmJjZWYwMDIyOTM4ODJmMTg0NTk1N2JlZWY4YTNiMTlkNjJkYzllMTRkZWQ3NzNhMDIyYTk=",
-    "otherModules": []
+    "otherModules": [],
+    "herokuAppName": "biodiful-app",
+    "herokuDeployType": "git"
   }
 }
