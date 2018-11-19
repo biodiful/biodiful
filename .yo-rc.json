@@ -1,0 +1,38 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "gitCompany": "",
+    "baseName": "biodiful",
+    "packageName": "org.biodiful",
+    "packageFolder": "org/biodiful",
+    "serverPort": 8080,
+    "serviceDiscoveryType": false,
+    "authenticationType": "jwt",
+    "uaaBaseName": "../uaa",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "enableSwaggerCodegen": false,
+    "messageBroker": false,
+    "buildTool": "gradle",
+    "useSass": false,
+    "clientPackageManager": "npm",
+    "testFrameworks": [],
+    "enableTranslation": true,
+    "nativeLanguage": "fr",
+    "languages": [
+      "en",
+      "es",
+      "fr"
+    ],
+    "clientFramework": "angularX",
+    "jhiPrefix": "jhi",
+    "jhipsterVersion": "5.7.0",
+    "jwtSecretKey": "MDhkODA5MzEyNGI0YjgwNDU0Mzc2MjkwNGM5NmExMDJjODUwNzA5NmQzNDIxZmMwYjczNWRjZjQzMzNhZTgyYTY5M2E1ZThhMjhjMmJjZWYwMDIyOTM4ODJmMTg0NTk1N2JlZWY4YTNiMTlkNjJkYzllMTRkZWQ3NzNhMDIyYTk=",
+    "otherModules": []
+  }
+}
