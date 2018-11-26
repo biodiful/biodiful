@@ -18,7 +18,7 @@
             "surveyName": "Survey Name",
             "surveyDescription": "Survey Description",
             "contactsDescription": "Contacts Description",
-            "friendlyURL": "Friendly URL - doit etre unique",
+            "friendlyURL": "Friendly URL (unique)",
             "photoURL": "Photo URL",
             "logosURL": "Logos URL",
             "formURL": "Form URL",

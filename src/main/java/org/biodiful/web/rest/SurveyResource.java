@@ -1,6 +1,8 @@
 package org.biodiful.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+
+import org.biodiful.security.AuthoritiesConstants;
 import org.biodiful.service.SurveyService;
 import org.biodiful.web.rest.errors.BadRequestAlertException;
 import org.biodiful.web.rest.util.HeaderUtil;
@@ -14,8 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,6 +53,7 @@ public class SurveyResource {
      */
     @PostMapping("/surveys")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<SurveyDTO> createSurvey(@Valid @RequestBody SurveyDTO surveyDTO) throws URISyntaxException {
         log.debug("REST request to save Survey : {}", surveyDTO);
         if (surveyDTO.getId() != null) {
@@ -71,6 +76,7 @@ public class SurveyResource {
      */
     @PutMapping("/surveys")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<SurveyDTO> updateSurvey(@Valid @RequestBody SurveyDTO surveyDTO) throws URISyntaxException {
         log.debug("REST request to update Survey : {}", surveyDTO);
         if (surveyDTO.getId() == null) {
@@ -90,6 +96,7 @@ public class SurveyResource {
      */
     @GetMapping("/surveys")
     @Timed
+    @PermitAll
     public ResponseEntity<List<SurveyDTO>> getAllSurveys(Pageable pageable) {
         log.debug("REST request to get a page of Surveys");
         Page<SurveyDTO> page = surveyService.findAll(pageable);
@@ -105,6 +112,7 @@ public class SurveyResource {
      */
     @GetMapping("/surveys/{id}")
     @Timed
+    @PermitAll
     public ResponseEntity<SurveyDTO> getSurvey(@PathVariable Long id) {
         log.debug("REST request to get Survey : {}", id);
         Optional<SurveyDTO> surveyDTO = surveyService.findOne(id);
@@ -119,6 +127,7 @@ public class SurveyResource {
      */
     @DeleteMapping("/surveys/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteSurvey(@PathVariable Long id) {
         log.debug("REST request to delete Survey : {}", id);
         surveyService.delete(id);

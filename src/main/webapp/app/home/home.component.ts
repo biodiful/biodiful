@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 import { LoginModalService, Principal, Account } from 'app/core';
+import { SurveyService } from 'app/entities/survey';
+import { ISurvey } from 'app/shared/model/survey.model';
 
 @Component({
     selector: 'jhi-home',
@@ -12,14 +15,49 @@ import { LoginModalService, Principal, Account } from 'app/core';
 export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
+    openSurveys: ISurvey[];
 
-    constructor(private principal: Principal, private loginModalService: LoginModalService, private eventManager: JhiEventManager) {}
+    constructor(
+        private principal: Principal,
+        private loginModalService: LoginModalService,
+        private eventManager: JhiEventManager,
+        private surveyService: SurveyService,
+        private jhiAlertService: JhiAlertService
+    ) {
+        this.openSurveys = [];
+    }
 
     ngOnInit() {
+        this.loadOpenSurveys();
         this.principal.identity().then(account => {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
+    }
+
+    loadOpenSurveys() {
+        this.surveyService
+            .query({
+                page: 0,
+                size: 20
+            })
+            .subscribe(
+                (res: HttpResponse<ISurvey[]>) => this.initOpenSurveys(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
+
+    private initOpenSurveys(data: ISurvey[], headers: HttpHeaders) {
+        //TODO create service methode to retrive list of open surveys
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].open) {
+                this.openSurveys.push(data[i]);
+            }
+        }
+    }
+
+    private onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
     }
 
     registerAuthenticationSuccess() {

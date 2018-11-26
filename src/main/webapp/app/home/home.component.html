@@ -22,16 +22,15 @@
             </div>
         </div>
 
-        <p jhiTranslate="home.question">
-            If you have any question on JHipster:
+        <p>
+            Vous pouvez répondre aux campagnes suivantes:
         </p>
 
         <ul>
-            <li><a href="https://www.jhipster.tech/" target="_blank" rel="noopener" jhiTranslate="home.link.homepage">JHipster homepage</a></li>
-            <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener" jhiTranslate="home.link.stackoverflow">JHipster on Stack Overflow</a></li>
-            <li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener" jhiTranslate="home.link.bugtracker">JHipster bug tracker</a></li>
-            <li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener" jhiTranslate="home.link.chat">JHipster public chat room</a></li>
-            <li><a href="https://twitter.com/java_hipster" target="_blank" rel="noopener" jhiTranslate="home.link.follow">follow @java_hipster on Twitter</a></li>
+            {{openSurveys}}
+            <li *ngFor="let survey of openSurveys">
+                <a [routerLink]="['/survey', survey.id, 'view' ]">{{survey.surveyName}}</a>
+            </li>        
         </ul>
 
         <p>

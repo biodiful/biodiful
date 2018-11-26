@@ -1,6 +1,8 @@
 package org.biodiful.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+
+import org.biodiful.security.AuthoritiesConstants;
 import org.biodiful.service.AnswerService;
 import org.biodiful.web.rest.errors.BadRequestAlertException;
 import org.biodiful.web.rest.util.HeaderUtil;
@@ -14,8 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,6 +53,7 @@ public class AnswerResource {
      */
     @PostMapping("/answers")
     @Timed
+    @PermitAll
     public ResponseEntity<AnswerDTO> createAnswer(@Valid @RequestBody AnswerDTO answerDTO) throws URISyntaxException {
         log.debug("REST request to save Answer : {}", answerDTO);
         if (answerDTO.getId() != null) {
@@ -71,6 +76,7 @@ public class AnswerResource {
      */
     @PutMapping("/answers")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<AnswerDTO> updateAnswer(@Valid @RequestBody AnswerDTO answerDTO) throws URISyntaxException {
         log.debug("REST request to update Answer : {}", answerDTO);
         if (answerDTO.getId() == null) {
@@ -90,6 +96,7 @@ public class AnswerResource {
      */
     @GetMapping("/answers")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<List<AnswerDTO>> getAllAnswers(Pageable pageable) {
         log.debug("REST request to get a page of Answers");
         Page<AnswerDTO> page = answerService.findAll(pageable);
@@ -105,6 +112,7 @@ public class AnswerResource {
      */
     @GetMapping("/answers/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<AnswerDTO> getAnswer(@PathVariable Long id) {
         log.debug("REST request to get Answer : {}", id);
         Optional<AnswerDTO> answerDTO = answerService.findOne(id);
@@ -119,6 +127,7 @@ public class AnswerResource {
      */
     @DeleteMapping("/answers/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteAnswer(@PathVariable Long id) {
         log.debug("REST request to delete Answer : {}", id);
         answerService.delete(id);

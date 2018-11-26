@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SurveyRepository extends JpaRepository<Survey, Long> {
 
+    org.springframework.data.domain.Page<Survey> findAllByOpenTrue(org.springframework.data.domain.Pageable arg0);
+
 }
