@@ -38,6 +38,8 @@ public class CacheConfiguration {
             cm.createCache(org.biodiful.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(org.biodiful.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(org.biodiful.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(org.biodiful.domain.Survey.class.getName(), jcacheConfiguration);
+            cm.createCache(org.biodiful.domain.Answer.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

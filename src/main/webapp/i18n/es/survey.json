@@ -1,0 +1,31 @@
+{
+    "biodifulApp": {
+        "survey": {
+            "home": {
+                "title": "Surveys",
+                "createLabel": "Crear nuevo Survey",
+                "createOrEditLabel": "Crear o editar Survey"
+            },
+            "created": "Un nuevo Survey ha sido creado con el identificador {{ param }}",
+            "updated": "Un Survey ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Survey ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Survey {{ id }}?"
+            },
+            "detail": {
+                "title": "Survey"
+            },
+            "surveyName": "Survey Name",
+            "surveyDescription": "Survey Description",
+            "contactsDescription": "Contacts Description",
+            "friendlyURL": "Friendly URL",
+            "photoURL": "Photo URL",
+            "logosURL": "Logos URL",
+            "formURL": "Form URL",
+            "challengersURL": "Challengers URL",
+            "numberOfMatches": "Number Of Matches",
+            "matchesDescription": "Matches Description",
+            "open": "Open"
+        }
+    }
+}

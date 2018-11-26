@@ -1,0 +1,35 @@
+entity Survey {
+    surveyName String required
+    surveyDescription TextBlob required
+    contactsDescription TextBlob
+    friendlyURL String unique
+    photoURL String
+    logosURL String
+    formURL String required
+    challengersURL String required
+    numberOfMatches Integer
+    matchesDescription TextBlob required
+    open Boolean required
+}
+
+entity Answer {
+    judgeID String required
+    challenger1 String required
+    challenger2 String required
+    winner String required
+    startTime Instant required
+    endTime Instant required
+}
+
+relationship ManyToOne {
+        Answer{Survey} to Survey
+}
+
+// Set pagination options
+paginate Survey with infinite-scroll
+paginate Answer with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl

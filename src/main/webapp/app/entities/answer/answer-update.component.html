@@ -1,0 +1,109 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-answer-heading" jhiTranslate="biodifulApp.answer.home.createOrEditLabel">Create or edit a Answer</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!answer.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="answer.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.answer.judgeID" for="field_judgeID">Judge ID</label>
+                    <input type="text" class="form-control" name="judgeID" id="field_judgeID"
+                        [(ngModel)]="answer.judgeID" required/>
+                    <div [hidden]="!(editForm.controls.judgeID?.dirty && editForm.controls.judgeID?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.judgeID?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.answer.challenger1" for="field_challenger1">Challenger 1</label>
+                    <input type="text" class="form-control" name="challenger1" id="field_challenger1"
+                        [(ngModel)]="answer.challenger1" required/>
+                    <div [hidden]="!(editForm.controls.challenger1?.dirty && editForm.controls.challenger1?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.challenger1?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.answer.challenger2" for="field_challenger2">Challenger 2</label>
+                    <input type="text" class="form-control" name="challenger2" id="field_challenger2"
+                        [(ngModel)]="answer.challenger2" required/>
+                    <div [hidden]="!(editForm.controls.challenger2?.dirty && editForm.controls.challenger2?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.challenger2?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.answer.winner" for="field_winner">Winner</label>
+                    <input type="text" class="form-control" name="winner" id="field_winner"
+                        [(ngModel)]="answer.winner" required/>
+                    <div [hidden]="!(editForm.controls.winner?.dirty && editForm.controls.winner?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.winner?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.answer.startTime" for="field_startTime">Start Time</label>
+                    <div class="d-flex">
+                        <input id="field_startTime" type="datetime-local" class="form-control" name="startTime" [(ngModel)]="startTime"
+                        required/>
+                    </div>
+                    <div [hidden]="!(editForm.controls.startTime?.dirty && editForm.controls.startTime?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.startTime?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.startTime?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.answer.endTime" for="field_endTime">End Time</label>
+                    <div class="d-flex">
+                        <input id="field_endTime" type="datetime-local" class="form-control" name="endTime" [(ngModel)]="endTime"
+                        required/>
+                    </div>
+                    <div [hidden]="!(editForm.controls.endTime?.dirty && editForm.controls.endTime?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.endTime?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.endTime?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.answer.survey" for="field_survey">Survey</label>
+                    <select class="form-control" id="field_survey" name="survey" [(ngModel)]="answer.surveyId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="surveyOption.id" *ngFor="let surveyOption of surveys; trackBy: trackSurveyById">{{surveyOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

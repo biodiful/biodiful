@@ -1,0 +1,117 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-survey-heading" jhiTranslate="biodifulApp.survey.home.createOrEditLabel">Create or edit a Survey</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!survey.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="survey.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.surveyName" for="field_surveyName">Survey Name</label>
+                    <input type="text" class="form-control" name="surveyName" id="field_surveyName"
+                        [(ngModel)]="survey.surveyName" required/>
+                    <div [hidden]="!(editForm.controls.surveyName?.dirty && editForm.controls.surveyName?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.surveyName?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.surveyDescription" for="field_surveyDescription">Survey Description</label>
+                    <textarea class="form-control" name="surveyDescription" id="field_surveyDescription"
+                        [(ngModel)]="survey.surveyDescription" required></textarea>
+                    <div [hidden]="!(editForm.controls.surveyDescription?.dirty && editForm.controls.surveyDescription?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.surveyDescription?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.contactsDescription" for="field_contactsDescription">Contacts Description</label>
+                    <textarea class="form-control" name="contactsDescription" id="field_contactsDescription"
+                        [(ngModel)]="survey.contactsDescription" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.friendlyURL" for="field_friendlyURL">Friendly URL</label>
+                    <input type="text" class="form-control" name="friendlyURL" id="field_friendlyURL"
+                        [(ngModel)]="survey.friendlyURL" />
+                    <div [hidden]="!(editForm.controls.friendlyURL?.dirty && editForm.controls.friendlyURL?.invalid)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.photoURL" for="field_photoURL">Photo URL</label>
+                    <input type="text" class="form-control" name="photoURL" id="field_photoURL"
+                        [(ngModel)]="survey.photoURL" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.logosURL" for="field_logosURL">Logos URL</label>
+                    <input type="text" class="form-control" name="logosURL" id="field_logosURL"
+                        [(ngModel)]="survey.logosURL" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.formURL" for="field_formURL">Form URL</label>
+                    <input type="text" class="form-control" name="formURL" id="field_formURL"
+                        [(ngModel)]="survey.formURL" required/>
+                    <div [hidden]="!(editForm.controls.formURL?.dirty && editForm.controls.formURL?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.formURL?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.challengersURL" for="field_challengersURL">Challengers URL</label>
+                    <input type="text" class="form-control" name="challengersURL" id="field_challengersURL"
+                        [(ngModel)]="survey.challengersURL" required/>
+                    <div [hidden]="!(editForm.controls.challengersURL?.dirty && editForm.controls.challengersURL?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.challengersURL?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.numberOfMatches" for="field_numberOfMatches">Number Of Matches</label>
+                    <input type="number" class="form-control" name="numberOfMatches" id="field_numberOfMatches"
+                        [(ngModel)]="survey.numberOfMatches" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.matchesDescription" for="field_matchesDescription">Matches Description</label>
+                    <textarea class="form-control" name="matchesDescription" id="field_matchesDescription"
+                        [(ngModel)]="survey.matchesDescription" required></textarea>
+                    <div [hidden]="!(editForm.controls.matchesDescription?.dirty && editForm.controls.matchesDescription?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.matchesDescription?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.open" for="field_open">Open</label>
+                    <input type="checkbox" class="form-control" name="open" id="field_open"
+                        [(ngModel)]="survey.open" />
+                    <div [hidden]="!(editForm.controls.open?.dirty && editForm.controls.open?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.open?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

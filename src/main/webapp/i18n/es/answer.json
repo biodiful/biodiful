@@ -1,0 +1,27 @@
+{
+    "biodifulApp": {
+        "answer": {
+            "home": {
+                "title": "Answers",
+                "createLabel": "Crear nuevo Answer",
+                "createOrEditLabel": "Crear o editar Answer"
+            },
+            "created": "Un nuevo Answer ha sido creado con el identificador {{ param }}",
+            "updated": "Un Answer ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Answer ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Answer {{ id }}?"
+            },
+            "detail": {
+                "title": "Answer"
+            },
+            "judgeID": "Judge ID",
+            "challenger1": "Challenger 1",
+            "challenger2": "Challenger 2",
+            "winner": "Winner",
+            "startTime": "Start Time",
+            "endTime": "End Time",
+            "survey": "Survey"
+        }
+    }
+}
