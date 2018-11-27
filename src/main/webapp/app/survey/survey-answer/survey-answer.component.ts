@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ISurvey } from 'app/shared/model/survey.model';
 import { Challenger } from 'app/shared/model/challenger.model';
-import { Answer } from 'app/shared/model/answer.model';
+import { Answer, IAnswer } from 'app/shared/model/answer.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import moment = require('moment');
+import { AnswerService } from 'app/entities/answer';
+import { Observable } from 'rxjs';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'jhi-survey-answer',
@@ -20,8 +23,9 @@ export class SurveyAnswerComponent implements OnInit {
     challengerOne: Challenger;
     challengerTwo: Challenger;
     isAllMatchesCompleted: boolean = false;
+    matchStarts: moment.Moment;
 
-    constructor(private activatedRoute: ActivatedRoute, public sanitizer: DomSanitizer) {}
+    constructor(private activatedRoute: ActivatedRoute, public sanitizer: DomSanitizer, private answerService: AnswerService) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ survey }) => {
@@ -38,7 +42,7 @@ export class SurveyAnswerComponent implements OnInit {
             'judge_' +
             Math.random()
                 .toString(36)
-                .substr(2, 9);
+                .substr(2, 15);
     }
 
     initNextMatch() {
@@ -51,13 +55,13 @@ export class SurveyAnswerComponent implements OnInit {
             this.challengerTwo = new Challenger('GOPR0111_3042', '../../content/images/survey/GOPR0111_3042.png');
         }
 
-        //TODO initialise matchStartsMoment
+        this.matchStarts = moment();
     }
 
     addWinner(winner) {
-        console.log('Winner added: ' + JSON.stringify(winner));
+        console.debug('Winner added: ' + JSON.stringify(winner));
         // Add a new Answer from the winner
-        let matchEndsMoment = moment();
+        let matchEnds = moment();
         this.answers.push(
             new Answer(
                 undefined,
@@ -65,8 +69,8 @@ export class SurveyAnswerComponent implements OnInit {
                 this.challengerOne.id,
                 this.challengerTwo.id,
                 winner.id,
-                matchEndsMoment,
-                matchEndsMoment,
+                this.matchStarts,
+                matchEnds,
                 this.survey.id
             )
         );
@@ -75,10 +79,15 @@ export class SurveyAnswerComponent implements OnInit {
         if (this.answers.length < this.nbOfMatches) {
             this.initNextMatch();
         } else {
-            // if we've got enought winners, display socio-pro questions
-            console.log('Answers:');
-            console.log(JSON.stringify(this.answers));
+            // If we've got enought winners, save the answers and display socio-pro questions
+
+            console.debug('Answers: ' + JSON.stringify(this.answers));
             this.isAllMatchesCompleted = true;
+
+            for (let answer of this.answers) {
+                //TODO create service to save a list of Answers
+                this.subscribeToSaveResponse(this.answerService.create(answer));
+            }
         }
     }
 
@@ -92,5 +101,17 @@ export class SurveyAnswerComponent implements OnInit {
 
     getSocialFormUrl(): SafeResourceUrl {
         return this.sanitizer.bypassSecurityTrustResourceUrl(this.survey.formURL + this.judgeId);
+    }
+
+    private subscribeToSaveResponse(result: Observable<HttpResponse<IAnswer>>) {
+        result.subscribe((res: HttpResponse<IAnswer>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+    }
+
+    onSaveError(): void {
+        alert('An error occured while saving your answers. Please try again later.');
+    }
+
+    onSaveSuccess(): void {
+        // alert('Save success!');
     }
 }

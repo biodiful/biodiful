@@ -1,30 +1,22 @@
 <div class="row justify-content-center">
     <div>
-        <form name="editForm" role="form" novalidate #editForm="ngForm">
-            <h2 id="jhi-survey-heading">{{survey.surveyName}}</h2>
-            <div class="col-md-9">
-                {{survey.surveyDescription}}
-            </div>
-            <div *ngIf="survey.photoURL.length > 0" class="col-md-3">
-                <span><img [src]="survey.photoURL" class="img-fluid rounded float-right"/></span>
-            </div>
-            <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-                </button>
-                <button type="submit" class="btn btn-primary" (click)="nextMatchState()">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save moke Answer</span>
-                </button>
-                <button class="btn btn-primary" [routerLink]="['/survey', survey.id, 'answer']">
-                    <fa-icon [icon]="'list'"></fa-icon>&nbsp;<span>Answer the survey</span>
-                </button>
-            </div>
-            <div *ngIf="survey.contactsDescription.length > 0" >
-                {{survey.contactsDescription}}
-            </div>
-            <div *ngIf="survey.logosURL.length > 0">
-                <span><img [src]="survey.logosURL" class="img-fluid rounded" /></span>
-            </div>
-        </form>
+        <h2 id="jhi-survey-heading">{{survey.surveyName}}</h2>
+        <div class="col-md-9">
+            {{survey.surveyDescription}}
+        </div>
+        <div *ngIf="survey.photoURL.length > 0" class="col-md-3">
+            <span><img [src]="survey.photoURL" class="img-fluid rounded float-right" /></span>
+        </div>
+        <div>
+            <button class="btn btn-primary" [routerLink]="['/survey', survey.id, 'answer']">
+                <fa-icon [icon]="'list'"></fa-icon>&nbsp;<span>Répondre a la campagne</span>
+            </button>
+        </div>
+        <div *ngIf="survey.contactsDescription.length > 0">
+            {{survey.contactsDescription}}
+        </div>
+        <div *ngIf="survey.logosURL.length > 0">
+            <span><img [src]="survey.logosURL" class="img-fluid rounded" /></span>
+        </div>
     </div>
 </div>
