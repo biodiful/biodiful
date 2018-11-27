@@ -38,11 +38,8 @@ export class SurveyAnswerComponent implements OnInit {
 
         this.initNextMatch();
 
-        this.judgeId =
-            'judge_' +
-            Math.random()
-                .toString(36)
-                .substr(2, 15);
+        const uniqueString = require('unique-string');
+        this.judgeId = 'judge_' + uniqueString();
     }
 
     initNextMatch() {
