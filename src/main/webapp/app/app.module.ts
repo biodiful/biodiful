@@ -20,6 +20,9 @@ import { BiodifulEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
+import { SurveyPresentationComponent } from './survey/survey-presentation/survey-presentation.component';
+import { SurveyAnswerComponent } from './survey/survey-answer/survey-answer.component';
+import { SurveyAnswerMatchComponent } from './survey/survey-answer-match/survey-answer-match.component';
 
 @NgModule({
     imports: [
@@ -40,7 +43,17 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         // jhipster-needle-angular-add-module JHipster will add new module here
         BiodifulEntityModule
     ],
-    declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
+    declarations: [
+        JhiMainComponent,
+        NavbarComponent,
+        ErrorComponent,
+        PageRibbonComponent,
+        ActiveMenuDirective,
+        FooterComponent,
+        SurveyPresentationComponent,
+        SurveyAnswerComponent,
+        SurveyAnswerMatchComponent
+    ],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,

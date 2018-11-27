@@ -29,9 +29,11 @@
         <ul>
             {{openSurveys}}
             <li *ngFor="let survey of openSurveys">
-                <a [routerLink]="['/survey', survey.id, 'view' ]">{{survey.surveyName}}</a>
+                <a [routerLink]="['/survey', survey.id, 'present' ]">{{survey.surveyName}}</a>
             </li>        
         </ul>
+
+        <!-- <div *jhiHasAnyAuthority="'ROLE_ADMIN'">TODO - display list of closed survey for the admin?</div> -->
 
         <p>
             <span jhiTranslate="home.like">If you like JHipster, don't forget to give us a star on</span> <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener" jhiTranslate="home.github">GitHub</a>!
