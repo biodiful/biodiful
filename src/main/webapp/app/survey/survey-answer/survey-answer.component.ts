@@ -4,7 +4,7 @@ import { ISurvey } from 'app/shared/model/survey.model';
 import { Challenger } from 'app/shared/model/challenger.model';
 import { Answer, IAnswer } from 'app/shared/model/answer.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import moment = require('moment');
+import moment from 'moment/src/moment';
 import { AnswerService } from 'app/entities/answer';
 import { Observable } from 'rxjs';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';

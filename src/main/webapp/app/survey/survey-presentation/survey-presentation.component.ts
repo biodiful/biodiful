@@ -6,7 +6,7 @@ import { Answer, IAnswer } from 'app/shared/model/answer.model';
 import { ISurvey } from 'app/shared/model/survey.model';
 import { Observable } from 'rxjs';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import moment = require('moment');
+import moment from 'moment/src/moment';
 
 @Component({
     selector: 'jhi-survey-presentation',
