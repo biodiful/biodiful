@@ -1,10 +1,7 @@
 <div class="row">
-    <div class="col-md-3">
-        <span class="hipster img-fluid rounded"></span>
-    </div>
-    <div class="col-md-9">
-        <h1 class="display-4" jhiTranslate="home.title">Welcome, Java Hipster!</h1>
-        <p class="lead" jhiTranslate="home.subtitle">This is your homepage</p>
+    <div class="col-md-7">
+        <h1 class="display-4" jhiTranslate="home.title">- BIODIFULL.ORG -</h1>
+        <p class="lead" jhiTranslate="home.subtitle">Un site dédié à l'étude de la perception humaine de la nature</p>
 
         <div [ngSwitch]="isAuthenticated()">
             <div class="alert alert-success" *ngSwitchCase="true">
@@ -12,18 +9,18 @@
                     translateValues="{username: '{{account.login}}'}"> You are logged in as user "{{account.login}}". </span>
             </div>
 
-            <div class="alert alert-warning" *ngSwitchCase="false">
+            <!-- <div class="alert alert-warning" *ngSwitchCase="false">
                 <span jhiTranslate="global.messages.info.authenticated.prefix">If you want to </span>
                 <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">sign in</a><span jhiTranslate="global.messages.info.authenticated.suffix">, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>
             </div>
             <div class="alert alert-warning" *ngSwitchCase="false">
                 <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>&nbsp;
                 <a class="alert-link" routerLink="register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
-            </div>
+            </div> -->
         </div>
 
-        <p>
-            Vous pouvez répondre aux campagnes suivantes:
+        <p jhiTranslate="home.survey.open">
+            Campagnes en cours :
         </p>
 
         <ul>
@@ -35,8 +32,33 @@
 
         <!-- <div *jhiHasAnyAuthority="'ROLE_ADMIN'">TODO - display list of closed survey for the admin?</div> -->
 
-        <p>
-            <span jhiTranslate="home.like">If you like JHipster, don't forget to give us a star on</span> <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener" jhiTranslate="home.github">GitHub</a>!
-        </p>
+        
+    </div>
+    <div class="col-md-5">
+        <img src="/content/images/home/diversity.jpg" class="img-fluid rounded"></img>
+    </div>
+</div>
+<div class="row py-4">
+    <div class="col-md-12">
+        <a href="http://www.biodiful.org" target="_blank" rel="noopener" jhiTranslate="home.more">
+            En savoir plus...
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md">
+        <img src="/content/images/home/cemeb-logo.jpeg" class="img-fluid rounded home-logo" height="100px"></img>
+    </div>
+    <div class="col-md">
+        <img src="/content/images/home/cnrs-logo.jpeg" class="img-fluid rounded home-logo" height="100px"></img>
+    </div>
+    <div class="col-md">
+        <img src="/content/images/home/marbec-logo.jpg" class="img-fluid rounded home-logo" height="100px"></img>
+    </div>
+    <div class="col-md">
+        <img src="/content/images/home/cefe-logo.png" class="img-fluid rounded home-logo" height="100px"></img>
+    </div>
+    <div class="col-md">
+        <img src="/content/images/home/uni-montpellier-logo.png" class="img-fluid rounded home-logo" height="100px"></img>
     </div>
 </div>

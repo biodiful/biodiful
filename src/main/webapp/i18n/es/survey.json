@@ -25,7 +25,8 @@
             "challengersURL": "Challengers URL",
             "numberOfMatches": "Number Of Matches",
             "matchesDescription": "Matches Description",
-            "open": "Open"
+            "open": "Open",
+            "answer": "Answer the survey"
         }
     }
 }

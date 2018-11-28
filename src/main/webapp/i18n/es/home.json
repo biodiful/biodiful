@@ -1,7 +1,8 @@
 {
     "home": {
-        "title": "¡Bienvenido, Java Hipster!",
-        "subtitle": "Esta es su página de inicio",
+        "title": "- BIODIFULL.ORG -",
+        "subtitle": "Un sitio dedicado al estudio de la percepción humana de la naturaleza.",
+        "survey.open": "Encuestas abiertas :",
         "logged": {
             "message": "Está conectado como \"{{username}}\"."
         },
@@ -13,7 +14,7 @@
             "chat": "Sala de chat pública de JHipster",
             "follow": "contacto @java_hipster en Twitter"
         },
-        "like": "Si te gusta JHipster, danos una estrella en",
+        "more": "Más información...",
         "github": "GitHub"
     }
 }
