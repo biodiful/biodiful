@@ -32,12 +32,23 @@ export class SurveyAnswerComponent implements OnInit {
             this.survey = survey;
         });
 
-        this.nbOfMatches = this.survey.numberOfMatches;
+        this.initNbOfMatches();
 
         //TODO send requests to init images URLs
 
         this.initNextMatch();
 
+        this.initJudgeId();
+    }
+
+    initNbOfMatches() {
+        this.nbOfMatches = this.survey.numberOfMatches;
+        if (this.nbOfMatches < 1) {
+            this.nbOfMatches = 10;
+        }
+    }
+
+    initJudgeId() {
         const uniqueString = require('unique-string');
         this.judgeId = 'judge_' + uniqueString();
     }

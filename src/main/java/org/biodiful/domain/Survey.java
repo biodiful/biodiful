@@ -55,7 +55,7 @@ public class Survey implements Serializable {
     private String challengersURL;
 
     @Column(name = "number_of_matches")
-    private Integer numberOfMatches;
+    private Integer numberOfMatches = 10;
 
     
     @Lob
