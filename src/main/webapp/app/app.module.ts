@@ -17,6 +17,7 @@ import { BiodifulAppRoutingModule } from './app-routing.module';
 import { BiodifulHomeModule } from './home/home.module';
 import { BiodifulAccountModule } from './account/account.module';
 import { BiodifulEntityModule } from './entities/entity.module';
+import { BiodifulAboutModule } from './about/about';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
@@ -39,6 +40,7 @@ import { SurveyAnswerMatchComponent } from './survey/survey-answer-match/survey-
         BiodifulSharedModule.forRoot(),
         BiodifulCoreModule,
         BiodifulHomeModule,
+        BiodifulAboutModule,
         BiodifulAccountModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
         BiodifulEntityModule

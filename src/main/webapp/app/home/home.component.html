@@ -5,14 +5,24 @@
     <p class="lead" jhiTranslate="home.subtitle">Un site dédié à l'étude de la perception humaine de la nature</p>
 </div>
 
-<div [ngSwitch]="isShowMoreInfo">
-    <div class="row" *ngSwitchDefault>
-        <div class="col-md-7">
-            <div [ngSwitch]="isAuthenticated()">
-                <div class="alert alert-success" *ngSwitchCase="true">
-                    <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message" translateValues="{username: '{{account.login}}'}">
+<div class="row">
+    <div class="col-md-7">
+
+        <p jhiTranslate="home.survey.open">
+            Campagnes en cours :
+        </p>
+
+        <ul>
+            <li *ngFor="let survey of openSurveys">
+                <a [routerLink]="['/survey', survey.id, 'present' ]">{{survey.surveyName}}</a>
+            </li>
+        </ul>
+        
+        <div [ngSwitch]="isAuthenticated()">
+            <div class="alert alert-success" *ngSwitchCase="true">
+                <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message" translateValues="{username: '{{account.login}}'}">
                         You are logged in as user "{{account.login}}". </span>
-                </div>
+            </div>
 
                 <!-- <div class="alert alert-warning" *ngSwitchCase="false">
                     <span jhiTranslate="global.messages.info.authenticated.prefix">If you want to </span>
@@ -22,98 +32,14 @@
                     <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>&nbsp;
                     <a class="alert-link" routerLink="register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
                 </div> -->
-            </div>
-
-            <p jhiTranslate="home.survey.open">
-                Campagnes en cours :
-            </p>
-
-            <ul>
-                <li *ngFor="let survey of openSurveys">
-                    <a [routerLink]="['/survey', survey.id, 'present' ]">{{survey.surveyName}}</a>
-                </li>
-            </ul>
-
-            <!-- <div *jhiHasAnyAuthority="'ROLE_ADMIN'">TODO - display list of closed survey for the admin?</div> -->
-
-            <a href="#" (click)="showMoreInfo()" jhiTranslate="home.more">En savoir plus...</a>
         </div>
-        <div class="col-md-5">
-            <img src="/content/images/home/diversity.jpg" class="img-fluid rounded"></img>
-        </div>
+
+        <!-- <div *jhiHasAnyAuthority="'ROLE_ADMIN'">TODO - display list of closed survey for the admin?</div> -->
+
+        <a href="#" [routerLink]="['/about']" jhiTranslate="home.more">En savoir plus...</a>
     </div>
-
-    <div class="row" *ngSwitchCase="true">
-        <div class="col-md-12">
-            <p>Ce site mets à disposition de la communauté scientifique uneplateforme en ligne pour héberger des
-                campagnes d’évaluation de la perception humaine de la nature à partir de questionnaires
-                photographiques.</p>
-            <p>Ce projet est financé par le <a href="http://www.labex-cemeb.org/" target="_blank">Labex CEMEB</a>.</p>
-            <p>
-                <h3>Liste de publications récentes</h3>
-                <ul>
-                    <li>
-                        <a href="http://nicolasmouquet.free.fr/publications/Tribot_et_al-2018-Scientific_Reports.pdf" target="_blank">
-                            Tribot, A., et al. (2018). "Confronting species aesthetics with ecological functions of coralreef fishes." Scientific Reports 8:11733.
-                        </a>
-                    </li>
-                    <li>
-                        <a href="http://nicolasmouquet.free.fr/publications/Tribot_el_al_2016_Scientific_Reports.pdf" target="_blank">
-                            Tribot, A., et al. (2016). "Taxonomicand functional diversity increase the aesthetic value of coralligenousreefs." Scientific Reports.
-                        </a>
-                    </li>
-                </ul>
-            </p>
-            <h3>Contacts</h3>
-            <div>
-                <h4>Coordination</h4>
-                <p>
-                    Nicolas Mouquet nicolas.mouquet (@) cnrs.fr
-                </p>
-                <h4>Chercheurs associés</h4>
-                <p>
-                    <ul>
-                        <li>Julie Deter julie.deter (@) umontpellier.fr</li>
-                        <li>Bertrand Schatz bertrand.schatz (@) cefe.cnrs.fr</li>
-                        <li>François Guilhaumon francois.guilhaumon (@) ird.fr</li>
-                    </ul>
-                </p>
-                <h4>Réalisons site web</h4>
-                <p>
-                    Thomas Bouttaz thomas.bouttaz (@) googlemail.com
-                </p>
-            </div>
-            <div class="py-2">
-                <a href="#" (click)="showOpenSurveys()">Voir la liste des campagnes</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="row py-2">
-        <div class="col-md">
-            <a href="http://www.labex-cemeb.org/" target="_blank">
-                <img src="/content/images/home/cemeb-logo.jpeg" class="img-fluid rounded home-logo" height="100px" />
-            </a>
-        </div>
-        <div class="col-md">
-            <a href="https://www.cnrs.fr/" target="_blank">
-                <img src="/content/images/home/cnrs-logo.jpeg" class="img-fluid rounded home-logo" height="100px" />
-            </a>
-        </div>
-        <div class="col-md">
-            <a href="http://www.umr-marbec.fr" target="_blank">
-                <img src="/content/images/home/marbec-logo.jpg" class="img-fluid rounded home-logo" height="100px" />
-            </a>
-        </div>
-        <div class="col-md">
-            <a href="https://www.cefe.cnrs.fr" target="_blank">
-                <img src="/content/images/home/cefe-logo.png" class="img-fluid rounded home-logo" height="100px" />
-            </a>
-        </div>
-        <div class="col-md">
-            <a href="https://www.umontpellier.fr/en/" target="_blank">
-                <img src="/content/images/home/uni-montpellier-logo.png" class="img-fluid rounded home-logo" height="100px" />
-            </a>
-        </div>
+    <div class="col-md-5">
+        <img src="/content/images/home/diversity.jpg" class="img-fluid rounded"></img>
     </div>
 </div>
+
