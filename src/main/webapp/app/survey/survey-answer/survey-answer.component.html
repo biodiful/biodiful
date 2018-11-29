@@ -16,9 +16,7 @@
     </div>
 
     <div *ngSwitchDefault>
-        <p>
-            {{survey.matchesDescription}}
-        </p>
+        <div [innerHTML]="survey.matchesDescription"></div>
 
         <jhi-survey-answer-match [challengerOne]="challengerOne" [challengerTwo]="challengerTwo" (winnerSelected)="addWinner($event)"></jhi-survey-answer-match>
 

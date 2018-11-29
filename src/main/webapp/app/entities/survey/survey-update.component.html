@@ -22,8 +22,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.surveyDescription" for="field_surveyDescription">Survey Description</label>
-                    <textarea class="form-control" name="surveyDescription" id="field_surveyDescription"
-                        [(ngModel)]="survey.surveyDescription" required></textarea>
+                    <angular-editor name="surveyDescription" id="field_surveyDescription" [(ngModel)]="survey.surveyDescription" required></angular-editor>
                     <div [hidden]="!(editForm.controls.surveyDescription?.dirty && editForm.controls.surveyDescription?.invalid)">
                         <small class="form-text text-danger"
                         [hidden]="!editForm.controls.surveyDescription?.errors?.required" jhiTranslate="entity.validation.required">
@@ -33,8 +32,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.contactsDescription" for="field_contactsDescription">Contacts Description</label>
-                    <textarea class="form-control" name="contactsDescription" id="field_contactsDescription"
-                        [(ngModel)]="survey.contactsDescription" ></textarea>
+                    <angular-editor name="contactsDescription" id="field_contactsDescription" [(ngModel)]="survey.contactsDescription"></angular-editor>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.friendlyURL" for="field_friendlyURL">Friendly URL</label>
@@ -82,8 +80,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.matchesDescription" for="field_matchesDescription">Matches Description</label>
-                    <textarea class="form-control" name="matchesDescription" id="field_matchesDescription"
-                        [(ngModel)]="survey.matchesDescription" required></textarea>
+                    <angular-editor name="matchesDescription" id="field_matchesDescription" [(ngModel)]="survey.matchesDescription"  required></angular-editor>
                     <div [hidden]="!(editForm.controls.matchesDescription?.dirty && editForm.controls.matchesDescription?.invalid)">
                         <small class="form-text text-danger"
                         [hidden]="!editForm.controls.matchesDescription?.errors?.required" jhiTranslate="entity.validation.required">
