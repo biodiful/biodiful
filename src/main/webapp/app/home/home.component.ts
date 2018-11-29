@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
     openSurveys: ISurvey[];
+    isShowMoreInfo: boolean = false;
 
     constructor(
         private principal: Principal,
@@ -74,5 +75,13 @@ export class HomeComponent implements OnInit {
 
     login() {
         this.modalRef = this.loginModalService.open();
+    }
+
+    showMoreInfo() {
+        this.isShowMoreInfo = true;
+    }
+
+    showOpenSurveys() {
+        this.isShowMoreInfo = false;
     }
 }
