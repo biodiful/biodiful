@@ -16,7 +16,11 @@ export class SurveyAnswerMatchComponent implements OnInit {
 
     constructor() {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        // Show loader while retrieving images from Flickr
+        this.challengerOne = new Challenger('UNDEFINED_1', '/content/images/loader.gif');
+        this.challengerTwo = new Challenger('UNDEFINED_2', '/content/images/loader.gif');
+    }
 
     challengerClicked(challenger) {
         //TODO add start and end date to challenges

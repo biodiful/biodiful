@@ -7,7 +7,12 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import moment from 'moment/src/moment';
 import { AnswerService } from 'app/entities/answer';
 import { Observable } from 'rxjs';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse, HttpClient } from '@angular/common/http';
+
+interface FlickrResponse {
+    photoset: Object;
+    stat: string;
+}
 
 @Component({
     selector: 'jhi-survey-answer',
@@ -20,12 +25,20 @@ export class SurveyAnswerComponent implements OnInit {
     judgeId: string;
     // winners: Challenger[] = [];
     answers: Answer[] = [];
+    challengers: Challenger[] = [];
     challengerOne: Challenger;
     challengerTwo: Challenger;
     isAllMatchesCompleted: boolean = false;
     matchStarts: moment.Moment;
 
-    constructor(private activatedRoute: ActivatedRoute, public sanitizer: DomSanitizer, private answerService: AnswerService) {}
+    flickrResponse: FlickrResponse;
+
+    constructor(
+        private activatedRoute: ActivatedRoute,
+        public sanitizer: DomSanitizer,
+        private answerService: AnswerService,
+        private http: HttpClient
+    ) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ survey }) => {
@@ -34,11 +47,42 @@ export class SurveyAnswerComponent implements OnInit {
 
         this.initNbOfMatches();
 
-        //TODO send requests to init images URLs
+        this.initChallangers();
 
-        this.initNextMatch();
+        // this.initNextMatch();
 
         this.initJudgeId();
+    }
+
+    initChallangers() {
+        // this.survey.challengersURL;
+        // let flickrUrl = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=7389b9b323b67e62de25f945af7ccaa3&user_id=162158790@N04&photoset_id=72157697901898520&format=json&nojsoncallback=1";
+
+        // let result = this.http.get(flickrUrl);
+        // console.debug("Flickr GET result: " + JSON.stringify(result))
+
+        // this.http.get<FlickrResponse[]>(flickrUrl).map(data => _.values(data))
+        // .do(console.log);
+
+        // this.http.get(flickrUrl).subscribe((data: FlickrResponse) => this.flickrResponse = {
+        //     photoset: data['photoset'],
+        //     stat:  data['stat']
+        // });
+
+        this.http.get(this.survey.challengersURL).subscribe(response => this.onGetChallengersSuccess(response), () => this.onError());
+    }
+
+    onGetChallengersSuccess(response) {
+        console.debug(JSON.stringify(response));
+        // for (let photo of response.photoset.photo) {
+        let photoset = response['photoset'];
+        // for (let photo of photoset["photo"]) {
+        for (let photo of photoset.photo) {
+            let photoUrl = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
+            this.challengers.push(new Challenger(photo.title, photoUrl));
+        }
+
+        this.initNextMatch();
     }
 
     initNbOfMatches() {
@@ -54,16 +98,18 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     initNextMatch() {
-        //TODO add random selection of images
-        if (this.challengerOne && this.challengerOne.id == 'GOPR0111_2856-16') {
-            this.challengerOne = new Challenger('GOPR0111_0853', '../../content/images/survey/GOPR0111_0853.png');
-            this.challengerTwo = new Challenger('GOPR0111_2136', '../../content/images/survey/GOPR0111_2136.png');
-        } else {
-            this.challengerOne = new Challenger('GOPR0111_2856-16', '../../content/images/survey/GOPR0111_2856-16.png');
-            this.challengerTwo = new Challenger('GOPR0111_3042', '../../content/images/survey/GOPR0111_3042.png');
-        }
+        // Load 2 random chanllengers
+        this.challengerOne = this.challengers[Math.floor(Math.random() * this.challengers.length)];
+        this.challengerTwo = this.challengers[Math.floor(Math.random() * this.challengers.length)];
+        this.checkChallengersAreDifferent();
 
         this.matchStarts = moment();
+    }
+
+    checkChallengersAreDifferent() {
+        while (this.challengerOne.id == this.challengerTwo.id) {
+            this.challengerTwo = this.challengers[Math.floor(Math.random() * this.challengers.length)];
+        }
     }
 
     addWinner(winner) {
@@ -88,12 +134,11 @@ export class SurveyAnswerComponent implements OnInit {
             this.initNextMatch();
         } else {
             // If we've got enought winners, save the answers and display socio-pro questions
-
             console.debug('Answers: ' + JSON.stringify(this.answers));
             this.isAllMatchesCompleted = true;
 
             for (let answer of this.answers) {
-                //TODO create service to save a list of Answers
+                //TODO create service to save a list of Answers in one call
                 this.subscribeToSaveResponse(this.answerService.create(answer));
             }
         }
@@ -112,14 +157,14 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     private subscribeToSaveResponse(result: Observable<HttpResponse<IAnswer>>) {
-        result.subscribe((res: HttpResponse<IAnswer>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+        result.subscribe((res: HttpResponse<IAnswer>) => this.onSaveResponseSuccess(), (res: HttpErrorResponse) => this.onError());
     }
 
-    onSaveError(): void {
-        alert('An error occured while saving your answers. Please try again later.');
+    onError(): void {
+        alert('An error occured. Please try again later.');
     }
 
-    onSaveSuccess(): void {
+    onSaveResponseSuccess(): void {
         // alert('Save success!');
     }
 }
