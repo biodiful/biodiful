@@ -3,29 +3,29 @@
         "survey": {
             "home": {
                 "title": "Surveys",
-                "createLabel": "Créer un nouveau Survey",
-                "createOrEditLabel": "Créer ou éditer un Survey"
+                "createLabel": "Créer une nouvelle campagne (Survey)",
+                "createOrEditLabel": "Créer ou éditer une campagne (Survey)"
             },
-            "created": "Un nouveau Survey a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Survey avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Survey avec l'identifiant {{ param }} a été supprimé",
+            "created": "Une nouvelle campagne a été créé avec l'identifiant {{ param }}",
+            "updated": "La campagne avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "La campagne avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Survey {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer la campagne {{ id }} ?"
             },
             "detail": {
                 "title": "Survey"
             },
             "surveyName": "Survey Name",
             "surveyDescription": "Survey Description",
-            "contactsDescription": "Contacts Description",
-            "friendlyURL": "Friendly URL (unique)",
-            "photoURL": "Photo URL",
-            "logosURL": "Logos URL",
-            "formURL": "Form URL",
-            "challengersURL": "Challengers URL",
-            "numberOfMatches": "Number Of Matches",
-            "matchesDescription": "Matches Description",
-            "open": "Open",
+            "contactsDescription": "Contacts Description - Description des personnes a contacter pour plus d’information sur cette campagne",
+            "friendlyURL": "Friendly URL (unique) - Sous partie de l’URL après le nom de domaine pour que les visiteurs accèdent a cette campagne: www.biodiful.org/|friendlyURL| ",
+            "photoURL": "Photo URL - URL de la photo à afficher à côté de la description de la campagne dans la page de présentation",
+            "logosURL": "Logos URL - URL de la photo avec les différents logos des organisateurs de cette campagne",
+            "formURL": "Form URL - URL du questionnaire socio-professionnel Google Form (doit contenir un parametre &entry.xxx= afin de passer l'identifiant du juge)",
+            "challengersURL": "Challengers URL - URL de l'appel a l'API Flickr pour obtenir les photos à afficher lors des matches",
+            "numberOfMatches": "Number Of Matches - Nombre de matches à effectuer par chaques personnes répondant à la campagne (default: 10)",
+            "matchesDescription": "Matches Description - description à afficher au dessus des deux photos lors d’un match",
+            "open": "Open - indique si la campagne est ouverte et que les visiteurs peuvent y répondre",
             "answer": "Répondre à la campagne"
         }
     }
