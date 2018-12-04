@@ -9,11 +9,6 @@ import { AnswerService } from 'app/entities/answer';
 import { Observable } from 'rxjs';
 import { HttpResponse, HttpErrorResponse, HttpClient } from '@angular/common/http';
 
-interface FlickrResponse {
-    photoset: Object;
-    stat: string;
-}
-
 @Component({
     selector: 'jhi-survey-answer',
     templateUrl: './survey-answer.component.html',
@@ -30,8 +25,6 @@ export class SurveyAnswerComponent implements OnInit {
     challengerTwo: Challenger;
     isAllMatchesCompleted: boolean = false;
     matchStarts: moment.Moment;
-
-    flickrResponse: FlickrResponse;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -137,10 +130,12 @@ export class SurveyAnswerComponent implements OnInit {
             console.debug('Answers: ' + JSON.stringify(this.answers));
             this.isAllMatchesCompleted = true;
 
-            for (let answer of this.answers) {
-                //TODO create service to save a list of Answers in one call
-                this.subscribeToSaveResponse(this.answerService.create(answer));
-            }
+            this.subscribeToSaveAllResponse(this.answerService.createAll(this.answers));
+
+            // for (let answer of this.answers) {
+            //     //TODO create service to save a list of Answers in one call
+            //     this.subscribeToSaveResponse(this.answerService.create(answer));
+            // }
         }
     }
 
@@ -154,6 +149,10 @@ export class SurveyAnswerComponent implements OnInit {
 
     getSocialFormUrl(): SafeResourceUrl {
         return this.sanitizer.bypassSecurityTrustResourceUrl(this.survey.formURL + this.judgeId);
+    }
+
+    private subscribeToSaveAllResponse(result: Observable<HttpResponse<IAnswer[]>>) {
+        result.subscribe((res: HttpResponse<IAnswer[]>) => this.onSaveResponseSuccess(), (res: HttpErrorResponse) => this.onError());
     }
 
     private subscribeToSaveResponse(result: Observable<HttpResponse<IAnswer>>) {

@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -46,6 +48,25 @@ public class AnswerServiceImpl implements AnswerService {
         Answer answer = answerMapper.toEntity(answerDTO);
         answer = answerRepository.save(answer);
         return answerMapper.toDto(answer);
+    }
+
+
+    /**
+     * Save a list of answer.
+     *
+     * @param answerDTO the entities to save
+     * @return the persisted entities
+     */
+    @Override
+    public List<AnswerDTO> saveAll(List<AnswerDTO> answersDTO) {
+        log.debug("Request to save all Answers : {}", answersDTO);
+
+        List<Answer> answers = new ArrayList<Answer>();
+        for (AnswerDTO answerDTO : answersDTO) {
+            answers.add(answerMapper.toEntity(answerDTO));
+        }
+        answers = answerRepository.saveAll(answers);
+        return answerMapper.toDto(answers);
     }
 
     /**

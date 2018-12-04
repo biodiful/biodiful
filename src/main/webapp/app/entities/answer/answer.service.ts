@@ -25,6 +25,13 @@ export class AnswerService {
             .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
+    createAll(answers: IAnswer[]): Observable<EntityArrayResponseType> {
+        const copy = this.convertDateArrayFromClient(answers);
+        return this.http
+            .post<IAnswer[]>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+    }
+
     update(answer: IAnswer): Observable<EntityResponseType> {
         const copy = this.convertDateFromClient(answer);
         return this.http
@@ -47,6 +54,14 @@ export class AnswerService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    }
+
+    protected convertDateArrayFromClient(answers: IAnswer[]): IAnswer[] {
+        let copy = [];
+        for (let answer of answers) {
+            copy.push(this.convertDateFromClient(answer));
+        }
+        return copy;
     }
 
     protected convertDateFromClient(answer: IAnswer): IAnswer {

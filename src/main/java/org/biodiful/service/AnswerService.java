@@ -5,6 +5,7 @@ import org.biodiful.service.dto.AnswerDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,6 +20,8 @@ public interface AnswerService {
      * @return the persisted entity
      */
     AnswerDTO save(AnswerDTO answerDTO);
+
+    List<AnswerDTO> saveAll(List<AnswerDTO> answersDTO);
 
     /**
      * Get all the answers.
