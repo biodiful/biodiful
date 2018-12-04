@@ -32,10 +32,12 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.contactsDescription" for="field_contactsDescription">Contacts Description</label>
+                    <div class="alert alert-info" role="alert">Description des personnes a contacter pour plus d’information sur cette campagne</div>
                     <angular-editor name="contactsDescription" id="field_contactsDescription" [(ngModel)]="survey.contactsDescription"></angular-editor>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.friendlyURL" for="field_friendlyURL">Friendly URL</label>
+                    <div class="alert alert-info" role="alert">Sous partie de l’URL après le nom de domaine pour que les visiteurs accèdent a cette campagne: www.biodiful.org/|friendlyURL| - Doit etre unique</div>
                     <input type="text" class="form-control" name="friendlyURL" id="field_friendlyURL"
                         [(ngModel)]="survey.friendlyURL" />
                     <div [hidden]="!(editForm.controls.friendlyURL?.dirty && editForm.controls.friendlyURL?.invalid)">
@@ -43,16 +45,19 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.photoURL" for="field_photoURL">Photo URL</label>
+                    <div class="alert alert-info" role="alert">URL de la photo à afficher à côté de la description de la campagne dans la page de présentation</div>
                     <input type="text" class="form-control" name="photoURL" id="field_photoURL"
                         [(ngModel)]="survey.photoURL" />
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.logosURL" for="field_logosURL">Logos URL</label>
+                    <div class="alert alert-info" role="alert">URL de la photo avec les différents logos des organisateurs de cette campagne</div>
                     <input type="text" class="form-control" name="logosURL" id="field_logosURL"
                         [(ngModel)]="survey.logosURL" />
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.formURL" for="field_formURL">Form URL</label>
+                    <div class="alert alert-info" role="alert">URL du questionnaire socio-professionnel Google Form (doit contenir un parametre &entry.xxx= afin de passer l'identifiant du juge)</div>
                     <input type="text" class="form-control" name="formURL" id="field_formURL"
                         [(ngModel)]="survey.formURL" required/>
                     <div [hidden]="!(editForm.controls.formURL?.dirty && editForm.controls.formURL?.invalid)">
@@ -64,6 +69,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.challengersURL" for="field_challengersURL">Challengers URL</label>
+                    <div class="alert alert-info" role="alert">URL de l'appel a l'API Flickr pour obtenir les photos à afficher lors des matches</div>
                     <input type="text" class="form-control" name="challengersURL" id="field_challengersURL"
                         [(ngModel)]="survey.challengersURL" required/>
                     <div [hidden]="!(editForm.controls.challengersURL?.dirty && editForm.controls.challengersURL?.invalid)">
@@ -75,11 +81,13 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.numberOfMatches" for="field_numberOfMatches">Number Of Matches</label>
+                    <div class="alert alert-info" role="alert">Nombre de matches à effectuer par chaques personnes répondant à la campagne (default: 10)</div>
                     <input type="number" class="form-control" name="numberOfMatches" id="field_numberOfMatches"
                         [(ngModel)]="survey.numberOfMatches" />
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.matchesDescription" for="field_matchesDescription">Matches Description</label>
+                    <div class="alert alert-info" role="alert">Description à afficher au dessus des deux photos lors d’un match</div>
                     <angular-editor name="matchesDescription" id="field_matchesDescription" [(ngModel)]="survey.matchesDescription"  required></angular-editor>
                     <div [hidden]="!(editForm.controls.matchesDescription?.dirty && editForm.controls.matchesDescription?.invalid)">
                         <small class="form-text text-danger"
@@ -90,6 +98,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.open" for="field_open">Open</label>
+                    <div class="alert alert-info" role="alert">Indique si la campagne est ouverte et que les visiteurs peuvent y répondre</div>
                     <input type="checkbox" class="form-control" name="open" id="field_open"
                         [(ngModel)]="survey.open" />
                     <div [hidden]="!(editForm.controls.open?.dirty && editForm.controls.open?.invalid)">
