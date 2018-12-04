@@ -65,29 +65,6 @@ public class AnswerResource {
     }
 
     /**
-     * POST  /answers : Create a list of answers.
-     *
-     * @param answerDTO the list of answerDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new answerDTO, or with status 400 (Bad Request) if the answers have already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PostMapping("/answers")
-    @Timed
-    @PermitAll
-    public ResponseEntity<List<AnswerDTO>> createAnswers(@Valid @RequestBody List<AnswerDTO> answersDTO) throws URISyntaxException {
-        log.debug("REST request to save all Answers : {}", answersDTO);
-        for (AnswerDTO answer : answersDTO) {
-            if (answer.getId() != null) {
-                throw new BadRequestAlertException("A new answer cannot already have an ID", ENTITY_NAME, "idexists");
-            }
-        }
-        List<AnswerDTO> results = answerService.saveAll(answersDTO);
-        return ResponseEntity.created(new URI("/api/answers/" + results.get(0).getId()))
-        .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, results.get(0).getId().toString()))
-            .body(results);
-    }
-
-    /**
      * PUT  /answers : Updates an existing answer.
      *
      * @param answerDTO the answerDTO to update
@@ -108,6 +85,29 @@ public class AnswerResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, answerDTO.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * POST  /answers : Create a list of answers.
+     *
+     * @param answerDTO the list of answerDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new answerDTOs, or with status 400 (Bad Request) if the answers have already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/answers/all")
+    @Timed
+    @PermitAll
+    public ResponseEntity<List<AnswerDTO>> createAllAnswers(@Valid @RequestBody List<AnswerDTO> answersDTO) throws URISyntaxException {
+        log.debug("REST request to save all Answers : {}", answersDTO);
+        for (AnswerDTO answer : answersDTO) {
+            if (answer.getId() != null) {
+                throw new BadRequestAlertException("A new answer cannot already have an ID", ENTITY_NAME, "idexists");
+            }
+        }
+        List<AnswerDTO> results = answerService.saveAll(answersDTO);
+        return ResponseEntity.created(new URI("/api/answers/all" + results.get(0).getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, results.get(0).getId().toString()))
+            .body(results);
     }
 
     /**

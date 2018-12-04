@@ -28,7 +28,7 @@ export class AnswerService {
     createAll(answers: IAnswer[]): Observable<EntityArrayResponseType> {
         const copy = this.convertDateArrayFromClient(answers);
         return this.http
-            .post<IAnswer[]>(this.resourceUrl, copy, { observe: 'response' })
+            .post<IAnswer[]>(this.resourceUrl + '/all', copy, { observe: 'response' })
             .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
