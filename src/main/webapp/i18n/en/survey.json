@@ -26,7 +26,8 @@
             "numberOfMatches": "Number Of Matches",
             "matchesDescription": "Matches Description",
             "open": "Open",
-            "answer": "Answer the survey"
+            "answer": "Answer the survey",
+            "judgesCount": "{{judgesCount}} people have already participated!"
         }
     }
 }

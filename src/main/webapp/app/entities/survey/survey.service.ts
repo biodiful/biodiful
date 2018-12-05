@@ -35,4 +35,8 @@ export class SurveyService {
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
+
+    getSurveyAnswersCount(id: number) {
+        return this.http.get(`${this.resourceUrl}/${id}/judges-count`);
+    }
 }

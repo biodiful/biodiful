@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -115,6 +116,17 @@ public class AnswerResourceIntTest {
         return answer;
     }
 
+    public static Answer createSecondEntity(EntityManager em) {
+        Answer answer = new Answer()
+            .judgeID(UPDATED_JUDGE_ID)
+            .challenger1(UPDATED_CHALLENGER_1)
+            .challenger2(UPDATED_CHALLENGER_2)
+            .winner(UPDATED_WINNER)
+            .startTime(UPDATED_START_TIME)
+            .endTime(UPDATED_END_TIME);
+        return answer;
+    }
+
     @Before
     public void initTest() {
         answer = createEntity(em);
@@ -142,6 +154,42 @@ public class AnswerResourceIntTest {
         assertThat(testAnswer.getWinner()).isEqualTo(DEFAULT_WINNER);
         assertThat(testAnswer.getStartTime()).isEqualTo(DEFAULT_START_TIME);
         assertThat(testAnswer.getEndTime()).isEqualTo(DEFAULT_END_TIME);
+    }
+
+
+    @Test
+    @Transactional
+    public void createAllAnswers() throws Exception {
+        int databaseSizeBeforeCreate = answerRepository.findAll().size();
+
+        List<AnswerDTO> answersDTO = new ArrayList<AnswerDTO>();
+
+        // Create the Answer
+        answersDTO.add(answerMapper.toDto(answer));
+        answersDTO.add(answerMapper.toDto(createSecondEntity(em)));
+        restAnswerMockMvc.perform(post("/api/answers/all")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(answersDTO)))
+            .andExpect(status().isCreated());
+
+        // Validate the Answer in the database
+        List<Answer> answerList = answerRepository.findAll();
+        assertThat(answerList).hasSize(databaseSizeBeforeCreate + 2);
+        Answer testAnswer = answerList.get(answerList.size() - 2);
+        assertThat(testAnswer.getJudgeID()).isEqualTo(DEFAULT_JUDGE_ID);
+        assertThat(testAnswer.getChallenger1()).isEqualTo(DEFAULT_CHALLENGER_1);
+        assertThat(testAnswer.getChallenger2()).isEqualTo(DEFAULT_CHALLENGER_2);
+        assertThat(testAnswer.getWinner()).isEqualTo(DEFAULT_WINNER);
+        assertThat(testAnswer.getStartTime()).isEqualTo(DEFAULT_START_TIME);
+        assertThat(testAnswer.getEndTime()).isEqualTo(DEFAULT_END_TIME);
+
+        Answer testAnswer2 = answerList.get(answerList.size() - 1);
+        assertThat(testAnswer2.getJudgeID()).isEqualTo(UPDATED_JUDGE_ID);
+        assertThat(testAnswer2.getChallenger1()).isEqualTo(UPDATED_CHALLENGER_1);
+        assertThat(testAnswer2.getChallenger2()).isEqualTo(UPDATED_CHALLENGER_2);
+        assertThat(testAnswer2.getWinner()).isEqualTo(UPDATED_WINNER);
+        assertThat(testAnswer2.getStartTime()).isEqualTo(UPDATED_START_TIME);
+        assertThat(testAnswer2.getEndTime()).isEqualTo(UPDATED_END_TIME);
     }
 
     @Test
@@ -296,7 +344,7 @@ public class AnswerResourceIntTest {
             .andExpect(jsonPath("$.[*].startTime").value(hasItem(DEFAULT_START_TIME.toString())))
             .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getAnswer() throws Exception {

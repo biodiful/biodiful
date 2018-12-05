@@ -38,6 +38,13 @@ public interface SurveyService {
     Optional<SurveyDTO> findOne(Long id);
 
     /**
+     * Count the number of judges that have answered a Survey
+     * @param id the id of the Survey
+     * @return the number of judges that have answered a Survey
+     */
+    long countJudgesForSurvey(Long id);
+
+    /**
      * Delete the "id" survey.
      *
      * @param id the id of the entity

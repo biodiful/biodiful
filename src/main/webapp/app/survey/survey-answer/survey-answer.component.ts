@@ -160,7 +160,7 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     onError(): void {
-        alert('An error occured. Please try again later.');
+        alert('An error occurred. Please try again later.');
     }
 
     onSaveResponseSuccess(): void {

@@ -1,5 +1,6 @@
 package org.biodiful.service.impl;
 
+import org.biodiful.repository.AnswerRepository;
 import org.biodiful.service.SurveyService;
 import org.biodiful.domain.Survey;
 import org.biodiful.repository.SurveyRepository;
@@ -28,9 +29,12 @@ public class SurveyServiceImpl implements SurveyService {
 
     private final SurveyMapper surveyMapper;
 
-    public SurveyServiceImpl(SurveyRepository surveyRepository, SurveyMapper surveyMapper) {
+    private final AnswerRepository answerRepository;
+
+    public SurveyServiceImpl(SurveyRepository surveyRepository, SurveyMapper surveyMapper, AnswerRepository answerRepository) {
         this.surveyRepository = surveyRepository;
         this.surveyMapper = surveyMapper;
+        this.answerRepository = answerRepository;
     }
 
     /**
@@ -60,6 +64,11 @@ public class SurveyServiceImpl implements SurveyService {
         log.debug("Request to get all Surveys");
         return surveyRepository.findAll(pageable)
             .map(surveyMapper::toDto);
+    }
+
+
+    public long countJudgesForSurvey(Long id) {
+        return answerRepository.countDisctinctJudgeForSurvey(id);
     }
 
 

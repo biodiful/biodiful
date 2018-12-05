@@ -120,6 +120,20 @@ public class SurveyResource {
     }
 
     /**
+     * GET  /surveys/:id : get the number of judges that have answered a survey.
+     *
+     * @param id the id of the survey
+     * @return the ResponseEntity with status 200 (OK) and with body the number of judges that have answered this survey
+     */
+    @GetMapping("/surveys/{id}/judges-count")
+    @Timed
+    @PermitAll
+    public ResponseEntity<Long> getSurveyJudgesCount(@PathVariable Long id) {
+        log.debug("REST request to get the number of jusges that have answered the Survey : {}", id);
+        return ResponseEntity.ok().body(surveyService.countJudgesForSurvey(id));
+    }
+
+    /**
      * DELETE  /surveys/:id : delete the "id" survey.
      *
      * @param id the id of the surveyDTO to delete

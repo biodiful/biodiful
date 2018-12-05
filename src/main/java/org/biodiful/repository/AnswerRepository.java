@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
+    @Query("select count(distinct a.judgeID) from Answer a where a.survey.id = :surveyId")
+    long countDisctinctJudgeForSurvey(long surveyId);
 }

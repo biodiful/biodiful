@@ -2,7 +2,9 @@ package org.biodiful.web.rest;
 
 import org.biodiful.BiodifulApp;
 
+import org.biodiful.domain.Answer;
 import org.biodiful.domain.Survey;
+import org.biodiful.repository.AnswerRepository;
 import org.biodiful.repository.SurveyRepository;
 import org.biodiful.service.SurveyService;
 import org.biodiful.service.dto.SurveyDTO;
@@ -78,6 +80,9 @@ public class SurveyResourceIntTest {
 
     @Autowired
     private SurveyRepository surveyRepository;
+
+    @Autowired
+    private AnswerRepository answerRepository;
 
     @Autowired
     private SurveyMapper surveyMapper;
@@ -190,6 +195,20 @@ public class SurveyResourceIntTest {
 
     @Test
     @Transactional
+    public void getSurveyResponsesCount() throws Exception {
+        Answer entity = AnswerResourceIntTest.createEntity(em);
+        entity.setSurvey(survey);
+
+        surveyRepository.saveAndFlush(survey);
+        answerRepository.saveAndFlush(entity);
+
+        restSurveyMockMvc.perform(get("/api/surveys/{id}/judges-count", survey.getId())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk()).andExpect(content().string("1"));
+    }
+
+    @Test
+    @Transactional
     public void checkSurveyNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = surveyRepository.findAll().size();
         // set the field null
@@ -287,7 +306,7 @@ public class SurveyResourceIntTest {
             .andExpect(jsonPath("$.[*].matchesDescription").value(hasItem(DEFAULT_MATCHES_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].open").value(hasItem(DEFAULT_OPEN.booleanValue())));
     }
-    
+
     @Test
     @Transactional
     public void getSurvey() throws Exception {

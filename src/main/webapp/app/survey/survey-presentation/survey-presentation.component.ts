@@ -15,36 +15,29 @@ import moment from 'moment/src/moment';
 })
 export class SurveyPresentationComponent implements OnInit {
     survey: ISurvey;
-    isSaving: boolean;
+    surveyJudgesCount: number;
 
     constructor(private surveyService: SurveyService, private activatedRoute: ActivatedRoute, private answerService: AnswerService) {}
 
     ngOnInit() {
-        this.isSaving = false;
         this.activatedRoute.data.subscribe(({ survey }) => {
             this.survey = survey;
+
+            this.subscribeToCountResponse(this.surveyService.getSurveyAnswersCount(this.survey.id));
         });
     }
 
-    previousState() {
-        window.history.back();
+    private subscribeToCountResponse(result: Observable<Object>) {
+        result.subscribe((res: HttpResponse<number>) => this.onCountSuccess(res), (res: HttpErrorResponse) => this.onError());
     }
 
-    nextMatchState() {
-        //For now, just save a fake answer
-        let answer = new Answer(undefined, 'jugeIDtest', 'challenger1', 'challenger2', 'winner', moment(), moment(), 1);
-        this.subscribeToSaveResponse(this.answerService.create(answer));
+    onError(): void {
+        console.debug('Failed to retrieve the number of judges for this survey');
+        //alert('An error occurred. Please try again later.');
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<IAnswer>>) {
-        result.subscribe((res: HttpResponse<IAnswer>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
-    }
-
-    onSaveError(): void {
-        alert('Save error :( ');
-    }
-
-    onSaveSuccess(): void {
-        alert('Save success!');
+    onCountSuccess(response): void {
+        console.debug('Number of distinct judges for this survey: ' + JSON.stringify(response));
+        this.surveyJudgesCount = response.toString();
     }
 }
