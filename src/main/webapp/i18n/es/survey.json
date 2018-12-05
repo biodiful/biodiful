@@ -27,7 +27,7 @@
             "matchesDescription": "Matches Description",
             "open": "Open",
             "answer": "Answer the survey",
-            "judgesCount": "{{judgesCount}} personas ya han participado!"
+            "judgesCount": "personas ya han participado!"
         }
     }
 }

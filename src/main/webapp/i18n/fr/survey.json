@@ -27,7 +27,7 @@
             "matchesDescription": "Matches Description",
             "open": "Open",
             "answer": "Répondre à la campagne",
-            "judgesCount": "{{judgesCount}} personnes ont déjà participé !"
+            "judgesCount": "personnes ont déjà participé !"
         }
     }
 }

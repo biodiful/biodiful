@@ -8,7 +8,10 @@
     </div>
 </div>
 <div class="row justify-content-center p-2">
-    <div class="alert alert-info" role="alert" jhiTranslate="biodifulApp.survey.judgesCount" translateValues="{judgesCount: '{{this.surveyJudgesCount}}'}">n personnes ont déjà participé !</div>
+    <div class="alert alert-info" role="alert">
+        <span class="font-weight-bold">{{this.surveyJudgesCount}}</span>
+        <span jhiTranslate="biodifulApp.survey.judgesCount">personnes ont déjà participé !</span>
+    </div>
 </div>
 <div class="row justify-content-center p-2">
     <button class="btn btn-primary" [routerLink]="['/survey', survey.id, 'answer']">
