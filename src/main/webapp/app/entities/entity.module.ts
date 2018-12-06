@@ -7,8 +7,8 @@ import { BiodifulAnswerModule } from './answer/answer.module';
 @NgModule({
     // prettier-ignore
     imports: [
-        BiodifulSurveyModule,
         BiodifulAnswerModule,
+        BiodifulSurveyModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

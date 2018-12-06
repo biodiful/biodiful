@@ -26,6 +26,15 @@ export class SurveyResolve implements Resolve<ISurvey> {
                 map((survey: HttpResponse<Survey>) => survey.body)
             );
         }
+
+        const friendlyUrl = route.params['friendlyUrl'] ? route.params['friendlyUrl'] : null;
+        if (friendlyUrl) {
+            return this.service.findByFriendlyUrl(friendlyUrl).pipe(
+                filter((response: HttpResponse<Survey>) => response.ok),
+                map((survey: HttpResponse<Survey>) => survey.body)
+            );
+        }
+
         return of(new Survey());
     }
 }
@@ -96,6 +105,18 @@ export const surveyRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
+            pageTitle: 'biodifulApp.survey.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: ':friendlyUrl',
+        component: SurveyPresentationComponent,
+        resolve: {
+            survey: SurveyResolve
+        },
+        data: {
+            authorities: [],
             pageTitle: 'biodifulApp.survey.home.title'
         },
         canActivate: [UserRouteAccessService]

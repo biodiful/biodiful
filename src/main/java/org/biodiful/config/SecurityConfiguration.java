@@ -3,6 +3,7 @@ package org.biodiful.config;
 import org.biodiful.security.*;
 import org.biodiful.security.jwt.*;
 
+import org.biodiful.web.rest.AngularRouteFilter;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
 
     private final CorsFilter corsFilter;
+
+    //private final AngularRouteFilter angularRouteFilter;
 
     private final SecurityProblemSupport problemSupport;
 
@@ -89,6 +92,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .csrf()
             .disable()
             .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+            //.addFilterBefore(angularRouteFilter, UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling()
             .authenticationEntryPoint(problemSupport)
             .accessDeniedHandler(problemSupport)

@@ -27,6 +27,10 @@ export class SurveyService {
         return this.http.get<ISurvey>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
+    findByFriendlyUrl(friendlyUrl: string): Observable<EntityResponseType> {
+        return this.http.get<ISurvey>(`${this.resourceUrl}/friendly-url/${friendlyUrl}`, { observe: 'response' });
+    }
+
     query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
         return this.http.get<ISurvey[]>(this.resourceUrl, { params: options, observe: 'response' });

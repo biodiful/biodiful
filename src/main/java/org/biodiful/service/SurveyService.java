@@ -37,6 +37,8 @@ public interface SurveyService {
      */
     Optional<SurveyDTO> findOne(Long id);
 
+    Optional<SurveyDTO> findOneByFriendlyURL(String friendlyURL);
+
     /**
      * Count the number of judges that have answered a Survey
      * @param id the id of the Survey

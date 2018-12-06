@@ -86,6 +86,12 @@ public class SurveyServiceImpl implements SurveyService {
             .map(surveyMapper::toDto);
     }
 
+    public Optional<SurveyDTO> findOneByFriendlyURL(String friendlyURL) {
+        log.debug("Request to get Survey : {}", friendlyURL);
+        return surveyRepository.findByFriendlyURL(friendlyURL)
+            .map(surveyMapper::toDto);
+    }
+
     /**
      * Delete the survey by id.
      *

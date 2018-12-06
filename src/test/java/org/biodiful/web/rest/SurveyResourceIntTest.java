@@ -333,6 +333,31 @@ public class SurveyResourceIntTest {
 
     @Test
     @Transactional
+    public void getSurveyByFriendlyUrl() throws Exception {
+        // Initialize the database
+        surveyRepository.saveAndFlush(survey);
+        Survey surveyWithSameFriendlyUrl = createEntity(em);
+
+        // Get the survey
+        restSurveyMockMvc.perform(get("/api/surveys/friendly-url/{friendlyURL}", survey.getFriendlyURL()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.id").value(survey.getId().intValue()))
+            .andExpect(jsonPath("$.surveyName").value(DEFAULT_SURVEY_NAME.toString()))
+            .andExpect(jsonPath("$.surveyDescription").value(DEFAULT_SURVEY_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.contactsDescription").value(DEFAULT_CONTACTS_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.friendlyURL").value(DEFAULT_FRIENDLY_URL.toString()))
+            .andExpect(jsonPath("$.photoURL").value(DEFAULT_PHOTO_URL.toString()))
+            .andExpect(jsonPath("$.logosURL").value(DEFAULT_LOGOS_URL.toString()))
+            .andExpect(jsonPath("$.formURL").value(DEFAULT_FORM_URL.toString()))
+            .andExpect(jsonPath("$.challengersURL").value(DEFAULT_CHALLENGERS_URL.toString()))
+            .andExpect(jsonPath("$.numberOfMatches").value(DEFAULT_NUMBER_OF_MATCHES))
+            .andExpect(jsonPath("$.matchesDescription").value(DEFAULT_MATCHES_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.open").value(DEFAULT_OPEN.booleanValue()));
+    }
+
+    @Test
+    @Transactional
     public void getNonExistingSurvey() throws Exception {
         // Get the survey
         restSurveyMockMvc.perform(get("/api/surveys/{id}", Long.MAX_VALUE))

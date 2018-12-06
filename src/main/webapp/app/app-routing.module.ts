@@ -15,6 +15,9 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
                     loadChildren: './admin/admin.module#BiodifulAdminModule'
                 }
             ],
+            // See issue described here if we don't use hashtag:
+            // https://stackoverflow.com/questions/48567071/jhipster-refresh-url-cause-cannot-get-user-management?rq=1
+            //{ useHash: false, enableTracing: DEBUG_INFO_ENABLED }
             { useHash: true, enableTracing: DEBUG_INFO_ENABLED }
         )
     ],

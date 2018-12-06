@@ -7,8 +7,8 @@
             "405": "Le verbe HTTP que vous avez utilisé n'est pas reconnu par cet URL.",
             "500": "Erreur interne du serveur."
         },
-        "concurrencyFailure":
-            "Un autre utilisateur a modifié ces données en même temps que vous. Vos changements n'ont pas été sauvegardés.",
-        "validation": "Erreur de validation côté serveur."
+        "concurrencyFailure": "Un autre utilisateur a modifié ces données en même temps que vous. Vos changements n'ont pas été sauvegardés.",
+        "validation": "Erreur de validation côté serveur.",
+        "friendlyurlexists": "La valeure du champ Friendly URL doit etre unique. La campagne {{param0}} existe deja avec la meme Friendly URL {{param1}}."
     }
 }

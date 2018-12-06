@@ -5,6 +5,7 @@ import com.codahale.metrics.annotation.Timed;
 import org.biodiful.security.AuthoritiesConstants;
 import org.biodiful.service.SurveyService;
 import org.biodiful.web.rest.errors.BadRequestAlertException;
+import org.biodiful.web.rest.errors.CustomParameterizedException;
 import org.biodiful.web.rest.util.HeaderUtil;
 import org.biodiful.web.rest.util.PaginationUtil;
 import org.biodiful.service.dto.SurveyDTO;
@@ -59,6 +60,15 @@ public class SurveyResource {
         if (surveyDTO.getId() != null) {
             throw new BadRequestAlertException("A new survey cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        if (surveyDTO.getFriendlyURL() != null) {
+            Optional<SurveyDTO> surveyWithSameFriendlyURL = surveyService.findOneByFriendlyURL(surveyDTO.getFriendlyURL());
+            if (surveyWithSameFriendlyURL.isPresent()) {
+                SurveyDTO sameURL = surveyWithSameFriendlyURL.get();
+                throw new CustomParameterizedException("error.friendlyurlexists", sameURL.getSurveyName(), sameURL.getFriendlyURL());
+            }
+        }
+
         SurveyDTO result = surveyService.save(surveyDTO);
         return ResponseEntity.created(new URI("/api/surveys/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -82,6 +92,19 @@ public class SurveyResource {
         if (surveyDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+
+        if (surveyDTO.getFriendlyURL() != null) {
+            Optional<SurveyDTO> surveyWithSameFriendlyURL = surveyService.findOneByFriendlyURL(surveyDTO.getFriendlyURL());
+            if (surveyWithSameFriendlyURL.isPresent()) {
+                SurveyDTO sameURL = surveyWithSameFriendlyURL.get();
+
+                // Check that the survey with the same URL is not the one we're currently editing
+                if (surveyDTO.getId() != sameURL.getId()) {
+                    throw new CustomParameterizedException("error.friendlyurlexists", sameURL.getSurveyName(), sameURL.getFriendlyURL());
+                }
+            }
+        }
+
         SurveyDTO result = surveyService.save(surveyDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, surveyDTO.getId().toString()))
@@ -116,6 +139,21 @@ public class SurveyResource {
     public ResponseEntity<SurveyDTO> getSurvey(@PathVariable Long id) {
         log.debug("REST request to get Survey : {}", id);
         Optional<SurveyDTO> surveyDTO = surveyService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(surveyDTO);
+    }
+
+    /**
+     * GET  /surveys/:id : get the survey from its friendly URL.
+     *
+     * @param friendlyURL the friendlyURL of the surveyDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the surveyDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/surveys/friendly-url/{friendlyURL}")
+    @Timed
+    @PermitAll
+    public ResponseEntity<SurveyDTO> getSurvey(@PathVariable String friendlyURL) {
+        log.debug("REST request to get Survey from friendlyURL: {}", friendlyURL);
+        Optional<SurveyDTO> surveyDTO = surveyService.findOneByFriendlyURL(friendlyURL);
         return ResponseUtil.wrapOrNotFound(surveyDTO);
     }
 

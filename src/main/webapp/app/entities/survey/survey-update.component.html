@@ -3,7 +3,6 @@
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
             <h2 id="jhi-survey-heading" jhiTranslate="biodifulApp.survey.home.createOrEditLabel">Create or edit a Survey</h2>
             <div>
-                <jhi-alert-error></jhi-alert-error>
                 <div class="form-group" [hidden]="!survey.id">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id"
@@ -37,7 +36,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.friendlyURL" for="field_friendlyURL">Friendly URL</label>
-                    <div class="alert alert-info" role="alert">Sous partie de l’URL après le nom de domaine pour que les visiteurs accèdent a cette campagne: www.biodiful.org/|friendlyURL| - Doit etre unique</div>
+                    <div class="alert alert-info" role="alert">Sous partie de l’URL après le nom de domaine pour que les visiteurs accèdent a cette campagne: www.biodiful.org/#/|friendlyURL| - Doit être unique et contenir uniquement des caractères alphanumériques sans espaces</div>
                     <input type="text" class="form-control" name="friendlyURL" id="field_friendlyURL"
                         [(ngModel)]="survey.friendlyURL" />
                     <div [hidden]="!(editForm.controls.friendlyURL?.dirty && editForm.controls.friendlyURL?.invalid)">
@@ -111,6 +110,7 @@
 
             </div>
             <div>
+                <jhi-alert-error></jhi-alert-error>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
