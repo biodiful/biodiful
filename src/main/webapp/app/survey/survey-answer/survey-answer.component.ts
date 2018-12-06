@@ -8,6 +8,7 @@ import moment from 'moment/src/moment';
 import { AnswerService } from 'app/entities/answer';
 import { Observable } from 'rxjs';
 import { HttpResponse, HttpErrorResponse, HttpClient } from '@angular/common/http';
+import { JhiAlertService } from 'ng-jhipster';
 
 @Component({
     selector: 'jhi-survey-answer',
@@ -30,7 +31,8 @@ export class SurveyAnswerComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         public sanitizer: DomSanitizer,
         private answerService: AnswerService,
-        private http: HttpClient
+        private http: HttpClient,
+        private jhiAlertService: JhiAlertService
     ) {}
 
     ngOnInit() {
@@ -62,16 +64,19 @@ export class SurveyAnswerComponent implements OnInit {
         //     stat:  data['stat']
         // });
 
-        this.http.get(this.survey.challengersURL).subscribe(response => this.onGetChallengersSuccess(response), () => this.onError());
+        this.http
+            .get(this.survey.challengersURL)
+            .subscribe(
+                response => this.onGetChallengersSuccess(response),
+                (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers - ' + res.message)
+            );
     }
 
     onGetChallengersSuccess(response) {
-        console.debug(JSON.stringify(response));
-        // for (let photo of response.photoset.photo) {
-        let photoset = response['photoset'];
-        // for (let photo of photoset["photo"]) {
-        for (let photo of photoset.photo) {
-            let photoUrl = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
+        // console.debug(JSON.stringify(response));
+        const photoset = response['photoset'];
+        for (const photo of photoset.photo) {
+            const photoUrl = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
             this.challengers.push(new Challenger(photo.title, photoUrl));
         }
 
@@ -108,7 +113,7 @@ export class SurveyAnswerComponent implements OnInit {
     addWinner(winner) {
         console.debug('Winner added: ' + JSON.stringify(winner));
         // Add a new Answer from the winner
-        let matchEnds = moment();
+        const matchEnds = moment();
         this.answers.push(
             new Answer(
                 undefined,
@@ -126,16 +131,11 @@ export class SurveyAnswerComponent implements OnInit {
         if (this.answers.length < this.nbOfMatches) {
             this.initNextMatch();
         } else {
-            // If we've got enought winners, save the answers and display socio-pro questions
+            // If we've got enough winners, save the answers and display socio-pro questions
             console.debug('Answers: ' + JSON.stringify(this.answers));
             this.isAllMatchesCompleted = true;
 
             this.subscribeToSaveAllResponse(this.answerService.createAll(this.answers));
-
-            // for (let answer of this.answers) {
-            //     //TODO create service to save a list of Answers in one call
-            //     this.subscribeToSaveResponse(this.answerService.create(answer));
-            // }
         }
     }
 
@@ -152,15 +152,16 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     private subscribeToSaveAllResponse(result: Observable<HttpResponse<IAnswer[]>>) {
-        result.subscribe((res: HttpResponse<IAnswer[]>) => this.onSaveResponseSuccess(), (res: HttpErrorResponse) => this.onError());
+        result.subscribe(
+            (res: HttpResponse<IAnswer[]>) => this.onSaveResponseSuccess(),
+            (res: HttpErrorResponse) => this.onError('Failed to save the list of responses - ' + res.message)
+        );
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<IAnswer>>) {
-        result.subscribe((res: HttpResponse<IAnswer>) => this.onSaveResponseSuccess(), (res: HttpErrorResponse) => this.onError());
-    }
-
-    onError(): void {
+    private onError(errorMessage: string) {
+        console.log(errorMessage);
         alert('An error occurred. Please try again later.');
+        //this.jhiAlertService.addAlert({type: 'danger', msg: 'error.generic', timeout: 2000}, []);
     }
 
     onSaveResponseSuccess(): void {

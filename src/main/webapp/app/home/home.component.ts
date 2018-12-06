@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
     openSurveys: ISurvey[];
+    closedSurveys: ISurvey[];
 
     constructor(
         private principal: Principal,
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit {
         private jhiAlertService: JhiAlertService
     ) {
         this.openSurveys = [];
+        this.closedSurveys = [];
     }
 
     ngOnInit() {
@@ -39,7 +41,7 @@ export class HomeComponent implements OnInit {
         this.surveyService
             .query({
                 page: 0,
-                size: 20
+                size: 30
             })
             .subscribe(
                 (res: HttpResponse<ISurvey[]>) => this.initOpenSurveys(res.body, res.headers),
@@ -48,10 +50,12 @@ export class HomeComponent implements OnInit {
     }
 
     private initOpenSurveys(data: ISurvey[], headers: HttpHeaders) {
-        //TODO create service methode to retrive list of open surveys
+        //TODO create service method to retrieve list of open surveys
         for (let i = 0; i < data.length; i++) {
             if (data[i].open) {
                 this.openSurveys.push(data[i]);
+            } else {
+                this.closedSurveys.push(data[i]);
             }
         }
     }

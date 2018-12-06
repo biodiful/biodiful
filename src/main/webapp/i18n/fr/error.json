@@ -9,6 +9,7 @@
         },
         "concurrencyFailure": "Un autre utilisateur a modifié ces données en même temps que vous. Vos changements n'ont pas été sauvegardés.",
         "validation": "Erreur de validation côté serveur.",
-        "friendlyurlexists": "La valeure du champ Friendly URL doit etre unique. La campagne {{param0}} existe deja avec la meme Friendly URL {{param1}}."
+        "friendlyurlexists": "La valeure du champ Friendly URL doit etre unique. La campagne {{param0}} existe deja avec la meme Friendly URL {{param1}}.",
+        "generic": "An error has occurred. Please try again later"
     }
 }

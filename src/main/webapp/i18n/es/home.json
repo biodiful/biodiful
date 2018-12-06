@@ -3,6 +3,7 @@
         "title": "- BIODIFUL.ORG -",
         "subtitle": "Un sitio dedicado al estudio de la percepción humana de la naturaleza.",
         "survey.open": "Encuestas abiertas :",
+        "survey.closed": "Encuestas cerradas :",
         "logged": {
             "message": "Está conectado como \"{{username}}\"."
         },

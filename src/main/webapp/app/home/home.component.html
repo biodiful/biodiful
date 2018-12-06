@@ -17,11 +17,22 @@
                 <a [routerLink]="['/survey', survey.id, 'present' ]">{{survey.surveyName}}</a>
             </li>
         </ul>
-        
+
         <div [ngSwitch]="isAuthenticated()">
             <div class="alert alert-success" *ngSwitchCase="true">
                 <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message" translateValues="{username: '{{account.login}}'}">
                         You are logged in as user "{{account.login}}". </span>
+
+                <p jhiTranslate="home.survey.closed">
+                    Campagnes fermées:
+                </p>
+
+                <ul>
+                    <li *ngFor="let survey of closedSurveys">
+                        <a [routerLink]="['/survey', survey.id, 'present' ]">{{survey.surveyName}}</a>
+                    </li>
+                </ul>
+
             </div>
 
                 <!-- <div class="alert alert-warning" *ngSwitchCase="false">

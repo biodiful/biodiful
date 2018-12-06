@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AnswerService } from 'app/entities/answer';
 import { SurveyService } from 'app/entities/survey';
-import { Answer, IAnswer } from 'app/shared/model/answer.model';
 import { ISurvey } from 'app/shared/model/survey.model';
 import { Observable } from 'rxjs';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -18,18 +16,13 @@ export class SurveyPresentationComponent implements OnInit {
     survey: ISurvey;
     surveyJudgesCount: number;
 
-    constructor(
-        private principal: Principal,
-        private surveyService: SurveyService,
-        private activatedRoute: ActivatedRoute,
-        private answerService: AnswerService
-    ) {}
+    constructor(private principal: Principal, private surveyService: SurveyService, private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ survey }) => {
             this.survey = survey;
 
-            this.subscribeToCountResponse(this.surveyService.getSurveyAnswersCount(this.survey.id));
+            this.subscribeToCountResponse(this.surveyService.getSurveyJudgesCount(this.survey.id));
         });
     }
 

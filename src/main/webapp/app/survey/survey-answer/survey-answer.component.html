@@ -1,3 +1,4 @@
+<jhi-alert-error></jhi-alert-error>
 <div [ngSwitch]="isAllMatchesCompleted">
     <div *ngSwitchCase="true" class="embed-responsive embed-responsive-1by1">
         <!-- <iframe [src]="this.survey.formURL" width="700" height="520"> -->
@@ -15,7 +16,7 @@
           <script async src="https://4screens.net/4screens-service-loader.js"></script> -->
     </div>
 
-    <div *ngSwitchDefault>
+    <div *ngSwitchCase="false">
         <div [innerHTML]="survey.matchesDescription"></div>
 
         <jhi-survey-answer-match [challengerOne]="challengerOne" [challengerTwo]="challengerTwo" (winnerSelected)="addWinner($event)"></jhi-survey-answer-match>
@@ -28,21 +29,20 @@
         </div>
     </div>
 </div>
-</div>
 
-<!-- 
+<!--
     $('iframe#google-form').onsubmit(function() {
       alert("the iframe has been loaded");
     });
-    
+
     $('iframe#google-form').onsubmit(alert("the iframe has been loaded")));
-    
+
     $('iframe#google-form').onchange(alert("onchange")));
-    
+
     To try:
     http://blog.sodhanalibrary.com/2015/02/detect-iframe-src-change-using-angularjs.html
-    
+
     Search callback method to parent DOM when form is submitted.
-    
+
     or just display thank you message in iFrame and save the Answers at the previous step
      -->

@@ -40,7 +40,7 @@ export class SurveyService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    getSurveyAnswersCount(id: number) {
+    getSurveyJudgesCount(id: number) {
         return this.http.get(`${this.resourceUrl}/${id}/judges-count`);
     }
 }
