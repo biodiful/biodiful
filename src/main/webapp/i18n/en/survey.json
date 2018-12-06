@@ -27,7 +27,9 @@
             "matchesDescription": "Matches Description",
             "open": "Open",
             "answer": "Answer the survey",
-            "judgesCount": "people have already participated!"
+            "judgesCount": "people have already participated!",
+            "moreInfo": "For more information, you can contact:",
+            "closedSurvey": "This survey is currently closed."
         }
     }
 }

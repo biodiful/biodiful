@@ -26,8 +26,10 @@
             "numberOfMatches": "Number Of Matches",
             "matchesDescription": "Matches Description",
             "open": "Open",
-            "answer": "Answer the survey",
-            "judgesCount": "personas ya han participado!"
+            "answer": "Responde la encuesta",
+            "judgesCount": "personas ya han participado!",
+            "moreInfo": "Para más información, puedes contactar:",
+            "closedSurvey": "Este encuesta está actualmente cerrado."
         }
     }
 }

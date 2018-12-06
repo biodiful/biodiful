@@ -27,7 +27,9 @@
             "matchesDescription": "Matches Description",
             "open": "Open",
             "answer": "Répondre à la campagne",
-            "judgesCount": "personnes ont déjà participé !"
+            "judgesCount": "personnes ont déjà participé !",
+            "moreInfo": "Pour plus d'information, vous pouvez contacter:",
+            "closedSurvey": "Cette campagne est actuellement fermée."
         }
     }
 }

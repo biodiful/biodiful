@@ -7,6 +7,7 @@ import { ISurvey } from 'app/shared/model/survey.model';
 import { Observable } from 'rxjs';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import moment from 'moment/src/moment';
+import { Principal } from 'app/core';
 
 @Component({
     selector: 'jhi-survey-presentation',
@@ -17,7 +18,12 @@ export class SurveyPresentationComponent implements OnInit {
     survey: ISurvey;
     surveyJudgesCount: number;
 
-    constructor(private surveyService: SurveyService, private activatedRoute: ActivatedRoute, private answerService: AnswerService) {}
+    constructor(
+        private principal: Principal,
+        private surveyService: SurveyService,
+        private activatedRoute: ActivatedRoute,
+        private answerService: AnswerService
+    ) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ survey }) => {
@@ -39,5 +45,9 @@ export class SurveyPresentationComponent implements OnInit {
     onCountSuccess(response): void {
         console.debug('Number of distinct judges for this survey: ' + JSON.stringify(response));
         this.surveyJudgesCount = response.toString();
+    }
+
+    isAuthenticated() {
+        return this.principal.isAuthenticated();
     }
 }
