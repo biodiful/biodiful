@@ -74,6 +74,12 @@ export class SurveyAnswerComponent implements OnInit {
 
     onGetChallengersSuccess(response) {
         // console.debug(JSON.stringify(response));
+
+        if (response['stat'] == 'fail') {
+            this.onError('Failed to retrieve challengers: ' + response['message']);
+            return;
+        }
+
         const photoset = response['photoset'];
         for (const photo of photoset.photo) {
             const photoUrl = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
@@ -96,7 +102,7 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     initNextMatch() {
-        // Load 2 random chanllengers
+        // Load 2 random challengers
         this.challengerOne = this.challengers[Math.floor(Math.random() * this.challengers.length)];
         this.challengerTwo = this.challengers[Math.floor(Math.random() * this.challengers.length)];
         this.checkChallengersAreDifferent();
