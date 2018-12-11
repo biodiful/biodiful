@@ -4,6 +4,7 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Lob;
+import org.biodiful.domain.enumeration.Language;
 
 /**
  * A DTO for the Survey entity.
@@ -33,7 +34,11 @@ public class SurveyDTO implements Serializable {
     private String formURL;
 
     @NotNull
-    private String challengersURL;
+    private String challengersPool1URL;
+
+    private String challengersPool2URL;
+
+    private String challengersPool3URL;
 
     private Integer numberOfMatches;
 
@@ -43,6 +48,12 @@ public class SurveyDTO implements Serializable {
 
     @NotNull
     private Boolean open;
+
+    @NotNull
+    private Language language;
+
+    @NotNull
+    private Boolean withRemise;
 
     public Long getId() {
         return id;
@@ -108,12 +119,28 @@ public class SurveyDTO implements Serializable {
         this.formURL = formURL;
     }
 
-    public String getChallengersURL() {
-        return challengersURL;
+    public String getChallengersPool1URL() {
+        return challengersPool1URL;
     }
 
-    public void setChallengersURL(String challengersURL) {
-        this.challengersURL = challengersURL;
+    public void setChallengersPool1URL(String challengersPool1URL) {
+        this.challengersPool1URL = challengersPool1URL;
+    }
+
+    public String getChallengersPool2URL() {
+        return challengersPool2URL;
+    }
+
+    public void setChallengersPool2URL(String challengersPool2URL) {
+        this.challengersPool2URL = challengersPool2URL;
+    }
+
+    public String getChallengersPool3URL() {
+        return challengersPool3URL;
+    }
+
+    public void setChallengersPool3URL(String challengersPool3URL) {
+        this.challengersPool3URL = challengersPool3URL;
     }
 
     public Integer getNumberOfMatches() {
@@ -138,6 +165,22 @@ public class SurveyDTO implements Serializable {
 
     public void setOpen(Boolean open) {
         this.open = open;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
+    }
+
+    public Boolean isWithRemise() {
+        return withRemise;
+    }
+
+    public void setWithRemise(Boolean withRemise) {
+        this.withRemise = withRemise;
     }
 
     @Override
@@ -172,10 +215,14 @@ public class SurveyDTO implements Serializable {
             ", photoURL='" + getPhotoURL() + "'" +
             ", logosURL='" + getLogosURL() + "'" +
             ", formURL='" + getFormURL() + "'" +
-            ", challengersURL='" + getChallengersURL() + "'" +
+            ", challengersPool1URL='" + getChallengersPool1URL() + "'" +
+            ", challengersPool2URL='" + getChallengersPool2URL() + "'" +
+            ", challengersPool3URL='" + getChallengersPool3URL() + "'" +
             ", numberOfMatches=" + getNumberOfMatches() +
             ", matchesDescription='" + getMatchesDescription() + "'" +
             ", open='" + isOpen() + "'" +
+            ", language='" + getLanguage() + "'" +
+            ", withRemise='" + isWithRemise() + "'" +
             "}";
     }
 }

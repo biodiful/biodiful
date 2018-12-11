@@ -15,12 +15,4 @@
                                  referencedTableName="survey"/>
 
     </changeSet>
-
-    <changeSet id="20181128101056-1" author="tbz">
-        <addDefaultValue tableName="survey"
-            columnName="number_of_matches"
-            defaultValueNumeric="10"
-            schemaName="public" />
-    </changeSet>
-
 </databaseChangeLog>

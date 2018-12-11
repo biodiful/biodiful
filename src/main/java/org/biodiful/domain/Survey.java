@@ -9,6 +9,8 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.biodiful.domain.enumeration.Language;
+
 /**
  * A Survey.
  */
@@ -51,11 +53,17 @@ public class Survey implements Serializable {
     private String formURL;
 
     @NotNull
-    @Column(name = "challengers_url", nullable = false)
-    private String challengersURL;
+    @Column(name = "challengers_pool_1_url", nullable = false)
+    private String challengersPool1URL;
+
+    @Column(name = "challengers_pool_2_url")
+    private String challengersPool2URL;
+
+    @Column(name = "challengers_pool_3_url")
+    private String challengersPool3URL;
 
     @Column(name = "number_of_matches")
-    private Integer numberOfMatches = 10;
+    private Integer numberOfMatches;
 
     
     @Lob
@@ -65,6 +73,15 @@ public class Survey implements Serializable {
     @NotNull
     @Column(name = "jhi_open", nullable = false)
     private Boolean open;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "language", nullable = false)
+    private Language language;
+
+    @NotNull
+    @Column(name = "with_remise", nullable = false)
+    private Boolean withRemise;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -166,17 +183,43 @@ public class Survey implements Serializable {
         this.formURL = formURL;
     }
 
-    public String getChallengersURL() {
-        return challengersURL;
+    public String getChallengersPool1URL() {
+        return challengersPool1URL;
     }
 
-    public Survey challengersURL(String challengersURL) {
-        this.challengersURL = challengersURL;
+    public Survey challengersPool1URL(String challengersPool1URL) {
+        this.challengersPool1URL = challengersPool1URL;
         return this;
     }
 
-    public void setChallengersURL(String challengersURL) {
-        this.challengersURL = challengersURL;
+    public void setChallengersPool1URL(String challengersPool1URL) {
+        this.challengersPool1URL = challengersPool1URL;
+    }
+
+    public String getChallengersPool2URL() {
+        return challengersPool2URL;
+    }
+
+    public Survey challengersPool2URL(String challengersPool2URL) {
+        this.challengersPool2URL = challengersPool2URL;
+        return this;
+    }
+
+    public void setChallengersPool2URL(String challengersPool2URL) {
+        this.challengersPool2URL = challengersPool2URL;
+    }
+
+    public String getChallengersPool3URL() {
+        return challengersPool3URL;
+    }
+
+    public Survey challengersPool3URL(String challengersPool3URL) {
+        this.challengersPool3URL = challengersPool3URL;
+        return this;
+    }
+
+    public void setChallengersPool3URL(String challengersPool3URL) {
+        this.challengersPool3URL = challengersPool3URL;
     }
 
     public Integer getNumberOfMatches() {
@@ -217,6 +260,32 @@ public class Survey implements Serializable {
     public void setOpen(Boolean open) {
         this.open = open;
     }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public Survey language(Language language) {
+        this.language = language;
+        return this;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
+    }
+
+    public Boolean isWithRemise() {
+        return withRemise;
+    }
+
+    public Survey withRemise(Boolean withRemise) {
+        this.withRemise = withRemise;
+        return this;
+    }
+
+    public void setWithRemise(Boolean withRemise) {
+        this.withRemise = withRemise;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -250,10 +319,14 @@ public class Survey implements Serializable {
             ", photoURL='" + getPhotoURL() + "'" +
             ", logosURL='" + getLogosURL() + "'" +
             ", formURL='" + getFormURL() + "'" +
-            ", challengersURL='" + getChallengersURL() + "'" +
+            ", challengersPool1URL='" + getChallengersPool1URL() + "'" +
+            ", challengersPool2URL='" + getChallengersPool2URL() + "'" +
+            ", challengersPool3URL='" + getChallengersPool3URL() + "'" +
             ", numberOfMatches=" + getNumberOfMatches() +
             ", matchesDescription='" + getMatchesDescription() + "'" +
             ", open='" + isOpen() + "'" +
+            ", language='" + getLanguage() + "'" +
+            ", withRemise='" + isWithRemise() + "'" +
             "}";
     }
 }

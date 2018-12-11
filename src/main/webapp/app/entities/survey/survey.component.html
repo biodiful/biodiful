@@ -22,10 +22,14 @@
             <th jhiSortBy="photoURL"><span jhiTranslate="biodifulApp.survey.photoURL">Photo URL</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="logosURL"><span jhiTranslate="biodifulApp.survey.logosURL">Logos URL</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="formURL"><span jhiTranslate="biodifulApp.survey.formURL">Form URL</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="challengersURL"><span jhiTranslate="biodifulApp.survey.challengersURL">Challengers URL</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="challengersPool1URL"><span jhiTranslate="biodifulApp.survey.challengersPool1URL">Challengers Pool 1 URL</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="challengersPool2URL"><span jhiTranslate="biodifulApp.survey.challengersPool2URL">Challengers Pool 2 URL</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="challengersPool3URL"><span jhiTranslate="biodifulApp.survey.challengersPool3URL">Challengers Pool 3 URL</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="numberOfMatches"><span jhiTranslate="biodifulApp.survey.numberOfMatches">Number Of Matches</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="matchesDescription"><span jhiTranslate="biodifulApp.survey.matchesDescription">Matches Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="open"><span jhiTranslate="biodifulApp.survey.open">Open</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="language"><span jhiTranslate="biodifulApp.survey.language">Language</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="withRemise"><span jhiTranslate="biodifulApp.survey.withRemise">With Remise</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -39,10 +43,14 @@
                 <td>{{survey.photoURL}}</td>
                 <td>{{survey.logosURL}}</td>
                 <td>{{survey.formURL}}</td>
-                <td>{{survey.challengersURL}}</td>
+                <td>{{survey.challengersPool1URL}}</td>
+                <td>{{survey.challengersPool2URL}}</td>
+                <td>{{survey.challengersPool3URL}}</td>
                 <td>{{survey.numberOfMatches}}</td>
                 <td>{{survey.matchesDescription}}</td>
                 <td>{{survey.open}}</td>
+                <td jhiTranslate="{{'biodifulApp.Language.' + survey.language}}">{{survey.language}}</td>
+                <td>{{survey.withRemise}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

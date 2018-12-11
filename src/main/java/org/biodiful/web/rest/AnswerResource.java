@@ -23,6 +23,7 @@ import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -90,7 +91,7 @@ public class AnswerResource {
     /**
      * POST  /answers : Create a list of answers.
      *
-     * @param answerDTO the list of answerDTO to create
+     * @param answersDTO the list of answerDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new answerDTOs, or with status 400 (Bad Request) if the answers have already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */

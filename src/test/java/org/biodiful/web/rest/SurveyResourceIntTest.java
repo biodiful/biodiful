@@ -36,6 +36,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.biodiful.domain.enumeration.Language;
 /**
  * Test class for the SurveyResource REST controller.
  *
@@ -66,8 +67,14 @@ public class SurveyResourceIntTest {
     private static final String DEFAULT_FORM_URL = "AAAAAAAAAA";
     private static final String UPDATED_FORM_URL = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CHALLENGERS_URL = "AAAAAAAAAA";
-    private static final String UPDATED_CHALLENGERS_URL = "BBBBBBBBBB";
+    private static final String DEFAULT_CHALLENGERS_POOL_1_URL = "AAAAAAAAAA";
+    private static final String UPDATED_CHALLENGERS_POOL_1_URL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CHALLENGERS_POOL_2_URL = "AAAAAAAAAA";
+    private static final String UPDATED_CHALLENGERS_POOL_2_URL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CHALLENGERS_POOL_3_URL = "AAAAAAAAAA";
+    private static final String UPDATED_CHALLENGERS_POOL_3_URL = "BBBBBBBBBB";
 
     private static final Integer DEFAULT_NUMBER_OF_MATCHES = 1;
     private static final Integer UPDATED_NUMBER_OF_MATCHES = 2;
@@ -77,6 +84,12 @@ public class SurveyResourceIntTest {
 
     private static final Boolean DEFAULT_OPEN = false;
     private static final Boolean UPDATED_OPEN = true;
+
+    private static final Language DEFAULT_LANGUAGE = Language.FR;
+    private static final Language UPDATED_LANGUAGE = Language.EN;
+
+    private static final Boolean DEFAULT_WITH_REMISE = false;
+    private static final Boolean UPDATED_WITH_REMISE = true;
 
     @Autowired
     private SurveyRepository surveyRepository;
@@ -132,10 +145,14 @@ public class SurveyResourceIntTest {
             .photoURL(DEFAULT_PHOTO_URL)
             .logosURL(DEFAULT_LOGOS_URL)
             .formURL(DEFAULT_FORM_URL)
-            .challengersURL(DEFAULT_CHALLENGERS_URL)
+            .challengersPool1URL(DEFAULT_CHALLENGERS_POOL_1_URL)
+            .challengersPool2URL(DEFAULT_CHALLENGERS_POOL_2_URL)
+            .challengersPool3URL(DEFAULT_CHALLENGERS_POOL_3_URL)
             .numberOfMatches(DEFAULT_NUMBER_OF_MATCHES)
             .matchesDescription(DEFAULT_MATCHES_DESCRIPTION)
-            .open(DEFAULT_OPEN);
+            .open(DEFAULT_OPEN)
+            .language(DEFAULT_LANGUAGE)
+            .withRemise(DEFAULT_WITH_REMISE);
         return survey;
     }
 
@@ -167,10 +184,14 @@ public class SurveyResourceIntTest {
         assertThat(testSurvey.getPhotoURL()).isEqualTo(DEFAULT_PHOTO_URL);
         assertThat(testSurvey.getLogosURL()).isEqualTo(DEFAULT_LOGOS_URL);
         assertThat(testSurvey.getFormURL()).isEqualTo(DEFAULT_FORM_URL);
-        assertThat(testSurvey.getChallengersURL()).isEqualTo(DEFAULT_CHALLENGERS_URL);
+        assertThat(testSurvey.getChallengersPool1URL()).isEqualTo(DEFAULT_CHALLENGERS_POOL_1_URL);
+        assertThat(testSurvey.getChallengersPool2URL()).isEqualTo(DEFAULT_CHALLENGERS_POOL_2_URL);
+        assertThat(testSurvey.getChallengersPool3URL()).isEqualTo(DEFAULT_CHALLENGERS_POOL_3_URL);
         assertThat(testSurvey.getNumberOfMatches()).isEqualTo(DEFAULT_NUMBER_OF_MATCHES);
         assertThat(testSurvey.getMatchesDescription()).isEqualTo(DEFAULT_MATCHES_DESCRIPTION);
         assertThat(testSurvey.isOpen()).isEqualTo(DEFAULT_OPEN);
+        assertThat(testSurvey.getLanguage()).isEqualTo(DEFAULT_LANGUAGE);
+        assertThat(testSurvey.isWithRemise()).isEqualTo(DEFAULT_WITH_REMISE);
     }
 
     @Test
@@ -247,10 +268,10 @@ public class SurveyResourceIntTest {
 
     @Test
     @Transactional
-    public void checkChallengersURLIsRequired() throws Exception {
+    public void checkChallengersPool1URLIsRequired() throws Exception {
         int databaseSizeBeforeTest = surveyRepository.findAll().size();
         // set the field null
-        survey.setChallengersURL(null);
+        survey.setChallengersPool1URL(null);
 
         // Create the Survey, which fails.
         SurveyDTO surveyDTO = surveyMapper.toDto(survey);
@@ -285,6 +306,44 @@ public class SurveyResourceIntTest {
 
     @Test
     @Transactional
+    public void checkLanguageIsRequired() throws Exception {
+        int databaseSizeBeforeTest = surveyRepository.findAll().size();
+        // set the field null
+        survey.setLanguage(null);
+
+        // Create the Survey, which fails.
+        SurveyDTO surveyDTO = surveyMapper.toDto(survey);
+
+        restSurveyMockMvc.perform(post("/api/surveys")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(surveyDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Survey> surveyList = surveyRepository.findAll();
+        assertThat(surveyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkWithRemiseIsRequired() throws Exception {
+        int databaseSizeBeforeTest = surveyRepository.findAll().size();
+        // set the field null
+        survey.setWithRemise(null);
+
+        // Create the Survey, which fails.
+        SurveyDTO surveyDTO = surveyMapper.toDto(survey);
+
+        restSurveyMockMvc.perform(post("/api/surveys")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(surveyDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Survey> surveyList = surveyRepository.findAll();
+        assertThat(surveyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllSurveys() throws Exception {
         // Initialize the database
         surveyRepository.saveAndFlush(survey);
@@ -301,10 +360,14 @@ public class SurveyResourceIntTest {
             .andExpect(jsonPath("$.[*].photoURL").value(hasItem(DEFAULT_PHOTO_URL.toString())))
             .andExpect(jsonPath("$.[*].logosURL").value(hasItem(DEFAULT_LOGOS_URL.toString())))
             .andExpect(jsonPath("$.[*].formURL").value(hasItem(DEFAULT_FORM_URL.toString())))
-            .andExpect(jsonPath("$.[*].challengersURL").value(hasItem(DEFAULT_CHALLENGERS_URL.toString())))
+            .andExpect(jsonPath("$.[*].challengersPool1URL").value(hasItem(DEFAULT_CHALLENGERS_POOL_1_URL.toString())))
+            .andExpect(jsonPath("$.[*].challengersPool2URL").value(hasItem(DEFAULT_CHALLENGERS_POOL_2_URL.toString())))
+            .andExpect(jsonPath("$.[*].challengersPool3URL").value(hasItem(DEFAULT_CHALLENGERS_POOL_3_URL.toString())))
             .andExpect(jsonPath("$.[*].numberOfMatches").value(hasItem(DEFAULT_NUMBER_OF_MATCHES)))
             .andExpect(jsonPath("$.[*].matchesDescription").value(hasItem(DEFAULT_MATCHES_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].open").value(hasItem(DEFAULT_OPEN.booleanValue())));
+            .andExpect(jsonPath("$.[*].open").value(hasItem(DEFAULT_OPEN.booleanValue())))
+            .andExpect(jsonPath("$.[*].language").value(hasItem(DEFAULT_LANGUAGE.toString())))
+            .andExpect(jsonPath("$.[*].withRemise").value(hasItem(DEFAULT_WITH_REMISE.booleanValue())));
     }
 
     @Test
@@ -325,10 +388,14 @@ public class SurveyResourceIntTest {
             .andExpect(jsonPath("$.photoURL").value(DEFAULT_PHOTO_URL.toString()))
             .andExpect(jsonPath("$.logosURL").value(DEFAULT_LOGOS_URL.toString()))
             .andExpect(jsonPath("$.formURL").value(DEFAULT_FORM_URL.toString()))
-            .andExpect(jsonPath("$.challengersURL").value(DEFAULT_CHALLENGERS_URL.toString()))
+            .andExpect(jsonPath("$.challengersPool1URL").value(DEFAULT_CHALLENGERS_POOL_1_URL.toString()))
+            .andExpect(jsonPath("$.challengersPool2URL").value(DEFAULT_CHALLENGERS_POOL_2_URL.toString()))
+            .andExpect(jsonPath("$.challengersPool3URL").value(DEFAULT_CHALLENGERS_POOL_3_URL.toString()))
             .andExpect(jsonPath("$.numberOfMatches").value(DEFAULT_NUMBER_OF_MATCHES))
             .andExpect(jsonPath("$.matchesDescription").value(DEFAULT_MATCHES_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.open").value(DEFAULT_OPEN.booleanValue()));
+            .andExpect(jsonPath("$.open").value(DEFAULT_OPEN.booleanValue()))
+            .andExpect(jsonPath("$.language").value(DEFAULT_LANGUAGE.toString()))
+            .andExpect(jsonPath("$.withRemise").value(DEFAULT_WITH_REMISE.booleanValue()));
     }
 
     @Test
@@ -350,10 +417,14 @@ public class SurveyResourceIntTest {
             .andExpect(jsonPath("$.photoURL").value(DEFAULT_PHOTO_URL.toString()))
             .andExpect(jsonPath("$.logosURL").value(DEFAULT_LOGOS_URL.toString()))
             .andExpect(jsonPath("$.formURL").value(DEFAULT_FORM_URL.toString()))
-            .andExpect(jsonPath("$.challengersURL").value(DEFAULT_CHALLENGERS_URL.toString()))
+            .andExpect(jsonPath("$.challengersPool1URL").value(DEFAULT_CHALLENGERS_POOL_1_URL.toString()))
+            .andExpect(jsonPath("$.challengersPool2URL").value(DEFAULT_CHALLENGERS_POOL_2_URL.toString()))
+            .andExpect(jsonPath("$.challengersPool3URL").value(DEFAULT_CHALLENGERS_POOL_3_URL.toString()))
             .andExpect(jsonPath("$.numberOfMatches").value(DEFAULT_NUMBER_OF_MATCHES))
             .andExpect(jsonPath("$.matchesDescription").value(DEFAULT_MATCHES_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.open").value(DEFAULT_OPEN.booleanValue()));
+            .andExpect(jsonPath("$.open").value(DEFAULT_OPEN.booleanValue()))
+            .andExpect(jsonPath("$.language").value(DEFAULT_LANGUAGE.toString()))
+            .andExpect(jsonPath("$.withRemise").value(DEFAULT_WITH_REMISE.booleanValue()));
     }
 
     @Test
@@ -384,10 +455,14 @@ public class SurveyResourceIntTest {
             .photoURL(UPDATED_PHOTO_URL)
             .logosURL(UPDATED_LOGOS_URL)
             .formURL(UPDATED_FORM_URL)
-            .challengersURL(UPDATED_CHALLENGERS_URL)
+            .challengersPool1URL(UPDATED_CHALLENGERS_POOL_1_URL)
+            .challengersPool2URL(UPDATED_CHALLENGERS_POOL_2_URL)
+            .challengersPool3URL(UPDATED_CHALLENGERS_POOL_3_URL)
             .numberOfMatches(UPDATED_NUMBER_OF_MATCHES)
             .matchesDescription(UPDATED_MATCHES_DESCRIPTION)
-            .open(UPDATED_OPEN);
+            .open(UPDATED_OPEN)
+            .language(UPDATED_LANGUAGE)
+            .withRemise(UPDATED_WITH_REMISE);
         SurveyDTO surveyDTO = surveyMapper.toDto(updatedSurvey);
 
         restSurveyMockMvc.perform(put("/api/surveys")
@@ -406,10 +481,14 @@ public class SurveyResourceIntTest {
         assertThat(testSurvey.getPhotoURL()).isEqualTo(UPDATED_PHOTO_URL);
         assertThat(testSurvey.getLogosURL()).isEqualTo(UPDATED_LOGOS_URL);
         assertThat(testSurvey.getFormURL()).isEqualTo(UPDATED_FORM_URL);
-        assertThat(testSurvey.getChallengersURL()).isEqualTo(UPDATED_CHALLENGERS_URL);
+        assertThat(testSurvey.getChallengersPool1URL()).isEqualTo(UPDATED_CHALLENGERS_POOL_1_URL);
+        assertThat(testSurvey.getChallengersPool2URL()).isEqualTo(UPDATED_CHALLENGERS_POOL_2_URL);
+        assertThat(testSurvey.getChallengersPool3URL()).isEqualTo(UPDATED_CHALLENGERS_POOL_3_URL);
         assertThat(testSurvey.getNumberOfMatches()).isEqualTo(UPDATED_NUMBER_OF_MATCHES);
         assertThat(testSurvey.getMatchesDescription()).isEqualTo(UPDATED_MATCHES_DESCRIPTION);
         assertThat(testSurvey.isOpen()).isEqualTo(UPDATED_OPEN);
+        assertThat(testSurvey.getLanguage()).isEqualTo(UPDATED_LANGUAGE);
+        assertThat(testSurvey.isWithRemise()).isEqualTo(UPDATED_WITH_REMISE);
     }
 
     @Test

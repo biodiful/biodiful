@@ -87,6 +87,21 @@
                         </small>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.answer.poolNumber" for="field_poolNumber">Pool Number</label>
+                    <input type="number" class="form-control" name="poolNumber" id="field_poolNumber"
+                        [(ngModel)]="answer.poolNumber" required/>
+                    <div [hidden]="!(editForm.controls.poolNumber?.dirty && editForm.controls.poolNumber?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.poolNumber?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.poolNumber?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.answer.survey" for="field_survey">Survey</label>

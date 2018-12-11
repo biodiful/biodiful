@@ -68,16 +68,28 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.challengersURL" for="field_challengersURL">Challengers URL</label>
-                    <div class="alert alert-info" role="alert">URL de l'appel a l'API Flickr pour obtenir les photos à afficher lors des matches</div>
-                    <input type="text" class="form-control" name="challengersURL" id="field_challengersURL"
-                        [(ngModel)]="survey.challengersURL" required/>
-                    <div [hidden]="!(editForm.controls.challengersURL?.dirty && editForm.controls.challengersURL?.invalid)">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.challengersPool1URL" for="field_challengersPool1URL">Challengers Pool 1 URL</label>
+                    <div class="alert alert-info" role="alert">URL de l'appel a l'API Flickr pour obtenir les photos de la 1ere Pool à afficher lors des matches</div>
+                    <input type="text" class="form-control" name="challengersPool1URL" id="field_challengersPool1URL"
+                        [(ngModel)]="survey.challengersPool1URL" required/>
+                    <div [hidden]="!(editForm.controls.challengersPool1URL?.dirty && editForm.controls.challengersPool1URL?.invalid)">
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.challengersURL?.errors?.required" jhiTranslate="entity.validation.required">
+                        [hidden]="!editForm.controls.challengersPool1URL?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.challengersPool2URL" for="field_challengersPool2URL">Challengers Pool 2 URL</label>
+                    <div class="alert alert-info" role="alert">URL de l'appel a l'API Flickr pour obtenir les photos de la 2eme Pool à afficher lors des matches</div>
+                    <input type="text" class="form-control" name="challengersPool2URL" id="field_challengersPool2URL"
+                        [(ngModel)]="survey.challengersPool2URL" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.challengersPool3URL" for="field_challengersPool3URL">Challengers Pool 3 URL</label>
+                    <div class="alert alert-info" role="alert">URL de l'appel a l'API Flickr pour obtenir les photos de la 3eme Pool à afficher lors des matches</div>
+                    <input type="text" class="form-control" name="challengersPool3URL" id="field_challengersPool3URL"
+                        [(ngModel)]="survey.challengersPool3URL" />
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.numberOfMatches" for="field_numberOfMatches">Number Of Matches</label>
@@ -104,6 +116,31 @@
                     <div [hidden]="!(editForm.controls.open?.dirty && editForm.controls.open?.invalid)">
                         <small class="form-text text-danger"
                         [hidden]="!editForm.controls.open?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.language" for="field_language">Language</label>
+                    <select class="form-control" name="language" [(ngModel)]="survey.language" id="field_language"  required>
+                        <option value="FR">{{'biodifulApp.Language.FR' | translate}}</option>
+                        <option value="EN">{{'biodifulApp.Language.EN' | translate}}</option>
+                        <option value="ES">{{'biodifulApp.Language.ES' | translate}}</option>
+                    </select>
+                    <div [hidden]="!(editForm.controls.language?.dirty && editForm.controls.language?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.language?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.withRemise" for="field_withRemise">With Remise</label>
+                    <input type="checkbox" class="form-control" name="withRemise" id="field_withRemise"
+                        [(ngModel)]="survey.withRemise" />
+                    <div [hidden]="!(editForm.controls.withRemise?.dirty && editForm.controls.withRemise?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.withRemise?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>

@@ -5,7 +5,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { SurveyService } from 'app/entities/survey/survey.service';
-import { ISurvey, Survey } from 'app/shared/model/survey.model';
+import { ISurvey, Survey, Language } from 'app/shared/model/survey.model';
 
 describe('Service Tests', () => {
     describe('Survey Service', () => {
@@ -31,8 +31,12 @@ describe('Service Tests', () => {
                 'AAAAAAA',
                 'AAAAAAA',
                 'AAAAAAA',
+                'AAAAAAA',
+                'AAAAAAA',
                 0,
                 'AAAAAAA',
+                false,
+                Language.FR,
                 false
             );
         });
@@ -75,10 +79,14 @@ describe('Service Tests', () => {
                         photoURL: 'BBBBBB',
                         logosURL: 'BBBBBB',
                         formURL: 'BBBBBB',
-                        challengersURL: 'BBBBBB',
+                        challengersPool1URL: 'BBBBBB',
+                        challengersPool2URL: 'BBBBBB',
+                        challengersPool3URL: 'BBBBBB',
                         numberOfMatches: 1,
                         matchesDescription: 'BBBBBB',
-                        open: true
+                        open: true,
+                        language: 'BBBBBB',
+                        withRemise: true
                     },
                     elemDefault
                 );
@@ -102,10 +110,14 @@ describe('Service Tests', () => {
                         photoURL: 'BBBBBB',
                         logosURL: 'BBBBBB',
                         formURL: 'BBBBBB',
-                        challengersURL: 'BBBBBB',
+                        challengersPool1URL: 'BBBBBB',
+                        challengersPool2URL: 'BBBBBB',
+                        challengersPool3URL: 'BBBBBB',
                         numberOfMatches: 1,
                         matchesDescription: 'BBBBBB',
-                        open: true
+                        open: true,
+                        language: 'BBBBBB',
+                        withRemise: true
                     },
                     elemDefault
                 );

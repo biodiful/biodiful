@@ -8,6 +8,7 @@ export interface IAnswer {
     winner?: string;
     startTime?: Moment;
     endTime?: Moment;
+    poolNumber?: number;
     surveyId?: number;
 }
 
@@ -20,6 +21,7 @@ export class Answer implements IAnswer {
         public winner?: string,
         public startTime?: Moment,
         public endTime?: Moment,
+        public poolNumber?: number,
         public surveyId?: number
     ) {}
 }

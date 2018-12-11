@@ -49,6 +49,10 @@ public class Answer implements Serializable {
     @Column(name = "end_time", nullable = false)
     private Instant endTime;
 
+    @NotNull
+    @Column(name = "pool_number", nullable = false)
+    private Integer poolNumber;
+
     @ManyToOne
     @JsonIgnoreProperties("")
     private Survey survey;
@@ -140,6 +144,19 @@ public class Answer implements Serializable {
         this.endTime = endTime;
     }
 
+    public Integer getPoolNumber() {
+        return poolNumber;
+    }
+
+    public Answer poolNumber(Integer poolNumber) {
+        this.poolNumber = poolNumber;
+        return this;
+    }
+
+    public void setPoolNumber(Integer poolNumber) {
+        this.poolNumber = poolNumber;
+    }
+
     public Survey getSurvey() {
         return survey;
     }
@@ -184,6 +201,7 @@ public class Answer implements Serializable {
             ", winner='" + getWinner() + "'" +
             ", startTime='" + getStartTime() + "'" +
             ", endTime='" + getEndTime() + "'" +
+            ", poolNumber=" + getPoolNumber() +
             "}";
     }
 }

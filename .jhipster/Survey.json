@@ -44,11 +44,19 @@
             ]
         },
         {
-            "fieldName": "challengersURL",
+            "fieldName": "challengersPool1URL",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "challengersPool2URL",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "challengersPool3URL",
+            "fieldType": "String"
         },
         {
             "fieldName": "numberOfMatches",
@@ -64,6 +72,21 @@
         },
         {
             "fieldName": "open",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "language",
+            "fieldType": "Language",
+            "fieldValues": "FR,EN,ES",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "withRemise",
             "fieldType": "Boolean",
             "fieldValidateRules": [
                 "required"

@@ -46,6 +46,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="pool_number" type="integer">
+                <constraints nullable="false" />
+            </column>
+
             <column name="survey_id" type="bigint">
                 <constraints nullable="true" />
             </column>

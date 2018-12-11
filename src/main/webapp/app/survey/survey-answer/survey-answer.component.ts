@@ -21,7 +21,11 @@ export class SurveyAnswerComponent implements OnInit {
     judgeId: string;
     // winners: Challenger[] = [];
     answers: Answer[] = [];
-    challengers: Challenger[] = [];
+    challengers: Challenger[][] = [];
+    challengersPool1: Challenger[] = [];
+    challengersPool2: Challenger[] = [];
+    challengersPool3: Challenger[] = [];
+    currentPool = 2;
     challengerOne: Challenger;
     challengerTwo: Challenger;
     isAllMatchesCompleted: boolean = false;
@@ -40,39 +44,43 @@ export class SurveyAnswerComponent implements OnInit {
             this.survey = survey;
         });
 
-        this.initNbOfMatches();
+        this.initChallengers();
 
-        this.initChallangers();
+        // this.initNbOfMatches();
 
         // this.initNextMatch();
 
         this.initJudgeId();
     }
 
-    initChallangers() {
-        // this.survey.challengersURL;
-        // let flickrUrl = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=7389b9b323b67e62de25f945af7ccaa3&user_id=162158790@N04&photoset_id=72157697901898520&format=json&nojsoncallback=1";
-
-        // let result = this.http.get(flickrUrl);
-        // console.debug("Flickr GET result: " + JSON.stringify(result))
-
-        // this.http.get<FlickrResponse[]>(flickrUrl).map(data => _.values(data))
-        // .do(console.log);
-
-        // this.http.get(flickrUrl).subscribe((data: FlickrResponse) => this.flickrResponse = {
-        //     photoset: data['photoset'],
-        //     stat:  data['stat']
-        // });
-
+    initChallengers() {
         this.http
-            .get(this.survey.challengersURL)
+            .get(this.survey.challengersPool1URL)
             .subscribe(
-                response => this.onGetChallengersSuccess(response),
-                (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers - ' + res.message)
+                response => this.onGetChallengersSuccess(response, this.challengersPool1),
+                (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 1- ' + res.message)
             );
+
+        if (this.survey.challengersPool2URL) {
+            this.http
+                .get(this.survey.challengersPool2URL)
+                .subscribe(
+                    response => this.onGetChallengersSuccess(response, this.challengersPool2),
+                    (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 2 - ' + res.message)
+                );
+        }
+
+        if (this.survey.challengersPool3URL) {
+            this.http
+                .get(this.survey.challengersPool3URL)
+                .subscribe(
+                    response => this.onGetChallengersSuccess(response, this.challengersPool3),
+                    (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 3 - ' + res.message)
+                );
+        }
     }
 
-    onGetChallengersSuccess(response) {
+    onGetChallengersSuccess(response, challengersPool) {
         // console.debug(JSON.stringify(response));
 
         if (response['stat'] == 'fail') {
@@ -83,14 +91,25 @@ export class SurveyAnswerComponent implements OnInit {
         const photoset = response['photoset'];
         for (const photo of photoset.photo) {
             const photoUrl = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
-            this.challengers.push(new Challenger(photo.title, photoUrl));
+            challengersPool.push(new Challenger(photo.title, photoUrl));
         }
+
+        this.challengers.push(challengersPool);
+
+        this.initNbOfMatches();
 
         this.initNextMatch();
     }
 
     initNbOfMatches() {
         this.nbOfMatches = this.survey.numberOfMatches;
+        if (this.challengersPool2.length > 0) {
+            this.nbOfMatches += this.survey.numberOfMatches;
+        }
+        if (this.challengersPool3.length > 0) {
+            this.nbOfMatches += this.survey.numberOfMatches;
+        }
+
         if (this.nbOfMatches < 1) {
             this.nbOfMatches = 10;
         }
@@ -102,17 +121,24 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     initNextMatch() {
-        // Load 2 random challengers
-        this.challengerOne = this.challengers[Math.floor(Math.random() * this.challengers.length)];
-        this.challengerTwo = this.challengers[Math.floor(Math.random() * this.challengers.length)];
-        this.checkChallengersAreDifferent();
+        //if (this.answers.length >)
+        //TODO - make this.survey.numberOfMatches required??
+        this.currentPool = Math.floor(this.answers.length / this.survey.numberOfMatches) + 1;
+        // Load 2 random challengers from the right pool
+        this.initNextChallengers(this.challengers[this.currentPool - 1]);
 
         this.matchStarts = moment();
     }
 
-    checkChallengersAreDifferent() {
+    initNextChallengers(challengersPool: Challenger[]) {
+        this.challengerOne = challengersPool[Math.floor(Math.random() * challengersPool.length)];
+        this.challengerTwo = challengersPool[Math.floor(Math.random() * challengersPool.length)];
+        this.checkChallengersAreDifferent(challengersPool);
+    }
+
+    checkChallengersAreDifferent(challengersPool) {
         while (this.challengerOne.id == this.challengerTwo.id) {
-            this.challengerTwo = this.challengers[Math.floor(Math.random() * this.challengers.length)];
+            this.challengerTwo = challengersPool[Math.floor(Math.random() * challengersPool.length)];
         }
     }
 
@@ -129,6 +155,7 @@ export class SurveyAnswerComponent implements OnInit {
                 winner.id,
                 this.matchStarts,
                 matchEnds,
+                this.currentPool, //TODO retrieve the right Pool Number - same in Challenger?
                 this.survey.id
             )
         );

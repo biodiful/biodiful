@@ -54,7 +54,7 @@ public class AnswerServiceImpl implements AnswerService {
     /**
      * Save a list of answer.
      *
-     * @param answerDTO the entities to save
+     * @param answersDTO the entities to save
      * @return the persisted entities
      */
     @Override

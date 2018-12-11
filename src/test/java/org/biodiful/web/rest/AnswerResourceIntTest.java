@@ -63,6 +63,9 @@ public class AnswerResourceIntTest {
     private static final Instant DEFAULT_END_TIME = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_END_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
+    private static final Integer DEFAULT_POOL_NUMBER = 1;
+    private static final Integer UPDATED_POOL_NUMBER = 2;
+
     @Autowired
     private AnswerRepository answerRepository;
 
@@ -112,7 +115,8 @@ public class AnswerResourceIntTest {
             .challenger2(DEFAULT_CHALLENGER_2)
             .winner(DEFAULT_WINNER)
             .startTime(DEFAULT_START_TIME)
-            .endTime(DEFAULT_END_TIME);
+            .endTime(DEFAULT_END_TIME)
+            .poolNumber(DEFAULT_POOL_NUMBER);
         return answer;
     }
 
@@ -123,7 +127,8 @@ public class AnswerResourceIntTest {
             .challenger2(UPDATED_CHALLENGER_2)
             .winner(UPDATED_WINNER)
             .startTime(UPDATED_START_TIME)
-            .endTime(UPDATED_END_TIME);
+            .endTime(UPDATED_END_TIME)
+            .poolNumber(UPDATED_POOL_NUMBER);
         return answer;
     }
 
@@ -154,8 +159,8 @@ public class AnswerResourceIntTest {
         assertThat(testAnswer.getWinner()).isEqualTo(DEFAULT_WINNER);
         assertThat(testAnswer.getStartTime()).isEqualTo(DEFAULT_START_TIME);
         assertThat(testAnswer.getEndTime()).isEqualTo(DEFAULT_END_TIME);
+        assertThat(testAnswer.getPoolNumber()).isEqualTo(DEFAULT_POOL_NUMBER);
     }
-
 
     @Test
     @Transactional
@@ -182,6 +187,7 @@ public class AnswerResourceIntTest {
         assertThat(testAnswer.getWinner()).isEqualTo(DEFAULT_WINNER);
         assertThat(testAnswer.getStartTime()).isEqualTo(DEFAULT_START_TIME);
         assertThat(testAnswer.getEndTime()).isEqualTo(DEFAULT_END_TIME);
+        assertThat(testAnswer.getPoolNumber()).isEqualTo(DEFAULT_POOL_NUMBER);
 
         Answer testAnswer2 = answerList.get(answerList.size() - 1);
         assertThat(testAnswer2.getJudgeID()).isEqualTo(UPDATED_JUDGE_ID);
@@ -190,6 +196,7 @@ public class AnswerResourceIntTest {
         assertThat(testAnswer2.getWinner()).isEqualTo(UPDATED_WINNER);
         assertThat(testAnswer2.getStartTime()).isEqualTo(UPDATED_START_TIME);
         assertThat(testAnswer2.getEndTime()).isEqualTo(UPDATED_END_TIME);
+        assertThat(testAnswer.getPoolNumber()).isEqualTo(UPDATED_POOL_NUMBER);
     }
 
     @Test
@@ -328,6 +335,25 @@ public class AnswerResourceIntTest {
 
     @Test
     @Transactional
+    public void checkPoolNumberIsRequired() throws Exception {
+        int databaseSizeBeforeTest = answerRepository.findAll().size();
+        // set the field null
+        answer.setPoolNumber(null);
+
+        // Create the Answer, which fails.
+        AnswerDTO answerDTO = answerMapper.toDto(answer);
+
+        restAnswerMockMvc.perform(post("/api/answers")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(answerDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Answer> answerList = answerRepository.findAll();
+        assertThat(answerList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllAnswers() throws Exception {
         // Initialize the database
         answerRepository.saveAndFlush(answer);
@@ -342,7 +368,8 @@ public class AnswerResourceIntTest {
             .andExpect(jsonPath("$.[*].challenger2").value(hasItem(DEFAULT_CHALLENGER_2.toString())))
             .andExpect(jsonPath("$.[*].winner").value(hasItem(DEFAULT_WINNER.toString())))
             .andExpect(jsonPath("$.[*].startTime").value(hasItem(DEFAULT_START_TIME.toString())))
-            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.toString())));
+            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.toString())))
+            .andExpect(jsonPath("$.[*].poolNumber").value(hasItem(DEFAULT_POOL_NUMBER)));
     }
 
     @Test
@@ -361,7 +388,8 @@ public class AnswerResourceIntTest {
             .andExpect(jsonPath("$.challenger2").value(DEFAULT_CHALLENGER_2.toString()))
             .andExpect(jsonPath("$.winner").value(DEFAULT_WINNER.toString()))
             .andExpect(jsonPath("$.startTime").value(DEFAULT_START_TIME.toString()))
-            .andExpect(jsonPath("$.endTime").value(DEFAULT_END_TIME.toString()));
+            .andExpect(jsonPath("$.endTime").value(DEFAULT_END_TIME.toString()))
+            .andExpect(jsonPath("$.poolNumber").value(DEFAULT_POOL_NUMBER));
     }
 
     @Test
@@ -390,7 +418,8 @@ public class AnswerResourceIntTest {
             .challenger2(UPDATED_CHALLENGER_2)
             .winner(UPDATED_WINNER)
             .startTime(UPDATED_START_TIME)
-            .endTime(UPDATED_END_TIME);
+            .endTime(UPDATED_END_TIME)
+            .poolNumber(UPDATED_POOL_NUMBER);
         AnswerDTO answerDTO = answerMapper.toDto(updatedAnswer);
 
         restAnswerMockMvc.perform(put("/api/answers")
@@ -408,6 +437,7 @@ public class AnswerResourceIntTest {
         assertThat(testAnswer.getWinner()).isEqualTo(UPDATED_WINNER);
         assertThat(testAnswer.getStartTime()).isEqualTo(UPDATED_START_TIME);
         assertThat(testAnswer.getEndTime()).isEqualTo(UPDATED_END_TIME);
+        assertThat(testAnswer.getPoolNumber()).isEqualTo(UPDATED_POOL_NUMBER);
     }
 
     @Test
