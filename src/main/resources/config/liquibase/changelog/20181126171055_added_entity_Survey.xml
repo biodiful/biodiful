@@ -62,8 +62,8 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="number_of_matches" type="integer">
-                <constraints nullable="true" />
+            <column name="number_of_matches_per_pool" type="integer">
+                <constraints nullable="false" />
             </column>
 
             <column name="matches_description" type="clob">
@@ -78,7 +78,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="with_remise" type="bit">
+            <column name="unique_challengers" type="bit">
                 <constraints nullable="false" />
             </column>
 

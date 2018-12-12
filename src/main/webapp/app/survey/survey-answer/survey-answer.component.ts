@@ -25,7 +25,7 @@ export class SurveyAnswerComponent implements OnInit {
     challengersPool1: Challenger[] = [];
     challengersPool2: Challenger[] = [];
     challengersPool3: Challenger[] = [];
-    currentPool = 2;
+    currentPool = 1;
     challengerOne: Challenger;
     challengerTwo: Challenger;
     isAllMatchesCompleted: boolean = false;
@@ -102,12 +102,12 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     initNbOfMatches() {
-        this.nbOfMatches = this.survey.numberOfMatches;
+        this.nbOfMatches = this.survey.numberOfMatchesPerPool;
         if (this.challengersPool2.length > 0) {
-            this.nbOfMatches += this.survey.numberOfMatches;
+            this.nbOfMatches += this.survey.numberOfMatchesPerPool;
         }
         if (this.challengersPool3.length > 0) {
-            this.nbOfMatches += this.survey.numberOfMatches;
+            this.nbOfMatches += this.survey.numberOfMatchesPerPool;
         }
 
         if (this.nbOfMatches < 1) {
@@ -121,11 +121,15 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     initNextMatch() {
-        //if (this.answers.length >)
-        //TODO - make this.survey.numberOfMatches required??
-        this.currentPool = Math.floor(this.answers.length / this.survey.numberOfMatches) + 1;
+        this.currentPool = Math.floor(this.answers.length / this.survey.numberOfMatchesPerPool) + 1;
         // Load 2 random challengers from the right pool
         this.initNextChallengers(this.challengers[this.currentPool - 1]);
+
+        //TODO - handle tirage sans remise
+        if (this.survey.uniqueChallengers) {
+            // Remove the 2 challengers from the right pool
+            // this.challengers[this.currentPool - 1][0];
+        }
 
         this.matchStarts = moment();
     }

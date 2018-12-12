@@ -82,11 +82,11 @@ describe('Service Tests', () => {
                         challengersPool1URL: 'BBBBBB',
                         challengersPool2URL: 'BBBBBB',
                         challengersPool3URL: 'BBBBBB',
-                        numberOfMatches: 1,
+                        numberOfMatchesPerPool: 1,
                         matchesDescription: 'BBBBBB',
                         open: true,
                         language: 'BBBBBB',
-                        withRemise: true
+                        uniqueChallengers: true
                     },
                     elemDefault
                 );
@@ -113,11 +113,11 @@ describe('Service Tests', () => {
                         challengersPool1URL: 'BBBBBB',
                         challengersPool2URL: 'BBBBBB',
                         challengersPool3URL: 'BBBBBB',
-                        numberOfMatches: 1,
+                        numberOfMatchesPerPool: 1,
                         matchesDescription: 'BBBBBB',
                         open: true,
                         language: 'BBBBBB',
-                        withRemise: true
+                        uniqueChallengers: true
                     },
                     elemDefault
                 );

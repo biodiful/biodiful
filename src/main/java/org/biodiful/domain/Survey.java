@@ -62,8 +62,9 @@ public class Survey implements Serializable {
     @Column(name = "challengers_pool_3_url")
     private String challengersPool3URL;
 
-    @Column(name = "number_of_matches")
-    private Integer numberOfMatches;
+    @NotNull
+    @Column(name = "number_of_matches_per_pool", nullable = false)
+    private Integer numberOfMatchesPerPool;
 
     
     @Lob
@@ -80,8 +81,8 @@ public class Survey implements Serializable {
     private Language language;
 
     @NotNull
-    @Column(name = "with_remise", nullable = false)
-    private Boolean withRemise;
+    @Column(name = "unique_challengers", nullable = false)
+    private Boolean uniqueChallengers;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -222,17 +223,17 @@ public class Survey implements Serializable {
         this.challengersPool3URL = challengersPool3URL;
     }
 
-    public Integer getNumberOfMatches() {
-        return numberOfMatches;
+    public Integer getNumberOfMatchesPerPool() {
+        return numberOfMatchesPerPool;
     }
 
-    public Survey numberOfMatches(Integer numberOfMatches) {
-        this.numberOfMatches = numberOfMatches;
+    public Survey numberOfMatchesPerPool(Integer numberOfMatchesPerPool) {
+        this.numberOfMatchesPerPool = numberOfMatchesPerPool;
         return this;
     }
 
-    public void setNumberOfMatches(Integer numberOfMatches) {
-        this.numberOfMatches = numberOfMatches;
+    public void setNumberOfMatchesPerPool(Integer numberOfMatchesPerPool) {
+        this.numberOfMatchesPerPool = numberOfMatchesPerPool;
     }
 
     public String getMatchesDescription() {
@@ -274,17 +275,17 @@ public class Survey implements Serializable {
         this.language = language;
     }
 
-    public Boolean isWithRemise() {
-        return withRemise;
+    public Boolean isUniqueChallengers() {
+        return uniqueChallengers;
     }
 
-    public Survey withRemise(Boolean withRemise) {
-        this.withRemise = withRemise;
+    public Survey uniqueChallengers(Boolean uniqueChallengers) {
+        this.uniqueChallengers = uniqueChallengers;
         return this;
     }
 
-    public void setWithRemise(Boolean withRemise) {
-        this.withRemise = withRemise;
+    public void setUniqueChallengers(Boolean uniqueChallengers) {
+        this.uniqueChallengers = uniqueChallengers;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -322,11 +323,11 @@ public class Survey implements Serializable {
             ", challengersPool1URL='" + getChallengersPool1URL() + "'" +
             ", challengersPool2URL='" + getChallengersPool2URL() + "'" +
             ", challengersPool3URL='" + getChallengersPool3URL() + "'" +
-            ", numberOfMatches=" + getNumberOfMatches() +
+            ", numberOfMatchesPerPool=" + getNumberOfMatchesPerPool() +
             ", matchesDescription='" + getMatchesDescription() + "'" +
             ", open='" + isOpen() + "'" +
             ", language='" + getLanguage() + "'" +
-            ", withRemise='" + isWithRemise() + "'" +
+            ", uniqueChallengers='" + isUniqueChallengers() + "'" +
             "}";
     }
 }

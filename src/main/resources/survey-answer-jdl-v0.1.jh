@@ -9,11 +9,11 @@ entity Survey {
     challengersPool1URL String required
     challengersPool2URL String
     challengersPool3URL String
-    numberOfMatches Integer
+    numberOfMatchesPerPool Integer required
     matchesDescription TextBlob required
     open Boolean required,
     language Language required,
-    withRemise Boolean required,
+    uniqueChallengers Boolean required,
 }
 
 enum Language {

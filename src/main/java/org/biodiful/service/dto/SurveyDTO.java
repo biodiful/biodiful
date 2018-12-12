@@ -40,7 +40,8 @@ public class SurveyDTO implements Serializable {
 
     private String challengersPool3URL;
 
-    private Integer numberOfMatches;
+    @NotNull
+    private Integer numberOfMatchesPerPool;
 
     
     @Lob
@@ -53,7 +54,7 @@ public class SurveyDTO implements Serializable {
     private Language language;
 
     @NotNull
-    private Boolean withRemise;
+    private Boolean uniqueChallengers;
 
     public Long getId() {
         return id;
@@ -143,12 +144,12 @@ public class SurveyDTO implements Serializable {
         this.challengersPool3URL = challengersPool3URL;
     }
 
-    public Integer getNumberOfMatches() {
-        return numberOfMatches;
+    public Integer getNumberOfMatchesPerPool() {
+        return numberOfMatchesPerPool;
     }
 
-    public void setNumberOfMatches(Integer numberOfMatches) {
-        this.numberOfMatches = numberOfMatches;
+    public void setNumberOfMatchesPerPool(Integer numberOfMatchesPerPool) {
+        this.numberOfMatchesPerPool = numberOfMatchesPerPool;
     }
 
     public String getMatchesDescription() {
@@ -175,12 +176,12 @@ public class SurveyDTO implements Serializable {
         this.language = language;
     }
 
-    public Boolean isWithRemise() {
-        return withRemise;
+    public Boolean isUniqueChallengers() {
+        return uniqueChallengers;
     }
 
-    public void setWithRemise(Boolean withRemise) {
-        this.withRemise = withRemise;
+    public void setUniqueChallengers(Boolean uniqueChallengers) {
+        this.uniqueChallengers = uniqueChallengers;
     }
 
     @Override
@@ -218,11 +219,11 @@ public class SurveyDTO implements Serializable {
             ", challengersPool1URL='" + getChallengersPool1URL() + "'" +
             ", challengersPool2URL='" + getChallengersPool2URL() + "'" +
             ", challengersPool3URL='" + getChallengersPool3URL() + "'" +
-            ", numberOfMatches=" + getNumberOfMatches() +
+            ", numberOfMatchesPerPool=" + getNumberOfMatchesPerPool() +
             ", matchesDescription='" + getMatchesDescription() + "'" +
             ", open='" + isOpen() + "'" +
             ", language='" + getLanguage() + "'" +
-            ", withRemise='" + isWithRemise() + "'" +
+            ", uniqueChallengers='" + isUniqueChallengers() + "'" +
             "}";
     }
 }

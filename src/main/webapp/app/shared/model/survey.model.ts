@@ -16,11 +16,11 @@ export interface ISurvey {
     challengersPool1URL?: string;
     challengersPool2URL?: string;
     challengersPool3URL?: string;
-    numberOfMatches?: number;
+    numberOfMatchesPerPool?: number;
     matchesDescription?: any;
     open?: boolean;
     language?: Language;
-    withRemise?: boolean;
+    uniqueChallengers?: boolean;
 }
 
 export class Survey implements ISurvey {
@@ -36,13 +36,13 @@ export class Survey implements ISurvey {
         public challengersPool1URL?: string,
         public challengersPool2URL?: string,
         public challengersPool3URL?: string,
-        public numberOfMatches?: number,
+        public numberOfMatchesPerPool?: number,
         public matchesDescription?: any,
         public open?: boolean,
         public language?: Language,
-        public withRemise?: boolean
+        public uniqueChallengers?: boolean
     ) {
         this.open = this.open || false;
-        this.withRemise = this.withRemise || false;
+        this.uniqueChallengers = this.uniqueChallengers || false;
     }
 }

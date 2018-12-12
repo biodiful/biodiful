@@ -59,8 +59,11 @@
             "fieldType": "String"
         },
         {
-            "fieldName": "numberOfMatches",
-            "fieldType": "Integer"
+            "fieldName": "numberOfMatchesPerPool",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "matchesDescription",
@@ -86,7 +89,7 @@
             ]
         },
         {
-            "fieldName": "withRemise",
+            "fieldName": "uniqueChallengers",
             "fieldType": "Boolean",
             "fieldValidateRules": [
                 "required"

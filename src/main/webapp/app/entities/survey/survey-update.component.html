@@ -92,10 +92,20 @@
                         [(ngModel)]="survey.challengersPool3URL" />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.numberOfMatches" for="field_numberOfMatches">Number Of Matches</label>
-                    <div class="alert alert-info" role="alert">Nombre de matches à effectuer par chaques personnes répondant à la campagne (default: 10)</div>
-                    <input type="number" class="form-control" name="numberOfMatches" id="field_numberOfMatches"
-                        [(ngModel)]="survey.numberOfMatches" />
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool" for="field_numberOfMatchesPerPool">Number Of Matches Per Pool</label>
+                    <div class="alert alert-info" role="alert">Nombre de matches à effectuer par Pools d'images renseignées</div>
+                    <input type="number" class="form-control" name="numberOfMatchesPerPool" id="field_numberOfMatchesPerPool"
+                        [(ngModel)]="survey.numberOfMatchesPerPool" required/>
+                    <div [hidden]="!(editForm.controls.numberOfMatchesPerPool?.dirty && editForm.controls.numberOfMatchesPerPool?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.numberOfMatchesPerPool?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.numberOfMatchesPerPool?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.matchesDescription" for="field_matchesDescription">Matches Description</label>
@@ -135,12 +145,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.withRemise" for="field_withRemise">With Remise</label>
-                    <input type="checkbox" class="form-control" name="withRemise" id="field_withRemise"
-                        [(ngModel)]="survey.withRemise" />
-                    <div [hidden]="!(editForm.controls.withRemise?.dirty && editForm.controls.withRemise?.invalid)">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.uniqueChallengers" for="field_uniqueChallengers">Unique Challengers</label>
+                    <input type="checkbox" class="form-control" name="uniqueChallengers" id="field_uniqueChallengers"
+                        [(ngModel)]="survey.uniqueChallengers" />
+                    <div [hidden]="!(editForm.controls.uniqueChallengers?.dirty && editForm.controls.uniqueChallengers?.invalid)">
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.withRemise?.errors?.required" jhiTranslate="entity.validation.required">
+                        [hidden]="!editForm.controls.uniqueChallengers?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
