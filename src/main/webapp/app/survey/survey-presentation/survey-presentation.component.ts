@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import moment from 'moment/src/moment';
 import { Principal } from 'app/core';
+import { SessionStorageService } from 'ngx-webstorage';
+import { JhiLanguageService } from 'ng-jhipster';
 
 @Component({
     selector: 'jhi-survey-presentation',
@@ -16,14 +18,28 @@ export class SurveyPresentationComponent implements OnInit {
     survey: ISurvey;
     surveyJudgesCount: number;
 
-    constructor(private principal: Principal, private surveyService: SurveyService, private activatedRoute: ActivatedRoute) {}
+    constructor(
+        private principal: Principal,
+        private surveyService: SurveyService,
+        private activatedRoute: ActivatedRoute,
+        private sessionStorage: SessionStorageService,
+        private languageService: JhiLanguageService
+    ) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ survey }) => {
             this.survey = survey;
 
             this.subscribeToCountResponse(this.surveyService.getSurveyJudgesCount(this.survey.id));
+
+            this.initLocale();
         });
+    }
+
+    initLocale() {
+        const languageKey = this.survey.language.toLowerCase();
+        this.sessionStorage.store('locale', languageKey);
+        this.languageService.changeLanguage(languageKey);
     }
 
     private subscribeToCountResponse(result: Observable<Object>) {

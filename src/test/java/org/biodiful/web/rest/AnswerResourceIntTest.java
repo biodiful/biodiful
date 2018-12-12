@@ -196,7 +196,7 @@ public class AnswerResourceIntTest {
         assertThat(testAnswer2.getWinner()).isEqualTo(UPDATED_WINNER);
         assertThat(testAnswer2.getStartTime()).isEqualTo(UPDATED_START_TIME);
         assertThat(testAnswer2.getEndTime()).isEqualTo(UPDATED_END_TIME);
-        assertThat(testAnswer.getPoolNumber()).isEqualTo(UPDATED_POOL_NUMBER);
+        assertThat(testAnswer2.getPoolNumber()).isEqualTo(UPDATED_POOL_NUMBER);
     }
 
     @Test

@@ -11,9 +11,9 @@ entity Survey {
     challengersPool3URL String
     numberOfMatchesPerPool Integer required
     matchesDescription TextBlob required
-    open Boolean required,
-    language Language required,
-    uniqueChallengers Boolean required,
+    open Boolean required
+    language Language required
+    uniqueChallengers Boolean required
 }
 
 enum Language {

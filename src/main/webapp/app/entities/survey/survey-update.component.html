@@ -132,6 +132,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.language" for="field_language">Language</label>
+                    <div class="alert alert-info" role="alert">Langue dans laquel est la campagne (EN, FR ou ES pour Anglais, Français ou Espagnole) afin de changer automatiquement la langue de l’application lorsqu’un visiteur se rends sur la page de présentation de la campagne.</div>
                     <select class="form-control" name="language" [(ngModel)]="survey.language" id="field_language"  required>
                         <option value="FR">{{'biodifulApp.Language.FR' | translate}}</option>
                         <option value="EN">{{'biodifulApp.Language.EN' | translate}}</option>
