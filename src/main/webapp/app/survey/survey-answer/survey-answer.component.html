@@ -23,8 +23,8 @@
 
         <div class="progress mt-4" style="height: 20px;">
             <div class="progress-bar" role="progressbar" [style.width.%]="getPercentAdvancement()" [attr.aria-valuenow]="getCurrentMatchNumber()"
-                aria-valuemin="1" [attr.aria-valuemax]="nbOfMatches">
-                {{getCurrentMatchNumber()}} / {{nbOfMatches}}
+                aria-valuemin="1" [attr.aria-valuemax]="totalNbOfMatches">
+                {{getCurrentMatchNumber()}} / {{totalNbOfMatches}}
             </div>
         </div>
     </div>
