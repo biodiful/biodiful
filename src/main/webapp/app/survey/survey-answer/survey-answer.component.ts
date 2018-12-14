@@ -17,10 +17,10 @@ import { JhiAlertService } from 'ng-jhipster';
 })
 export class SurveyAnswerComponent implements OnInit {
     survey: ISurvey;
-    nbOfMatches: number;
+    totalNbOfMatches: number;
     judgeId: string;
-    // winners: Challenger[] = [];
     answers: Answer[] = [];
+    // 2 dimensions array containing the pools of challengers:
     challengers: Challenger[][] = [];
     challengersPool1: Challenger[] = [];
     challengersPool2: Challenger[] = [];
@@ -46,10 +46,6 @@ export class SurveyAnswerComponent implements OnInit {
 
         this.initChallengers();
 
-        // this.initNbOfMatches();
-
-        // this.initNextMatch();
-
         this.initJudgeId();
     }
 
@@ -57,7 +53,7 @@ export class SurveyAnswerComponent implements OnInit {
         this.http
             .get(this.survey.challengersPool1URL)
             .subscribe(
-                response => this.onGetChallengersSuccess(response, this.challengersPool1),
+                response => this.onGetChallengersSuccess(response, this.challengersPool1, 0),
                 (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 1- ' + res.message)
             );
 
@@ -65,7 +61,7 @@ export class SurveyAnswerComponent implements OnInit {
             this.http
                 .get(this.survey.challengersPool2URL)
                 .subscribe(
-                    response => this.onGetChallengersSuccess(response, this.challengersPool2),
+                    response => this.onGetChallengersSuccess(response, this.challengersPool2, 1),
                     (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 2 - ' + res.message)
                 );
         }
@@ -74,13 +70,13 @@ export class SurveyAnswerComponent implements OnInit {
             this.http
                 .get(this.survey.challengersPool3URL)
                 .subscribe(
-                    response => this.onGetChallengersSuccess(response, this.challengersPool3),
+                    response => this.onGetChallengersSuccess(response, this.challengersPool3, 2),
                     (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 3 - ' + res.message)
                 );
         }
     }
 
-    onGetChallengersSuccess(response, challengersPool) {
+    onGetChallengersSuccess(response, challengersPool, poolIndex) {
         // console.debug(JSON.stringify(response));
 
         if (response['stat'] == 'fail') {
@@ -94,7 +90,8 @@ export class SurveyAnswerComponent implements OnInit {
             challengersPool.push(new Challenger(photo.title, photoUrl));
         }
 
-        this.challengers.push(challengersPool);
+        // this.challengers.push(challengersPool);
+        this.challengers[poolIndex] = challengersPool;
 
         this.initNbOfMatches();
 
@@ -102,16 +99,16 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     initNbOfMatches() {
-        this.nbOfMatches = this.survey.numberOfMatchesPerPool;
+        this.totalNbOfMatches = this.survey.numberOfMatchesPerPool;
         if (this.challengersPool2.length > 0) {
-            this.nbOfMatches += this.survey.numberOfMatchesPerPool;
+            this.totalNbOfMatches += this.survey.numberOfMatchesPerPool;
         }
         if (this.challengersPool3.length > 0) {
-            this.nbOfMatches += this.survey.numberOfMatchesPerPool;
+            this.totalNbOfMatches += this.survey.numberOfMatchesPerPool;
         }
 
-        if (this.nbOfMatches < 1) {
-            this.nbOfMatches = 10;
+        if (this.totalNbOfMatches < 1) {
+            this.totalNbOfMatches = 10;
         }
     }
 
@@ -121,28 +118,35 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     initNextMatch() {
+        // Determine the current pool based on how many answers have been recorded
         this.currentPool = Math.floor(this.answers.length / this.survey.numberOfMatchesPerPool) + 1;
         // Load 2 random challengers from the right pool
         this.initNextChallengers(this.challengers[this.currentPool - 1]);
-
-        //TODO - handle tirage sans remise
-        if (this.survey.uniqueChallengers) {
-            // Remove the 2 challengers from the right pool
-            // this.challengers[this.currentPool - 1][0];
-        }
 
         this.matchStarts = moment();
     }
 
     initNextChallengers(challengersPool: Challenger[]) {
-        this.challengerOne = challengersPool[Math.floor(Math.random() * challengersPool.length)];
-        this.challengerTwo = challengersPool[Math.floor(Math.random() * challengersPool.length)];
-        this.checkChallengersAreDifferent(challengersPool);
-    }
+        const randomIndex1 = Math.floor(Math.random() * challengersPool.length);
+        this.challengerOne = challengersPool[randomIndex1];
 
-    checkChallengersAreDifferent(challengersPool) {
+        // Check whether challengers should only be presented once (tirage sans remise)
+        if (this.survey.uniqueChallengers && challengersPool.length > 0) {
+            challengersPool.splice(randomIndex1, 1);
+        }
+
+        const randomIndex2 = Math.floor(Math.random() * challengersPool.length);
+        this.challengerTwo = challengersPool[randomIndex2];
+
+        // Check that the 2 challengers are different (in case 2 images with the same ID exist in the pool)
         while (this.challengerOne.id == this.challengerTwo.id) {
-            this.challengerTwo = challengersPool[Math.floor(Math.random() * challengersPool.length)];
+            const randomIndex2 = Math.floor(Math.random() * challengersPool.length);
+            this.challengerTwo = challengersPool[randomIndex2];
+        }
+
+        // Check whether challengers should only be presented once (tirage sans remise)
+        if (this.survey.uniqueChallengers && challengersPool.length > 0) {
+            challengersPool.splice(randomIndex2, 1);
         }
     }
 
@@ -159,13 +163,13 @@ export class SurveyAnswerComponent implements OnInit {
                 winner.id,
                 this.matchStarts,
                 matchEnds,
-                this.currentPool, //TODO retrieve the right Pool Number - same in Challenger?
+                this.currentPool,
                 this.survey.id
             )
         );
 
         // Determine whether to display next challengers
-        if (this.answers.length < this.nbOfMatches) {
+        if (this.answers.length < this.totalNbOfMatches) {
             this.initNextMatch();
         } else {
             // If we've got enough winners, save the answers and display socio-pro questions
@@ -181,7 +185,7 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     getPercentAdvancement(): number {
-        return (this.getCurrentMatchNumber() * 100) / this.nbOfMatches;
+        return (this.getCurrentMatchNumber() * 100) / this.totalNbOfMatches;
     }
 
     getSocialFormUrl(): SafeResourceUrl {
