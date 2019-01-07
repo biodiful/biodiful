@@ -17,7 +17,7 @@
     <div class="alert alert-warning" jhiTranslate="biodifulApp.survey.closedSurvey">Cette campagne est actuellement fermée.</div>
 </div>
 <div *ngIf="this.survey.open || isAuthenticated()" class="row justify-content-center p-2">
-    <button class="btn btn-primary" [routerLink]="['/survey', survey.id, 'answer']">
+    <button class="btn btn-primary p-3" [routerLink]="['/survey', survey.id, 'answer']">
         <fa-icon [icon]="'list'"></fa-icon>&nbsp;<span jhiTranslate="biodifulApp.survey.answer">Répondre a la campagne</span>
     </button>
 </div>
