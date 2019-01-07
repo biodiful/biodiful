@@ -114,7 +114,7 @@ export class SurveyAnswerComponent implements OnInit {
 
     initJudgeId() {
         const uniqueString = require('unique-string');
-        this.judgeId = 'judge_' + uniqueString();
+        this.judgeId = 'C_' + this.survey.id + '_judge_' + uniqueString();
     }
 
     initNextMatch() {
