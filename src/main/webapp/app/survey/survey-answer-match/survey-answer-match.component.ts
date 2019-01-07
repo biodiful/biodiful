@@ -4,7 +4,7 @@ import { Challenger } from 'app/shared/model/challenger.model';
 @Component({
     selector: 'jhi-survey-answer-match',
     templateUrl: './survey-answer-match.component.html',
-    styles: []
+    styleUrls: ['survey-answer-match.css']
 })
 export class SurveyAnswerMatchComponent implements OnInit {
     @Input()
