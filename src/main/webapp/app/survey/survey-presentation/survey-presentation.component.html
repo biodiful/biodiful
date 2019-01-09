@@ -18,8 +18,27 @@
 </div>
 <div *ngIf="this.survey.open || isAuthenticated()" class="row justify-content-center p-2">
     <button class="btn btn-primary p-3" [routerLink]="['/survey', survey.id, 'answer']">
-        <fa-icon [icon]="'list'"></fa-icon>&nbsp;<span jhiTranslate="biodifulApp.survey.answer">Répondre a la campagne</span>
+        <fa-icon icon="list"></fa-icon>&nbsp;<span jhiTranslate="biodifulApp.survey.answer">Répondre à la campagne</span>
     </button>
+</div>
+<div class="row justify-content-center mt-3" jhiTranslate="biodifulApp.survey.answer">
+    Aidez nous à faire circuler cette étude:
+</div>
+<div class="row justify-content-center">
+    <!-- <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbiodiful.org%2F%23%2FRecifsCorail&amp;src=sdkpreparse" class="btn btn-social btn-facebook m-2"> -->
+        <a target="_blank" [href]="getFacebookUrl()" class="btn btn-social btn-facebook m-2">
+        <span class="fab fa-facebook"></span>
+        Facebook
+    </a>
+    <a target="_blank" class="btn btn-social btn-twitter m-2"
+        [href]="getTwitterUrl()">
+        <span class="fab fa-twitter"></span>
+        Twitter
+    </a>
+    <a class="btn btn-primary m-2" [href]="getMailToHref()" target="_top">
+        <fa-icon icon="envelope"></fa-icon>&nbsp;
+        <span>Mail</span>
+    </a>
 </div>
 <div *ngIf="survey.contactsDescription && survey.contactsDescription.length > 0" class="row">
     <div class="col-md" [innerHTML]="survey.contactsDescription"></div>

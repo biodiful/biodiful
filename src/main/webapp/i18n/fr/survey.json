@@ -33,7 +33,8 @@
             "answer": "Répondre à la campagne",
             "judgesCount": "personnes ont déjà participé !",
             "moreInfo": "Pour plus d'information, vous pouvez contacter:",
-            "closedSurvey": "Cette campagne est actuellement fermée."
+            "closedSurvey": "Cette campagne est actuellement fermée.",
+            "share": "Aidez nous à faire circuler cette étude:"
         }
     }
 }

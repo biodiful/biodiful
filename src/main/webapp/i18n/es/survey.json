@@ -33,7 +33,8 @@
             "answer": "Responde la encuesta",
             "judgesCount": "personas ya han participado!",
             "moreInfo": "Para más información, puedes contactar:",
-            "closedSurvey": "Este encuesta está actualmente cerrado."
+            "closedSurvey": "Este encuesta está actualmente cerrado.",
+            "share": "Ayúdanos a compartir este estudio:"
         }
     }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SurveyService } from 'app/entities/survey';
 import { ISurvey } from 'app/shared/model/survey.model';
 import { Observable } from 'rxjs';
@@ -12,18 +12,20 @@ import { JhiLanguageService } from 'ng-jhipster';
 @Component({
     selector: 'jhi-survey-presentation',
     templateUrl: './survey-presentation.component.html',
-    styles: []
+    styleUrls: ['survey-presentation.css']
 })
 export class SurveyPresentationComponent implements OnInit {
     survey: ISurvey;
     surveyJudgesCount: number;
+    surveyAbsoluteUrlEncoded: string;
 
     constructor(
         private principal: Principal,
         private surveyService: SurveyService,
         private activatedRoute: ActivatedRoute,
         private sessionStorage: SessionStorageService,
-        private languageService: JhiLanguageService
+        private languageService: JhiLanguageService,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -33,7 +35,21 @@ export class SurveyPresentationComponent implements OnInit {
             this.subscribeToCountResponse(this.surveyService.getSurveyJudgesCount(this.survey.id));
 
             this.initLocale();
+
+            this.initSurveyAbsoluteUrl();
         });
+    }
+
+    initSurveyAbsoluteUrl() {
+        this.surveyAbsoluteUrlEncoded = 'https://www.biodiful.org/#';
+        console.log(this.activatedRoute.snapshot.url);
+        if (this.survey.friendlyURL) {
+            this.surveyAbsoluteUrlEncoded += '/' + this.survey.friendlyURL;
+        } else {
+            this.surveyAbsoluteUrlEncoded += this.router.url;
+        }
+
+        this.surveyAbsoluteUrlEncoded = encodeURIComponent(this.surveyAbsoluteUrlEncoded);
     }
 
     initLocale() {
@@ -58,5 +74,17 @@ export class SurveyPresentationComponent implements OnInit {
 
     isAuthenticated() {
         return this.principal.isAuthenticated();
+    }
+
+    getFacebookUrl(): String {
+        return `https://www.facebook.com/sharer/sharer.php?u=${this.surveyAbsoluteUrlEncoded}&amp;src=sdkpreparse`;
+    }
+
+    getTwitterUrl(): String {
+        return `https://twitter.com/intent/tweet?text=${this.surveyAbsoluteUrlEncoded}`;
+    }
+
+    getMailToHref(): String {
+        return `mailto:?Subject=${encodeURIComponent(this.survey.surveyName)}&body=${this.surveyAbsoluteUrlEncoded}`;
     }
 }
