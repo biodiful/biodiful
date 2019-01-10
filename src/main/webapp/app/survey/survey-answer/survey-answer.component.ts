@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ISurvey } from 'app/shared/model/survey.model';
 import { Challenger } from 'app/shared/model/challenger.model';
 import { Answer, IAnswer } from 'app/shared/model/answer.model';
@@ -30,8 +30,10 @@ export class SurveyAnswerComponent implements OnInit {
     challengerTwo: Challenger;
     isAllMatchesCompleted: boolean = false;
     matchStarts: moment.Moment;
+    socialFormUrl: SafeResourceUrl;
 
     constructor(
+        private router: Router,
         private activatedRoute: ActivatedRoute,
         public sanitizer: DomSanitizer,
         private answerService: AnswerService,
@@ -47,6 +49,8 @@ export class SurveyAnswerComponent implements OnInit {
         this.initChallengers();
 
         this.initJudgeId();
+
+        this.socialFormUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.survey.formURL + this.judgeId);
     }
 
     initChallengers() {
@@ -174,8 +178,8 @@ export class SurveyAnswerComponent implements OnInit {
         } else {
             // If we've got enough winners, save the answers and display socio-pro questions
             console.debug('Answers: ' + JSON.stringify(this.answers));
-            this.isAllMatchesCompleted = true;
 
+            this.isAllMatchesCompleted = true;
             this.subscribeToSaveAllResponse(this.answerService.createAll(this.answers));
         }
     }
@@ -186,10 +190,6 @@ export class SurveyAnswerComponent implements OnInit {
 
     getPercentAdvancement(): number {
         return (this.getCurrentMatchNumber() * 100) / this.totalNbOfMatches;
-    }
-
-    getSocialFormUrl(): SafeResourceUrl {
-        return this.sanitizer.bypassSecurityTrustResourceUrl(this.survey.formURL + this.judgeId);
     }
 
     private subscribeToSaveAllResponse(result: Observable<HttpResponse<IAnswer[]>>) {
