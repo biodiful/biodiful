@@ -29,6 +29,8 @@ export class SurveyPresentationComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.reloadParentIframe();
+
         this.activatedRoute.data.subscribe(({ survey }) => {
             this.survey = survey;
 
@@ -38,6 +40,14 @@ export class SurveyPresentationComponent implements OnInit {
 
             this.initSurveyAbsoluteUrl();
         });
+    }
+
+    reloadParentIframe() {
+        // Detect whether we're in an iframe (i.e. if we follow the link at the end of the google form)
+        if (window.frameElement) {
+            // Reload parent with curent path
+            window.parent.location.href = '#/' + this.router.url;
+        }
     }
 
     initSurveyAbsoluteUrl() {
