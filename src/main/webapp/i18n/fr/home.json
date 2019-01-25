@@ -1,6 +1,6 @@
 {
     "home": {
-        "title": "- BIODIFUL.ORG -",
+        "title": "BIODIFUL.ORG",
         "subtitle": "Un site dédié à l'étude de la perception humaine de la nature",
         "survey.open": "Campagnes en cours :",
         "survey.closed": "Campagnes fermées :",
@@ -15,7 +15,7 @@
             "chat": "JHipster public chat room",
             "follow": "Suivez @java_hipster sur Twitter"
         },
-        "more": "En savoir plus...",
+        "more": "En savoir <br> plus...",
         "github": "GitHub "
     }
 }

@@ -2,7 +2,7 @@
     "biodifulApp": {
         "survey": {
             "home": {
-                "title": "Surveys",
+                "title": "Campagnes",
                 "createLabel": "Créer une nouvelle campagne (Survey)",
                 "createOrEditLabel": "Créer ou éditer une campagne (Survey)"
             },
