@@ -26,6 +26,7 @@ export class SurveyAnswerComponent implements OnInit {
     challengersPool2: Challenger[] = [];
     challengersPool3: Challenger[] = [];
     currentPool = 1;
+    totalNbOfPools = 1;
     challengerOne: Challenger;
     challengerTwo: Challenger;
     isAllMatchesCompleted: boolean = false;
@@ -104,11 +105,15 @@ export class SurveyAnswerComponent implements OnInit {
 
     initNbOfMatches() {
         this.totalNbOfMatches = this.survey.numberOfMatchesPerPool;
-        if (this.challengersPool2.length > 0) {
-            this.totalNbOfMatches += this.survey.numberOfMatchesPerPool;
+
+        if (this.challengersPool2.length > 0 && this.survey.numberOfMatchesPerPool2 > 0) {
+            this.totalNbOfMatches += this.survey.numberOfMatchesPerPool2;
+            this.totalNbOfPools = 2;
         }
-        if (this.challengersPool3.length > 0) {
-            this.totalNbOfMatches += this.survey.numberOfMatchesPerPool;
+
+        if (this.challengersPool3.length > 0 && this.survey.numberOfMatchesPerPool3 > 0) {
+            this.totalNbOfMatches += this.survey.numberOfMatchesPerPool3;
+            this.totalNbOfPools = 3;
         }
 
         if (this.totalNbOfMatches < 1) {
@@ -123,7 +128,8 @@ export class SurveyAnswerComponent implements OnInit {
 
     initNextMatch() {
         // Determine the current pool based on how many answers have been recorded
-        this.currentPool = Math.floor(this.answers.length / this.survey.numberOfMatchesPerPool) + 1;
+        // this.currentPool = Math.floor(this.answers.length / this.survey.numberOfMatchesPerPool) + 1;
+
         // Load 2 random challengers from the right pool
         this.initNextChallengers(this.challengers[this.currentPool - 1]);
 
@@ -174,6 +180,7 @@ export class SurveyAnswerComponent implements OnInit {
 
         // Determine whether to display next challengers
         if (this.answers.length < this.totalNbOfMatches) {
+            this.updateCurrentPool();
             this.initNextMatch();
         } else {
             // If we've got enough winners, save the answers and display socio-pro questions
@@ -184,8 +191,31 @@ export class SurveyAnswerComponent implements OnInit {
         }
     }
 
+    updateCurrentPool() {
+        // Determine which pool we're on
+        if (this.currentPool == 1 && this.totalNbOfPools > 1 && this.answers.length >= this.survey.numberOfMatchesPerPool) {
+            this.currentPool = 2;
+        } else if (
+            this.currentPool == 2 &&
+            this.totalNbOfPools > 2 &&
+            this.answers.length >= this.survey.numberOfMatchesPerPool + this.survey.numberOfMatchesPerPool2
+        ) {
+            this.currentPool = 3;
+        }
+    }
+
     getCurrentMatchNumber(): number {
         return this.answers.length + 1;
+    }
+
+    getDescriptionForCurrentPool(): any {
+        if (this.currentPool == 2 && this.survey.matchesDescriptionPool2) {
+            return this.survey.matchesDescriptionPool2;
+        } else if (this.currentPool == 3 && this.survey.matchesDescriptionPool3) {
+            return this.survey.matchesDescriptionPool3;
+        }
+
+        return this.survey.matchesDescription;
     }
 
     getPercentAdvancement(): number {

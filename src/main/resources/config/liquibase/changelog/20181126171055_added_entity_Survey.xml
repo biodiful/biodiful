@@ -66,8 +66,24 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="number_of_matches_per_pool_2" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="number_of_matches_per_pool_3" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="matches_description" type="clob">
                 <constraints nullable="false" />
+            </column>
+
+            <column name="matches_description_pool_2" type="clob">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="matches_description_pool_3" type="clob">
+                <constraints nullable="true" />
             </column>
 
             <column name="jhi_open" type="bit">

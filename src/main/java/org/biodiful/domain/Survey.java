@@ -66,10 +66,24 @@ public class Survey implements Serializable {
     @Column(name = "number_of_matches_per_pool", nullable = false)
     private Integer numberOfMatchesPerPool;
 
+    @Column(name = "number_of_matches_per_pool_2")
+    private Integer numberOfMatchesPerPool2;
+
+    @Column(name = "number_of_matches_per_pool_3")
+    private Integer numberOfMatchesPerPool3;
+
     
     @Lob
     @Column(name = "matches_description", nullable = false)
     private String matchesDescription;
+
+    @Lob
+    @Column(name = "matches_description_pool_2")
+    private String matchesDescriptionPool2;
+
+    @Lob
+    @Column(name = "matches_description_pool_3")
+    private String matchesDescriptionPool3;
 
     @NotNull
     @Column(name = "jhi_open", nullable = false)
@@ -236,6 +250,32 @@ public class Survey implements Serializable {
         this.numberOfMatchesPerPool = numberOfMatchesPerPool;
     }
 
+    public Integer getNumberOfMatchesPerPool2() {
+        return numberOfMatchesPerPool2;
+    }
+
+    public Survey numberOfMatchesPerPool2(Integer numberOfMatchesPerPool2) {
+        this.numberOfMatchesPerPool2 = numberOfMatchesPerPool2;
+        return this;
+    }
+
+    public void setNumberOfMatchesPerPool2(Integer numberOfMatchesPerPool2) {
+        this.numberOfMatchesPerPool2 = numberOfMatchesPerPool2;
+    }
+
+    public Integer getNumberOfMatchesPerPool3() {
+        return numberOfMatchesPerPool3;
+    }
+
+    public Survey numberOfMatchesPerPool3(Integer numberOfMatchesPerPool3) {
+        this.numberOfMatchesPerPool3 = numberOfMatchesPerPool3;
+        return this;
+    }
+
+    public void setNumberOfMatchesPerPool3(Integer numberOfMatchesPerPool3) {
+        this.numberOfMatchesPerPool3 = numberOfMatchesPerPool3;
+    }
+
     public String getMatchesDescription() {
         return matchesDescription;
     }
@@ -247,6 +287,32 @@ public class Survey implements Serializable {
 
     public void setMatchesDescription(String matchesDescription) {
         this.matchesDescription = matchesDescription;
+    }
+
+    public String getMatchesDescriptionPool2() {
+        return matchesDescriptionPool2;
+    }
+
+    public Survey matchesDescriptionPool2(String matchesDescriptionPool2) {
+        this.matchesDescriptionPool2 = matchesDescriptionPool2;
+        return this;
+    }
+
+    public void setMatchesDescriptionPool2(String matchesDescriptionPool2) {
+        this.matchesDescriptionPool2 = matchesDescriptionPool2;
+    }
+
+    public String getMatchesDescriptionPool3() {
+        return matchesDescriptionPool3;
+    }
+
+    public Survey matchesDescriptionPool3(String matchesDescriptionPool3) {
+        this.matchesDescriptionPool3 = matchesDescriptionPool3;
+        return this;
+    }
+
+    public void setMatchesDescriptionPool3(String matchesDescriptionPool3) {
+        this.matchesDescriptionPool3 = matchesDescriptionPool3;
     }
 
     public Boolean isOpen() {
@@ -324,7 +390,11 @@ public class Survey implements Serializable {
             ", challengersPool2URL='" + getChallengersPool2URL() + "'" +
             ", challengersPool3URL='" + getChallengersPool3URL() + "'" +
             ", numberOfMatchesPerPool=" + getNumberOfMatchesPerPool() +
+            ", numberOfMatchesPerPool2=" + getNumberOfMatchesPerPool2() +
+            ", numberOfMatchesPerPool3=" + getNumberOfMatchesPerPool3() +
             ", matchesDescription='" + getMatchesDescription() + "'" +
+            ", matchesDescriptionPool2='" + getMatchesDescriptionPool2() + "'" +
+            ", matchesDescriptionPool3='" + getMatchesDescriptionPool3() + "'" +
             ", open='" + isOpen() + "'" +
             ", language='" + getLanguage() + "'" +
             ", uniqueChallengers='" + isUniqueChallengers() + "'" +

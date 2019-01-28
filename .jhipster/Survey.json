@@ -66,12 +66,30 @@
             ]
         },
         {
+            "fieldName": "numberOfMatchesPerPool2",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "numberOfMatchesPerPool3",
+            "fieldType": "Integer"
+        },
+        {
             "fieldName": "matchesDescription",
             "fieldType": "byte[]",
             "fieldTypeBlobContent": "text",
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "matchesDescriptionPool2",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "matchesDescriptionPool3",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
         },
         {
             "fieldName": "open",

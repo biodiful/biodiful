@@ -8,7 +8,7 @@
     </div>
 
     <div *ngSwitchCase="false">
-        <div [innerHTML]="survey.matchesDescription"></div>
+        <div [innerHTML]="getDescriptionForCurrentPool()"></div>
 
         <jhi-survey-answer-match [challengerOne]="challengerOne" [challengerTwo]="challengerTwo" (winnerSelected)="addWinner($event)"></jhi-survey-answer-match>
 

@@ -17,7 +17,11 @@ export interface ISurvey {
     challengersPool2URL?: string;
     challengersPool3URL?: string;
     numberOfMatchesPerPool?: number;
+    numberOfMatchesPerPool2?: number;
+    numberOfMatchesPerPool3?: number;
     matchesDescription?: any;
+    matchesDescriptionPool2?: any;
+    matchesDescriptionPool3?: any;
     open?: boolean;
     language?: Language;
     uniqueChallengers?: boolean;
@@ -37,7 +41,11 @@ export class Survey implements ISurvey {
         public challengersPool2URL?: string,
         public challengersPool3URL?: string,
         public numberOfMatchesPerPool?: number,
+        public numberOfMatchesPerPool2?: number,
+        public numberOfMatchesPerPool3?: number,
         public matchesDescription?: any,
+        public matchesDescriptionPool2?: any,
+        public matchesDescriptionPool3?: any,
         public open?: boolean,
         public language?: Language,
         public uniqueChallengers?: boolean

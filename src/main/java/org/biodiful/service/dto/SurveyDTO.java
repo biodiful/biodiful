@@ -43,9 +43,19 @@ public class SurveyDTO implements Serializable {
     @NotNull
     private Integer numberOfMatchesPerPool;
 
+    private Integer numberOfMatchesPerPool2;
+
+    private Integer numberOfMatchesPerPool3;
+
     
     @Lob
     private String matchesDescription;
+
+    @Lob
+    private String matchesDescriptionPool2;
+
+    @Lob
+    private String matchesDescriptionPool3;
 
     @NotNull
     private Boolean open;
@@ -152,12 +162,44 @@ public class SurveyDTO implements Serializable {
         this.numberOfMatchesPerPool = numberOfMatchesPerPool;
     }
 
+    public Integer getNumberOfMatchesPerPool2() {
+        return numberOfMatchesPerPool2;
+    }
+
+    public void setNumberOfMatchesPerPool2(Integer numberOfMatchesPerPool2) {
+        this.numberOfMatchesPerPool2 = numberOfMatchesPerPool2;
+    }
+
+    public Integer getNumberOfMatchesPerPool3() {
+        return numberOfMatchesPerPool3;
+    }
+
+    public void setNumberOfMatchesPerPool3(Integer numberOfMatchesPerPool3) {
+        this.numberOfMatchesPerPool3 = numberOfMatchesPerPool3;
+    }
+
     public String getMatchesDescription() {
         return matchesDescription;
     }
 
     public void setMatchesDescription(String matchesDescription) {
         this.matchesDescription = matchesDescription;
+    }
+
+    public String getMatchesDescriptionPool2() {
+        return matchesDescriptionPool2;
+    }
+
+    public void setMatchesDescriptionPool2(String matchesDescriptionPool2) {
+        this.matchesDescriptionPool2 = matchesDescriptionPool2;
+    }
+
+    public String getMatchesDescriptionPool3() {
+        return matchesDescriptionPool3;
+    }
+
+    public void setMatchesDescriptionPool3(String matchesDescriptionPool3) {
+        this.matchesDescriptionPool3 = matchesDescriptionPool3;
     }
 
     public Boolean isOpen() {
@@ -220,7 +262,11 @@ public class SurveyDTO implements Serializable {
             ", challengersPool2URL='" + getChallengersPool2URL() + "'" +
             ", challengersPool3URL='" + getChallengersPool3URL() + "'" +
             ", numberOfMatchesPerPool=" + getNumberOfMatchesPerPool() +
+            ", numberOfMatchesPerPool2=" + getNumberOfMatchesPerPool2() +
+            ", numberOfMatchesPerPool3=" + getNumberOfMatchesPerPool3() +
             ", matchesDescription='" + getMatchesDescription() + "'" +
+            ", matchesDescriptionPool2='" + getMatchesDescriptionPool2() + "'" +
+            ", matchesDescriptionPool3='" + getMatchesDescriptionPool3() + "'" +
             ", open='" + isOpen() + "'" +
             ", language='" + getLanguage() + "'" +
             ", uniqueChallengers='" + isUniqueChallengers() + "'" +

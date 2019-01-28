@@ -45,7 +45,7 @@ public interface SurveyService {
      * @return the number of judges that have answered a Survey
      */
     long countJudgesForSurvey(Long id);
-
+    
     /**
      * Delete the "id" survey.
      *
