@@ -1,30 +1,32 @@
 <div class="row justify-content-center p-2">
     <div class="col-md">
-        <h2 id="jhi-survey-heading">{{survey.surveyName}}</h2>
-        <div [innerHTML]="survey.surveyDescription" class="justify-content-center"></div>
+        <h2 id="jhi-survey-heading survey-name">{{survey.surveyName}}</h2>
+        <div [innerHTML]="survey.surveyDescription" class="justify-content-center survey-description"></div>
     </div>
     <div *ngIf="survey.photoURL && survey.photoURL.length > 0" class="col-sm">
-        <span><img [src]="survey.photoURL" class="img-fluid rounded float-right" /></span>
+        <span><img [src]="survey.photoURL" class="img-fluid rounded float-right survey-photo" /></span>
     </div>
 </div>
-<div class="row justify-content-center p-2">
-    <div class="alert alert-info" role="alert">
-        <span class="font-weight-bold">{{this.surveyJudgesCount}}</span>
-        <span jhiTranslate="biodifulApp.survey.judgesCount">personnes ont déjà participé !</span>
+<!-- <div class="row"> -->
+    <div *ngIf="this.survey.open || isAuthenticated()" class="row justify-content-center p-2 start-survey">
+        <button class="btn btn-primary p-3" [routerLink]="['/survey', survey.id, 'answer']">
+            <fa-icon icon="list"></fa-icon>&nbsp;<span jhiTranslate="biodifulApp.survey.answer">Répondre à la campagne</span>
+        </button>
     </div>
-</div>
+    <div class="row justify-content-center p-2">
+        <div class="alert alert-info survey-total-answers" role="alert">
+            <span class="font-weight-bold">{{this.surveyJudgesCount}}</span>
+            <span jhiTranslate="biodifulApp.survey.judgesCount">personnes ont déjà participé !</span>
+        </div>
+    </div>
+<!-- </div> -->
 <div *ngIf="! this.survey.open" class="row justify-content-center">
-    <div class="alert alert-warning" jhiTranslate="biodifulApp.survey.closedSurvey">Cette campagne est actuellement fermée.</div>
+    <div class="alert alert-warning survey-closed" jhiTranslate="biodifulApp.survey.closedSurvey">Cette campagne est actuellement fermée.</div>
 </div>
-<div *ngIf="this.survey.open || isAuthenticated()" class="row justify-content-center p-2">
-    <button class="btn btn-primary p-3" [routerLink]="['/survey', survey.id, 'answer']">
-        <fa-icon icon="list"></fa-icon>&nbsp;<span jhiTranslate="biodifulApp.survey.answer">Répondre à la campagne</span>
-    </button>
-</div>
-<div class="row justify-content-center mt-3" jhiTranslate="biodifulApp.survey.share">
+<div class="row justify-content-center mt-3 share-survey" jhiTranslate="biodifulApp.survey.share">
     Aidez nous à faire circuler cette étude:
 </div>
-<div class="row justify-content-center">
+<div class="row justify-content-center share-survey-links">
     <!-- <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbiodiful.org%2F%23%2FRecifsCorail&amp;src=sdkpreparse" class="btn btn-social btn-facebook m-2"> -->
         <a target="_blank" [href]="getFacebookUrl()" class="btn btn-social btn-facebook m-2">
         <span class="fab fa-facebook"></span>
@@ -41,8 +43,8 @@
     </a>
 </div>
 <div *ngIf="survey.contactsDescription && survey.contactsDescription.length > 0" class="row">
-    <div class="col-md" [innerHTML]="survey.contactsDescription"></div>
+    <div class="col-md survey-contacts" [innerHTML]="survey.contactsDescription"></div>
 </div>
 <div *ngIf="survey.logosURL && survey.logosURL.length > 0" class="row justify-content-center p-2">
-    <img [src]="survey.logosURL" class="img-fluid rounded" />
+    <img [src]="survey.logosURL" class="img-fluid rounded survey-logos" />
 </div>
