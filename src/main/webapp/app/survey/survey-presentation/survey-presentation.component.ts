@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SurveyService } from 'app/entities/survey';
 import { ISurvey } from 'app/shared/model/survey.model';
@@ -12,7 +12,8 @@ import { JhiLanguageService } from 'ng-jhipster';
 @Component({
     selector: 'jhi-survey-presentation',
     templateUrl: './survey-presentation.component.html',
-    styleUrls: ['survey-presentation.css']
+    styleUrls: ['survey-presentation.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class SurveyPresentationComponent implements OnInit {
     survey: ISurvey;
