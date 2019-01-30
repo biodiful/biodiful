@@ -1,16 +1,18 @@
-<div *ngIf="survey.photoURL && survey.photoURL.length > 0" class="row justify-content-center">
-    <span><img [src]="survey.photoURL" class="img-fluid rounded float-right survey-photo" /></span>
+<div *ngIf="survey.photoURL && survey.photoURL.length > 0" class="row justify-content-center row-1">
+    <div class="col-md-12">
+        <div class="survey-photo" [style.background-image]="'url(' + survey.photoURL + ')'"></div>
+    </div>
 </div>
-<div class="row justify-content-center p-2">
+<div class="row justify-content-center p-2 row-2">
     <div class="col-md-8">
         <h1 id="jhi-survey-heading survey-name">{{survey.surveyName}}</h1>
         <div [innerHTML]="survey.surveyDescription" class="justify-content-center survey-description"></div>
     </div>
-    <div *ngIf="survey.logosURL && survey.logosURL.length > 0" class="col-md-4">
+    <div *ngIf="survey.logosURL && survey.logosURL.length > 0" class="col-md-4 logos-col">
         <img [src]="survey.logosURL" class="img-fluid rounded survey-logos" />
     </div>
 </div>
-<div class="row justify-content-center">
+<div class="row justify-content-center row-3">
     <div class="col-md-6">
         <div *ngIf="this.survey.open || isAuthenticated()" class="start-survey">
             <button class="btn btn-primary p-3" [routerLink]="['/survey', survey.id, 'answer']">
@@ -49,7 +51,7 @@
     </div>
 </div>
 
-<div *ngIf="survey.contactsDescription && survey.contactsDescription.length > 0" class="row">
+<div *ngIf="survey.contactsDescription && survey.contactsDescription.length > 0" class="row row-4">
     <div class="col-md survey-contacts" [innerHTML]="survey.contactsDescription"></div>
 </div>
 
