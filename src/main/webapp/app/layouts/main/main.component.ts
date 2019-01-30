@@ -8,6 +8,8 @@ import { JhiLanguageHelper } from 'app/core';
     templateUrl: './main.component.html'
 })
 export class JhiMainComponent implements OnInit {
+    containerClass: String;
+
     constructor(private jhiLanguageHelper: JhiLanguageHelper, private router: Router) {}
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
@@ -15,6 +17,12 @@ export class JhiMainComponent implements OnInit {
         if (routeSnapshot.firstChild) {
             title = this.getPageTitle(routeSnapshot.firstChild) || title;
         }
+
+        // Update container class to target current component
+        if (routeSnapshot.routeConfig) {
+            this.containerClass = 'container-fluid ' + routeSnapshot.routeConfig.component.name;
+        }
+
         return title;
     }
 
