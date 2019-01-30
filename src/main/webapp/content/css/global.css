@@ -224,4 +224,182 @@ ui bootstrap tweaks
     white-space: nowrap;
 }
 
+/* ==========================================================================
+Bespoke Biodiful CSS
+========================================================================== */
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    line-height: 29px;
+    color: #2f2f30;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container-fluid {
+    max-width: 1280px !important;
+}
+
+.card.jh-card {
+    padding: 70px;
+    padding-top: 40px;
+}
+
+@media screen and (max-width: 640px) {
+    .card.jh-card {
+        padding: 10px;
+        padding-top: 30px;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .card.jh-card {
+        padding: 50px;
+        padding-top: 40px;
+    }
+}
+
+b,
+strong {
+    font-weight: bolder;
+    color: #33839c;
+}
+
+.footer {
+    /* border-top: 1px solid rgba(0,0,0,.125); */
+    background-color: #fff;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+
+h1,
+#jhi-survey-heading survey-name {
+    font-family: 'Roboto', sans-serif;
+
+    font-weight: 100 !important;
+    /* background-color: #000; */
+    color: #33839c;
+    font-size: 50px;
+    padding-bottom: 35px;
+}
+
+h3 {
+    font-family: 'Roboto', sans-serif;
+
+    font-weight: 100 !important;
+    /* background-color: #000; */
+    color: #33839c;
+    font-size: 50px;
+}
+
+.col-md.survey-contacts {
+    border-top: 1px solid #33839c;
+    padding-top: 40px;
+}
+
+button.btn.btn-primary {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    background-color: #33839c;
+    border-radius: 100px;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: auto;
+    font-size: 25px;
+    line-height: 36px;
+    border: 0px !important;
+}
+
+button.btn.btn-primary:hover {
+    background-color: #64bcd6;
+}
+
+div.share-survey {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    border: solid 2px #33839c !important;
+    border-radius: 100px;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: auto;
+    font-size: 25px;
+    line-height: 36px;
+    /* border: 0px!important; */
+    display: block;
+    width: auto;
+    /* background-color: #eaeaea; */
+    border: 2px solid #000;
+    text-align: center;
+    color: #33839c;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+button.btn.btn-primary fa-icon.ng-fa-icon {
+    display: none;
+}
+.jh-navbar {
+    background-color: #33839c !important;
+}
+.jh-navbar[_ngcontent-c3] {
+    background-color: #33839c !important;
+    padding: 0.2em 1em;
+}
+
+span.navbar-title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    text-transform: uppercase;
+}
+
+span.navbar-version {
+    color: #bad5dd !important;
+}
+
+.start-survey {
+    text-align: center;
+}
+.share-survey-links {
+    text-align: center;
+}
+.alert.alert-info.survey-total-answers {
+    background-color: transparent;
+    border: 0px;
+    text-align: center;
+    color: #33839c !important;
+}
+div.survey-photo {
+    width: 100% !important;
+    height: 50px;
+    background-color: #efefef;
+    border-radius: 100px !important;
+    background-size: cover;
+    display: block;
+    height: 140px;
+    background-color: #00f !important;
+    max-width: auto !important;
+    position: relative !important;
+    background-attachment: fixed;
+    width: 100% !important;
+    margin-bottom: 40px !important;
+}
+
+img.img-fluid.rounded.survey-logos {
+    position: relative;
+    top: 50%;
+    transform: perspective(1px) translateY(-50%);
+}
+
+.survey-description {
+    padding-bottom: 40px;
+}
+
+.logos-col {
+    background-color: #eef5f7;
+    padding: 40px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 40px;
+}
+
 /* jhipster-needle-css-add-main JHipster will add new css style */
