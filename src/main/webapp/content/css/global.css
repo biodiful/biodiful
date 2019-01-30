@@ -225,7 +225,7 @@ ui bootstrap tweaks
 }
 
 /* ==========================================================================
-Bespoke Biodiful CSS
+Biodiful Bespoke CSS
 ========================================================================== */
 
 body {
@@ -275,7 +275,6 @@ strong {
 h1,
 #jhi-survey-heading survey-name {
     font-family: 'Roboto', sans-serif;
-
     font-weight: 100 !important;
     /* background-color: #000; */
     color: #33839c;
@@ -285,7 +284,6 @@ h1,
 
 h3 {
     font-family: 'Roboto', sans-serif;
-
     font-weight: 100 !important;
     /* background-color: #000; */
     color: #33839c;
@@ -370,16 +368,14 @@ span.navbar-version {
 }
 div.survey-photo {
     width: 100% !important;
-    height: 50px;
     background-color: #efefef;
-    border-radius: 100px !important;
+    border-radius: 25px !important;
     background-size: cover;
     display: block;
-    height: 140px;
+    height: 190px;
     background-color: #00f !important;
     max-width: auto !important;
     position: relative !important;
-    background-attachment: fixed;
     width: 100% !important;
     margin-bottom: 40px !important;
 }
@@ -400,6 +396,15 @@ img.img-fluid.rounded.survey-logos {
     text-align: center;
     vertical-align: middle;
     border-radius: 40px;
+}
+
+.row-3 {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.share-survey-links {
+    text-align: center;
+    padding-top: 20px;
 }
 
 /* jhipster-needle-css-add-main JHipster will add new css style */
