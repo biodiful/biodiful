@@ -240,6 +240,10 @@ body {
     max-width: 1280px !important;
 }
 
+.container-fluid.survey-answer {
+    max-width: inherit !important;
+}
+
 .card.jh-card {
     padding: 70px;
     padding-top: 40px;
@@ -257,6 +261,7 @@ strong {
     background-color: #fff;
     border-radius: 20px;
     margin-top: 10px;
+    padding: 20px;
 }
 
 h1,
@@ -284,7 +289,7 @@ h3 {
     padding-top: 40px;
 }
 
-button.btn.btn-primary {
+.container-fluid.survey-presentation button.btn.btn-primary {
     font-family: 'Roboto', sans-serif;
     font-weight: 100;
     background-color: #33839c;
@@ -297,7 +302,7 @@ button.btn.btn-primary {
     border: 0px !important;
 }
 
-button.btn.btn-primary:hover {
+.container-fluid.survey-presentation button.btn.btn-primary:hover {
     background-color: #64bcd6;
 }
 
@@ -323,7 +328,7 @@ div.share-survey {
     padding-right: 20px;
     background-position: center;
 }
-button.btn.btn-primary fa-icon.ng-fa-icon {
+.container-fluid.survey-presentation button.btn.btn-primary fa-icon.ng-fa-icon {
     display: none;
 }
 
@@ -414,7 +419,7 @@ img.img-fluid.rounded.survey-logos {
         font-size: 30px !important;
     }
 
-    button.btn.btn-primary {
+    .container-fluid.survey-presentation button.btn.btn-primary {
         font-size: 18px !important;
     }
 

@@ -2,7 +2,7 @@
     "home": {
         "title": "BIODIFUL.ORG",
         "subtitle": "A site dedicated to the study of human's perception of nature",
-        "survey.open": "Opened surveys :",
+        "survey.open": "Open surveys :",
         "survey.closed": "Closed surveys :",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
@@ -15,7 +15,7 @@
             "chat": "JHipster public chat room",
             "follow": "follow @java_hipster on Twitter"
         },
-        "more": "More <br> information...",
+        "more": "More information",
         "github": "GitHub"
     }
 }
