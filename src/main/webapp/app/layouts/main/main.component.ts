@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 
 import { JhiLanguageHelper } from 'app/core';
+import { SurveyAnswerComponent } from 'app/survey/survey-answer/survey-answer.component';
+import { SurveyPresentationComponent } from 'app/survey/survey-presentation/survey-presentation.component';
+import { HomeComponent } from 'app/home';
 
 @Component({
     selector: 'jhi-main',
@@ -19,8 +22,16 @@ export class JhiMainComponent implements OnInit {
         }
 
         // Update container class to target current component
-        if (routeSnapshot.routeConfig) {
-            this.containerClass = 'container-fluid ' + routeSnapshot.routeConfig.component.name;
+        if (routeSnapshot.routeConfig && routeSnapshot.routeConfig.component) {
+            if (routeSnapshot.routeConfig.component == HomeComponent) {
+                this.containerClass = 'container-fluid home';
+            } else if (routeSnapshot.routeConfig.component == SurveyPresentationComponent) {
+                this.containerClass = 'container-fluid survey-presentation';
+            } else if (routeSnapshot.routeConfig.component == SurveyAnswerComponent) {
+                this.containerClass = 'container-fluid survey-answer';
+            } else {
+                this.containerClass = 'container-fluid';
+            }
         }
 
         return title;
