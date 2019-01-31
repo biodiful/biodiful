@@ -375,6 +375,20 @@ div.survey-photo {
     margin-bottom: 40px !important;
 }
 
+/* image normale avec arrondi par style suivant */
+
+.survey-img {
+    width: 100%;
+}
+
+.row.justify-content-center.row-1 .col-md-12 {
+    border-radius: 25px !important;
+    background-color: #000;
+    overflow: hidden;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
 img.img-fluid.rounded.survey-logos {
     position: relative;
     top: 50%;
@@ -402,7 +416,7 @@ img.img-fluid.rounded.survey-logos {
     padding-top: 20px;
 }
 
-@media screen and (max-width: 992px) {
+media screen and (max-width: 992px) {
     .jh-logo-container[_ngcontent-c3] {
         width: inherit;
     }
