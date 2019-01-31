@@ -243,20 +243,7 @@ body {
 .card.jh-card {
     padding: 70px;
     padding-top: 40px;
-}
-
-@media screen and (max-width: 640px) {
-    .card.jh-card {
-        padding: 10px;
-        padding-top: 30px;
-    }
-}
-
-@media screen and (max-width: 960px) {
-    .card.jh-card {
-        padding: 50px;
-        padding-top: 40px;
-    }
+    border-radius: 20px;
 }
 
 b,
@@ -275,6 +262,7 @@ strong {
 h1,
 #jhi-survey-heading survey-name {
     font-family: 'Roboto', sans-serif;
+
     font-weight: 100 !important;
     /* background-color: #000; */
     color: #33839c;
@@ -284,6 +272,7 @@ h1,
 
 h3 {
     font-family: 'Roboto', sans-serif;
+
     font-weight: 100 !important;
     /* background-color: #000; */
     color: #33839c;
@@ -332,10 +321,12 @@ div.share-survey {
     padding: 10px;
     padding-left: 20px;
     padding-right: 20px;
+    background-position: center;
 }
 button.btn.btn-primary fa-icon.ng-fa-icon {
     display: none;
 }
+
 .jh-navbar {
     background-color: #33839c !important;
 }
@@ -373,7 +364,6 @@ div.survey-photo {
     background-size: cover;
     display: block;
     height: 190px;
-    background-color: #00f !important;
     max-width: auto !important;
     position: relative !important;
     width: 100% !important;
@@ -405,6 +395,54 @@ img.img-fluid.rounded.survey-logos {
 .share-survey-links {
     text-align: center;
     padding-top: 20px;
+}
+
+@media screen and (max-width: 992px) {
+    .jh-logo-container[_ngcontent-c3] {
+        width: inherit;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .card.jh-card {
+        padding: 10px !important;
+        padding-top: 10px !important;
+    }
+    #jhi-survey-heading survey-name,
+    h1,
+    h3 {
+        font-size: 30px !important;
+    }
+
+    button.btn.btn-primary {
+        font-size: 18px !important;
+    }
+
+    div.share-survey {
+        font-size: 15px !important;
+        line-height: 20px !important;
+    }
+
+    body {
+        font-size: 17px !important;
+        line-height: 24px !important;
+    }
+
+    #jhi-survey-heading survey-name,
+    h1 {
+        padding-bottom: 15px !important;
+    }
+
+    span.navbar-version {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 960px) {
+    .card.jh-card {
+        padding: 50px !important;
+        padding-top: 40px !important;
+    }
 }
 
 /* jhipster-needle-css-add-main JHipster will add new css style */
