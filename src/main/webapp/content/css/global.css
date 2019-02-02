@@ -267,7 +267,6 @@ strong {
 h1,
 #jhi-survey-heading survey-name {
     font-family: 'Roboto', sans-serif;
-
     font-weight: 100 !important;
     /* background-color: #000; */
     color: #33839c;
@@ -277,7 +276,6 @@ h1,
 
 h3 {
     font-family: 'Roboto', sans-serif;
-
     font-weight: 100 !important;
     /* background-color: #000; */
     color: #33839c;
@@ -416,7 +414,7 @@ img.img-fluid.rounded.survey-logos {
     padding-top: 20px;
 }
 
-media screen and (max-width: 992px) {
+@media screen and (max-width: 992px) {
     .jh-logo-container[_ngcontent-c3] {
         width: inherit;
     }
