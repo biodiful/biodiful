@@ -16,6 +16,7 @@
             "follow": "Suivez @java_hipster sur Twitter"
         },
         "more": "En savoir plus",
+        "more.footer": "En savoir<br> plus",
         "github": "GitHub "
     }
 }

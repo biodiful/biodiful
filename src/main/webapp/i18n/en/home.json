@@ -16,6 +16,7 @@
             "follow": "follow @java_hipster on Twitter"
         },
         "more": "More information",
+        "more.footer": "More<br> information",
         "github": "GitHub"
     }
 }
