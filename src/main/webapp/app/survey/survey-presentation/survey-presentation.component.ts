@@ -8,6 +8,7 @@ import moment from 'moment/src/moment';
 import { Principal } from 'app/core';
 import { SessionStorageService } from 'ngx-webstorage';
 import { JhiLanguageService } from 'ng-jhipster';
+import { Meta } from '@angular/platform-browser';
 
 @Component({
     selector: 'jhi-survey-presentation',
@@ -18,6 +19,7 @@ import { JhiLanguageService } from 'ng-jhipster';
 export class SurveyPresentationComponent implements OnInit {
     survey: ISurvey;
     surveyJudgesCount: number;
+    surveyAbsoluteUrl: string;
     surveyAbsoluteUrlEncoded: string;
 
     constructor(
@@ -26,7 +28,8 @@ export class SurveyPresentationComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private sessionStorage: SessionStorageService,
         private languageService: JhiLanguageService,
-        private router: Router
+        private router: Router,
+        private meta: Meta
     ) {}
 
     ngOnInit() {
@@ -37,10 +40,34 @@ export class SurveyPresentationComponent implements OnInit {
 
             this.subscribeToCountResponse(this.surveyService.getSurveyJudgesCount(this.survey.id));
 
-            this.initLocale();
-
             this.initSurveyAbsoluteUrl();
+
+            this.updateMetaTags();
+
+            this.initLocale();
         });
+    }
+
+    updateMetaTags() {
+        // this.meta.addTags([
+        //     { name: 'og:title', content: this.survey.surveyName },
+        //     { name: 'og:description', content: this.htmlToPlaintext(this.survey.surveyDescription) },
+        //   ]);
+
+        //TODO URL - remove first or update OK?
+        this.meta.updateTag({ name: 'og:url', content: this.surveyAbsoluteUrl });
+        this.meta.updateTag({ name: 'og:title', content: this.survey.surveyName });
+        this.meta.updateTag({ name: 'og:description', content: this.firstSentence(this.survey.surveyDescription) });
+
+        //TODO also update these tags on the homepage?
+    }
+
+    firstSentence(text) {
+        return this.htmlToPlaintext(text).split('.')[0];
+    }
+
+    htmlToPlaintext(text) {
+        return text ? String(text).replace(/<[^>]+>/gm, ' ') : '';
     }
 
     reloadParentIframe() {
@@ -52,15 +79,15 @@ export class SurveyPresentationComponent implements OnInit {
     }
 
     initSurveyAbsoluteUrl() {
-        this.surveyAbsoluteUrlEncoded = 'https://www.biodiful.org/#';
+        this.surveyAbsoluteUrl = 'https://www.biodiful.org/#';
         console.log(this.activatedRoute.snapshot.url);
         if (this.survey.friendlyURL) {
-            this.surveyAbsoluteUrlEncoded += '/' + this.survey.friendlyURL;
+            this.surveyAbsoluteUrl += '/' + this.survey.friendlyURL;
         } else {
-            this.surveyAbsoluteUrlEncoded += this.router.url;
+            this.surveyAbsoluteUrl += this.router.url;
         }
 
-        this.surveyAbsoluteUrlEncoded = encodeURIComponent(this.surveyAbsoluteUrlEncoded);
+        this.surveyAbsoluteUrlEncoded = encodeURIComponent(this.surveyAbsoluteUrl);
     }
 
     initLocale() {

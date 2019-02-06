@@ -465,4 +465,10 @@ img.img-fluid.rounded.survey-logos {
     }
 }
 
+/* Custom rules for Mobile */
+
+.lead {
+    margin-left: 15px;
+}
+
 /* jhipster-needle-css-add-main JHipster will add new css style */
