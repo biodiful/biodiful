@@ -21,7 +21,8 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.surveyDescription" for="field_surveyDescription">Survey Description</label>
-                    <angular-editor name="surveyDescription" id="field_surveyDescription" [(ngModel)]="survey.surveyDescription" required></angular-editor>
+                    <!-- <div class="alert alert-warning">La 1ere phrase de la description est importante car elles est utilisé par la fonctionnalité de partage Facebook. Cette première phrase doit donc décrire la campagne de manière succincte (ne pas dépasser 300 characteres).</div> -->
+                    <angular-editor [config]="angularEditorConfig" name="surveyDescription" id="field_surveyDescription" [(ngModel)]="survey.surveyDescription" required></angular-editor>
                     <div [hidden]="!(editForm.controls.surveyDescription?.dirty && editForm.controls.surveyDescription?.invalid)">
                         <small class="form-text text-danger"
                         [hidden]="!editForm.controls.surveyDescription?.errors?.required" jhiTranslate="entity.validation.required">
@@ -31,7 +32,7 @@
                 </div>
                 <div class="form-group" ngbTooltip="Description des personnes a contacter pour plus d’information sur cette campagne">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.contactsDescription" for="field_contactsDescription">Contacts Description</label>
-                    <angular-editor name="contactsDescription" id="field_contactsDescription" [(ngModel)]="survey.contactsDescription"></angular-editor>
+                    <angular-editor [config]="angularEditorConfig" name="contactsDescription" id="field_contactsDescription" [(ngModel)]="survey.contactsDescription"></angular-editor>
                 </div>
                 <div class="form-group" ngbTooltip="Sous partie de l’URL après le nom de domaine pour que les visiteurs accèdent a cette campagne: www.biodiful.org/#/|friendlyURL|">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.friendlyURL" for="field_friendlyURL">Friendly URL</label>
@@ -114,7 +115,7 @@
                 </div>
                 <div class="form-group" ngbTooltip="Description à afficher au dessus des deux photos lors d’un match pour la 1ere Pool">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.matchesDescription" for="field_matchesDescription">Matches Description</label>
-                    <angular-editor name="matchesDescription" id="field_matchesDescription" [(ngModel)]="survey.matchesDescription"  required></angular-editor>
+                    <angular-editor [config]="angularEditorConfig" name="matchesDescription" id="field_matchesDescription" [(ngModel)]="survey.matchesDescription"  required></angular-editor>
                     <div [hidden]="!(editForm.controls.matchesDescription?.dirty && editForm.controls.matchesDescription?.invalid)">
                         <small class="form-text text-danger"
                         [hidden]="!editForm.controls.matchesDescription?.errors?.required" jhiTranslate="entity.validation.required">
@@ -125,13 +126,13 @@
                 <div class="form-group" ngbTooltip="Description à afficher au dessus des deux photos lors d’un match pour la 2eme Pool">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.matchesDescriptionPool2" for="field_matchesDescriptionPool2">Matches Description
                         Pool 2</label>
-                    <angular-editor name="matchesDescriptionPool2" id="field_matchesDescriptionPool2"
+                    <angular-editor [config]="angularEditorConfig" name="matchesDescriptionPool2" id="field_matchesDescriptionPool2"
                         [(ngModel)]="survey.matchesDescriptionPool2" ></angular-editor>
                 </div>
                 <div class="form-group" ngbTooltip="Description à afficher au dessus des deux photos lors d’un match pour la 3eme Pool">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.matchesDescriptionPool3" for="field_matchesDescriptionPool3">Matches Description
                         Pool 3</label>
-                    <angular-editor name="matchesDescriptionPool3" id="field_matchesDescriptionPool3"
+                    <angular-editor [config]="angularEditorConfig" name="matchesDescriptionPool3" id="field_matchesDescriptionPool3"
                         [(ngModel)]="survey.matchesDescriptionPool3" ></angular-editor>
                 </div>
                 <div class="form-group" ngbTooltip="Indique si la campagne est ouverte et que les visiteurs peuvent y répondre">
