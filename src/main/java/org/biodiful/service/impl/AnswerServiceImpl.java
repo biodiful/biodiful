@@ -108,4 +108,9 @@ public class AnswerServiceImpl implements AnswerService {
         log.debug("Request to delete Answer : {}", id);
         answerRepository.deleteById(id);
     }
+
+    @Override
+    public List<AnswerDTO> findBySurveyId(Long surveyId) {
+        return answerMapper.toDto(answerRepository.findBySurveyId(surveyId));
+    }
 }
