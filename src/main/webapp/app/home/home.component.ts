@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
@@ -10,7 +10,8 @@ import { ISurvey } from 'app/shared/model/survey.model';
 @Component({
     selector: 'jhi-home',
     templateUrl: './home.component.html',
-    styleUrls: ['home.css']
+    styleUrls: ['home.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit {
     account: Account;

@@ -49,26 +49,21 @@ export class SurveyPresentationComponent implements OnInit {
     }
 
     updateMetaTags() {
-        // this.meta.addTags([
-        //     { name: 'og:title', content: this.survey.surveyName },
-        //     { name: 'og:description', content: this.htmlToPlaintext(this.survey.surveyDescription) },
-        //   ]);
-
-        //TODO URL - remove first or update OK?
+        // Issue with dynamically updating Meta-tags: Facebook's crawler doesnt interprets javascript
+        // Work-around: Use angular universal's Server Side Rendering, but this technology is not ready for java yet
+        // (see https://github.com/swaechter/angularj-universal )
         this.meta.updateTag({ name: 'og:url', content: this.surveyAbsoluteUrl });
         this.meta.updateTag({ name: 'og:title', content: this.survey.surveyName });
-        this.meta.updateTag({ name: 'og:description', content: this.firstSentence(this.survey.surveyDescription) });
-
-        //TODO also update these tags on the homepage?
+        // this.meta.updateTag({ name: 'og:description', content: this.firstSentence(this.survey.surveyDescription) });
     }
 
-    firstSentence(text) {
-        return this.htmlToPlaintext(text).split('.')[0];
-    }
+    // firstSentence(text) {
+    //     return this.htmlToPlaintext(text).split('.')[0];
+    // }
 
-    htmlToPlaintext(text) {
-        return text ? String(text).replace(/<[^>]+>/gm, ' ') : '';
-    }
+    // htmlToPlaintext(text) {
+    //     return text ? String(text).replace(/<[^>]+>/gm, ' ') : '';
+    // }
 
     reloadParentIframe() {
         // Detect whether we're in an iframe (i.e. if we follow the link at the end of the google form)
