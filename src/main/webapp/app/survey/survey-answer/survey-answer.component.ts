@@ -47,6 +47,8 @@ export class SurveyAnswerComponent implements OnInit {
             this.survey = survey;
         });
 
+        //TODO send GA event with survey ID?
+
         this.initChallengers();
 
         this.initJudgeId();
@@ -236,6 +238,7 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     onSaveResponseSuccess(): void {
+        window.location.href = this.survey.formURL + this.judgeId;
         // alert('Save success!');
     }
 }
