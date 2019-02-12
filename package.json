@@ -117,10 +117,12 @@
     "webpack:prod": "npm run cleanup && npm run webpack:prod:main && npm run clean-www",
     "webpack:test": "npm run test",
     "webpack-dev-server": "node --max_old_space_size=4096 node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js"
+    "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js",
+    "heroku-postbuild": "echo Skip build on Heroku"
   },
   "jestSonar": {
     "reportPath": "build/test-results/jest",
     "reportFile": "TESTS-results-sonar.xml"
-  }
+  },
+  "heroku-run-build-script": true
 }
