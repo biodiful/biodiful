@@ -61,7 +61,7 @@ export class SurveyAnswerComponent implements OnInit {
             .get(this.survey.challengersPool1URL)
             .subscribe(
                 response => this.onGetChallengersSuccess(response, this.challengersPool1, 0),
-                (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 1- ' + res.message)
+                (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 1 - ' + res.message)
             );
 
         if (this.survey.challengersPool2URL) {
@@ -238,7 +238,7 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     onSaveResponseSuccess(): void {
+        //alert('Save success!');
         window.location.href = this.survey.formURL + this.judgeId;
-        // alert('Save success!');
     }
 }
