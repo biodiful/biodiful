@@ -44,14 +44,33 @@
             ]
         },
         {
-            "fieldName": "challengersURL",
+            "fieldName": "challengersPool1URL",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "numberOfMatches",
+            "fieldName": "challengersPool2URL",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "challengersPool3URL",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "numberOfMatchesPerPool",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "numberOfMatchesPerPool2",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "numberOfMatchesPerPool3",
             "fieldType": "Integer"
         },
         {
@@ -63,7 +82,32 @@
             ]
         },
         {
+            "fieldName": "matchesDescriptionPool2",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "matchesDescriptionPool3",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
             "fieldName": "open",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "language",
+            "fieldType": "Language",
+            "fieldValues": "FR,EN,ES",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "uniqueChallengers",
             "fieldType": "Boolean",
             "fieldValidateRules": [
                 "required"

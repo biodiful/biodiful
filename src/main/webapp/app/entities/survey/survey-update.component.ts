@@ -6,6 +6,7 @@ import { JhiDataUtils } from 'ng-jhipster';
 
 import { ISurvey } from 'app/shared/model/survey.model';
 import { SurveyService } from './survey.service';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
     selector: 'jhi-survey-update',
@@ -14,6 +15,15 @@ import { SurveyService } from './survey.service';
 export class SurveyUpdateComponent implements OnInit {
     survey: ISurvey;
     isSaving: boolean;
+
+    angularEditorConfig: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '10rem',
+        minHeight: '5rem',
+        placeholder: 'Enter text here...',
+        translate: 'no'
+    };
 
     constructor(private dataUtils: JhiDataUtils, private surveyService: SurveyService, private activatedRoute: ActivatedRoute) {}
 

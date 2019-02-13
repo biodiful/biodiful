@@ -25,7 +25,7 @@ describe('Service Tests', () => {
             httpMock = injector.get(HttpTestingController);
             currentDate = moment();
 
-            elemDefault = new Answer(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', currentDate, currentDate);
+            elemDefault = new Answer(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', currentDate, currentDate, 0);
         });
 
         describe('Service methods', async () => {
@@ -78,7 +78,8 @@ describe('Service Tests', () => {
                         challenger2: 'BBBBBB',
                         winner: 'BBBBBB',
                         startTime: currentDate.format(DATE_TIME_FORMAT),
-                        endTime: currentDate.format(DATE_TIME_FORMAT)
+                        endTime: currentDate.format(DATE_TIME_FORMAT),
+                        poolNumber: 1
                     },
                     elemDefault
                 );
@@ -106,7 +107,8 @@ describe('Service Tests', () => {
                         challenger2: 'BBBBBB',
                         winner: 'BBBBBB',
                         startTime: currentDate.format(DATE_TIME_FORMAT),
-                        endTime: currentDate.format(DATE_TIME_FORMAT)
+                        endTime: currentDate.format(DATE_TIME_FORMAT),
+                        poolNumber: 1
                     },
                     elemDefault
                 );

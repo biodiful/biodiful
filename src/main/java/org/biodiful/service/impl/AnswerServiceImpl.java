@@ -54,7 +54,7 @@ public class AnswerServiceImpl implements AnswerService {
     /**
      * Save a list of answer.
      *
-     * @param answerDTO the entities to save
+     * @param answersDTO the entities to save
      * @return the persisted entities
      */
     @Override
@@ -107,5 +107,10 @@ public class AnswerServiceImpl implements AnswerService {
     public void delete(Long id) {
         log.debug("Request to delete Answer : {}", id);
         answerRepository.deleteById(id);
+    }
+
+    @Override
+    public List<AnswerDTO> findBySurveyId(Long surveyId) {
+        return answerMapper.toDto(answerRepository.findBySurveyId(surveyId));
     }
 }

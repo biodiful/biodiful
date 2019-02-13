@@ -1,8 +1,18 @@
+<!-- <div class="mx-auto">
+        <img class="challenger mb-2 mr-2" [src]="challengerOne.url" [alt]="challengerOne.id" (click)="challengerClicked(challengerOne)" />
+        <img class="challenger mb-2" [src]="challengerTwo.url" [alt]="challengerTwo.id" (click)="challengerClicked(challengerTwo)" />
+    </div> -->
+    
+
+<!-- Pour que les challenger prennent toute la place (mieux pour la version mobile) -->
+    
 <div class="row">
-    <div class="col-md-6">
-        <img [src]="challengerOne.url" [alt]="challengerOne.id" (click)="challengerClicked(challengerOne)" />
+    <div class="col-6 col-md-6">
+        <img class="challenger mb-2 mr-2" [src]="challengerOne.url" [alt]="challengerOne.id" (click)="challengerClicked(challengerOne)" />
     </div>
-    <div class="col-md-6">
-        <img [src]="challengerTwo.url" [alt]="challengerTwo.id" (click)="challengerClicked(challengerTwo)" />
+    <div class="col-6 col-md-6">
+        <img class="challenger mb-2" [src]="challengerTwo.url" [alt]="challengerTwo.id" (click)="challengerClicked(challengerTwo)" />
     </div>
-</div>
+</div> 
+
+<!-- .challenger style width: 100%; -->

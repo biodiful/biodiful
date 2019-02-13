@@ -21,6 +21,7 @@
             "winner": "Winner",
             "startTime": "Start Time",
             "endTime": "End Time",
+            "poolNumber": "Pool Number",
             "survey": "Survey"
         }
     }

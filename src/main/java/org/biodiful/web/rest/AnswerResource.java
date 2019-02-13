@@ -23,6 +23,7 @@ import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -90,7 +91,7 @@ public class AnswerResource {
     /**
      * POST  /answers : Create a list of answers.
      *
-     * @param answerDTO the list of answerDTO to create
+     * @param answersDTO the list of answerDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new answerDTOs, or with status 400 (Bad Request) if the answers have already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
@@ -114,16 +115,26 @@ public class AnswerResource {
      * GET  /answers : get all the answers.
      *
      * @param pageable the pagination information
+     * @param surveyId the ID of the survey to restrict the list of answers (optional)
      * @return the ResponseEntity with status 200 (OK) and the list of answers in body
      */
     @GetMapping("/answers")
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<List<AnswerDTO>> getAllAnswers(Pageable pageable) {
+    public ResponseEntity<List<AnswerDTO>> getAllAnswers(Pageable pageable, @RequestParam(value="surveyId", required=false) Optional<Long> surveyId) {
         log.debug("REST request to get a page of Answers");
-        Page<AnswerDTO> page = answerService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/answers");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        List<AnswerDTO> answers;
+        HttpHeaders headers;
+        if (surveyId.isPresent()) {
+            answers = answerService.findBySurveyId(surveyId.get());
+            headers = new HttpHeaders();
+            headers.add("X-Total-Count", Integer.toString(answers.size()));
+        } else {
+            Page<AnswerDTO> page = answerService.findAll(pageable);
+            headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/answers");
+            answers = page.getContent();
+        }
+        return ResponseEntity.ok().headers(headers).body(answers);
     }
 
     /**

@@ -1,48 +1,24 @@
 <jhi-alert-error></jhi-alert-error>
 <div [ngSwitch]="isAllMatchesCompleted">
-    <div *ngSwitchCase="true" class="embed-responsive embed-responsive-1by1">
-        <!-- <iframe [src]="this.survey.formURL" width="700" height="520"> -->
-        <!-- <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScUQE1qz9s7lpc4D2np7xbPRUnJCXhIG76V5lqxxpR28pF5zw/viewform?embedded=true" width="640" height="1095" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe> -->
-        <!-- <iframe class="embed-responsive-item" id="google-form" src="https://docs.google.com/forms/d/e/1FAIpQLScUQE1qz9s7lpc4D2np7xbPRUnJCXhIG76V5lqxxpR28pF5zw/viewform?embedded=true" > -->
-        <iframe class="embed-responsive-item" id="google-form" [src]="getSocialFormUrl()">
+    <div *ngSwitchCase="true">
+    <!-- <div *ngSwitchCase="true" class="embed-responsive embed-responsive-1by1"> -->
+        <!-- <iframe class="embed-responsive-item" id="google-form" src="https://docs.google.com/forms/d/e/1FAIpQLScUQE1qz9s7lpc4D2np7xbPRUnJCXhIG76V5lqxxpR28pF5zw/viewform?embedded=true" scrolling="yes" > -->
+        <!-- <iframe class="embed-responsive-item" id="google-form" [src]="this.socialFormUrl" frameborder="0" marginheight="0" marginwidth="0" onLoad="parent.scrollTo(0,0);" scrolling="yes">
             Loading...
-        </iframe>
-
-        <!-- <iframe src="https://4screens.net/e/5bd0e35eea892f0100018e28" width="1000" height="1000">
-            Loading...
-          </iframe> -->
-
-        <!-- <div data-fsid="e.5bd0e35eea892f0100018e28" data-width="100%" data-height="auto"></div>
-          <script async src="https://4screens.net/4screens-service-loader.js"></script> -->
+        </iframe> -->
+        <img src="/content/images/loader.gif">
     </div>
 
     <div *ngSwitchCase="false">
-        <div [innerHTML]="survey.matchesDescription"></div>
+        <div [innerHTML]="getDescriptionForCurrentPool()"></div>
 
         <jhi-survey-answer-match [challengerOne]="challengerOne" [challengerTwo]="challengerTwo" (winnerSelected)="addWinner($event)"></jhi-survey-answer-match>
 
         <div class="progress mt-4" style="height: 20px;">
             <div class="progress-bar" role="progressbar" [style.width.%]="getPercentAdvancement()" [attr.aria-valuenow]="getCurrentMatchNumber()"
-                aria-valuemin="1" [attr.aria-valuemax]="nbOfMatches">
-                {{getCurrentMatchNumber()}} / {{nbOfMatches}}
+                aria-valuemin="1" [attr.aria-valuemax]="totalNbOfMatches">
+                {{getCurrentMatchNumber()}} / {{totalNbOfMatches}}
             </div>
         </div>
     </div>
 </div>
-
-<!--
-    $('iframe#google-form').onsubmit(function() {
-      alert("the iframe has been loaded");
-    });
-
-    $('iframe#google-form').onsubmit(alert("the iframe has been loaded")));
-
-    $('iframe#google-form').onchange(alert("onchange")));
-
-    To try:
-    http://blog.sodhanalibrary.com/2015/02/detect-iframe-src-change-using-angularjs.html
-
-    Search callback method to parent DOM when form is submitted.
-
-    or just display thank you message in iFrame and save the Answers at the previous step
-     -->

@@ -6,10 +6,22 @@ entity Survey {
     photoURL String
     logosURL String
     formURL String required
-    challengersURL String required
-    numberOfMatches Integer
+    challengersPool1URL String required
+    challengersPool2URL String
+    challengersPool3URL String
+    numberOfMatchesPerPool Integer required
+    numberOfMatchesPerPool2 Integer
+    numberOfMatchesPerPool3 Integer
     matchesDescription TextBlob required
+    matchesDescriptionPool2 TextBlob
+    matchesDescriptionPool3 TextBlob
     open Boolean required
+    language Language required
+    uniqueChallengers Boolean required
+}
+
+enum Language {
+    FR, EN, ES
 }
 
 entity Answer {
@@ -19,6 +31,7 @@ entity Answer {
     winner String required
     startTime Instant required
     endTime Instant required
+    poolNumber Integer required
 }
 
 relationship ManyToOne {

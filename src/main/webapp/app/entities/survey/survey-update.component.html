@@ -21,7 +21,8 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.surveyDescription" for="field_surveyDescription">Survey Description</label>
-                    <angular-editor name="surveyDescription" id="field_surveyDescription" [(ngModel)]="survey.surveyDescription" required></angular-editor>
+                    <!-- <div class="alert alert-warning">La 1ere phrase de la description est importante car elles est utilisé par la fonctionnalité de partage Facebook. Cette première phrase doit donc décrire la campagne de manière succincte (ne pas dépasser 300 characteres).</div> -->
+                    <angular-editor [config]="angularEditorConfig" name="surveyDescription" id="field_surveyDescription" [(ngModel)]="survey.surveyDescription" required></angular-editor>
                     <div [hidden]="!(editForm.controls.surveyDescription?.dirty && editForm.controls.surveyDescription?.invalid)">
                         <small class="form-text text-danger"
                         [hidden]="!editForm.controls.surveyDescription?.errors?.required" jhiTranslate="entity.validation.required">
@@ -29,35 +30,30 @@
                         </small>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ngbTooltip="Description des personnes a contacter pour plus d’information sur cette campagne">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.contactsDescription" for="field_contactsDescription">Contacts Description</label>
-                    <div class="alert alert-info" role="alert">Description des personnes a contacter pour plus d’information sur cette campagne</div>
-                    <angular-editor name="contactsDescription" id="field_contactsDescription" [(ngModel)]="survey.contactsDescription"></angular-editor>
+                    <angular-editor [config]="angularEditorConfig" name="contactsDescription" id="field_contactsDescription" [(ngModel)]="survey.contactsDescription"></angular-editor>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ngbTooltip="Sous partie de l’URL après le nom de domaine pour que les visiteurs accèdent a cette campagne: www.biodiful.org/#/|friendlyURL|">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.friendlyURL" for="field_friendlyURL">Friendly URL</label>
-                    <div class="alert alert-info" role="alert">Sous partie de l’URL après le nom de domaine pour que les visiteurs accèdent a cette campagne: www.biodiful.org/#/|friendlyURL|</div>
                     <div class="alert alert-warning">Doit être unique et contenir uniquement des caractères alphanumériques sans espaces</div>
                     <input type="text" class="form-control" name="friendlyURL" id="field_friendlyURL"
                         [(ngModel)]="survey.friendlyURL" />
                     <div [hidden]="!(editForm.controls.friendlyURL?.dirty && editForm.controls.friendlyURL?.invalid)">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ngbTooltip="URL de la photo à afficher à côté de la description de la campagne dans la page de présentation">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.photoURL" for="field_photoURL">Photo URL</label>
-                    <div class="alert alert-info" role="alert">URL de la photo à afficher à côté de la description de la campagne dans la page de présentation</div>
                     <input type="text" class="form-control" name="photoURL" id="field_photoURL"
                         [(ngModel)]="survey.photoURL" />
                 </div>
-                <div class="form-group">
+                <div class="form-group" ngbTooltip="URL de la photo avec les différents logos des organisateurs de cette campagne">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.logosURL" for="field_logosURL">Logos URL</label>
-                    <div class="alert alert-info" role="alert">URL de la photo avec les différents logos des organisateurs de cette campagne</div>
                     <input type="text" class="form-control" name="logosURL" id="field_logosURL"
                         [(ngModel)]="survey.logosURL" />
                 </div>
-                <div class="form-group">
+                <div class="form-group" ngbTooltip="URL du questionnaire socio-professionnel Google Form (doit contenir un parametre &entry.xxx= afin de passer l'identifiant du juge)">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.formURL" for="field_formURL">Form URL</label>
-                    <div class="alert alert-info" role="alert">URL du questionnaire socio-professionnel Google Form (doit contenir un parametre &entry.xxx= afin de passer l'identifiant du juge)</div>
                     <input type="text" class="form-control" name="formURL" id="field_formURL"
                         [(ngModel)]="survey.formURL" required/>
                     <div [hidden]="!(editForm.controls.formURL?.dirty && editForm.controls.formURL?.invalid)">
@@ -67,28 +63,59 @@
                         </small>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.challengersURL" for="field_challengersURL">Challengers URL</label>
-                    <div class="alert alert-info" role="alert">URL de l'appel a l'API Flickr pour obtenir les photos à afficher lors des matches</div>
-                    <input type="text" class="form-control" name="challengersURL" id="field_challengersURL"
-                        [(ngModel)]="survey.challengersURL" required/>
-                    <div [hidden]="!(editForm.controls.challengersURL?.dirty && editForm.controls.challengersURL?.invalid)">
+                <div class="form-group" ngbTooltip="URL de l'appel a l'API Flickr pour obtenir les photos de la 1ere Pool à afficher lors des matches">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.challengersPool1URL" for="field_challengersPool1URL">Challengers Pool 1 URL</label>
+                    <input type="text" class="form-control" name="challengersPool1URL" id="field_challengersPool1URL"
+                        [(ngModel)]="survey.challengersPool1URL" required/>
+                    <div [hidden]="!(editForm.controls.challengersPool1URL?.dirty && editForm.controls.challengersPool1URL?.invalid)">
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.challengersURL?.errors?.required" jhiTranslate="entity.validation.required">
+                        [hidden]="!editForm.controls.challengersPool1URL?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.numberOfMatches" for="field_numberOfMatches">Number Of Matches</label>
-                    <div class="alert alert-info" role="alert">Nombre de matches à effectuer par chaques personnes répondant à la campagne (default: 10)</div>
-                    <input type="number" class="form-control" name="numberOfMatches" id="field_numberOfMatches"
-                        [(ngModel)]="survey.numberOfMatches" />
+                <div class="form-group" ngbTooltip="URL de l'appel a l'API Flickr pour obtenir les photos de la 2eme Pool à afficher lors des matches">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.challengersPool2URL" for="field_challengersPool2URL">Challengers Pool 2 URL</label>
+                    <div class="alert alert-warning">Si ce paramètre est renseigné, les paramètres indiquant le nombre de matches a effectuer (Number Of Matches Per Pool 2) et la description des matches pour cette pool (Matches Description Pool 2) doivent également être renseignés</div>
+                    <input type="text" class="form-control" name="challengersPool2URL" id="field_challengersPool2URL"
+                        [(ngModel)]="survey.challengersPool2URL" />
                 </div>
-                <div class="form-group">
+                <div class="form-group" ngbTooltip="URL de l'appel a l'API Flickr pour obtenir les photos de la 3eme Pool à afficher lors des matches">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.challengersPool3URL" for="field_challengersPool3URL">Challengers Pool 3 URL</label>
+                    <div class="alert alert-warning">Si ce paramètre est renseigné, les paramètres indiquant le nombre de matches a effectuer (Number Of Matches Per Pool 3) et la description des matches pour cette pool (Matches Description Pool 3) doivent également être renseignés</div>
+                    <input type="text" class="form-control" name="challengersPool3URL" id="field_challengersPool3URL"
+                        [(ngModel)]="survey.challengersPool3URL" />
+                </div>
+                <div class="form-group" ngbTooltip="Nombre de matches à effectuer pour la 1ere Pool d'images">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool" for="field_numberOfMatchesPerPool">Number Of Matches Per Pool</label>
+                    <input type="number" class="form-control" name="numberOfMatchesPerPool" id="field_numberOfMatchesPerPool"
+                        [(ngModel)]="survey.numberOfMatchesPerPool" required/>
+                    <div [hidden]="!(editForm.controls.numberOfMatchesPerPool?.dirty && editForm.controls.numberOfMatchesPerPool?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.numberOfMatchesPerPool?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.numberOfMatchesPerPool?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group" ngbTooltip="Nombre de matches à effectuer pour la 2eme Pool d'images">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool2"
+                        for="field_numberOfMatchesPerPool2">Number Of Matches Per Pool 2</label>
+                    <input type="number" class="form-control" name="numberOfMatchesPerPool2" id="field_numberOfMatchesPerPool2"
+                        [(ngModel)]="survey.numberOfMatchesPerPool2" />
+                </div>
+                <div class="form-group" ngbTooltip="Nombre de matches à effectuer pour la 3eme Pool d'images" >
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool3"
+                        for="field_numberOfMatchesPerPool3">Number Of Matches Per Pool 3</label>
+                    <input type="number" class="form-control" name="numberOfMatchesPerPool3" id="field_numberOfMatchesPerPool3"
+                        [(ngModel)]="survey.numberOfMatchesPerPool3" />
+                </div>
+                <div class="form-group" ngbTooltip="Description à afficher au dessus des deux photos lors d’un match pour la 1ere Pool">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.matchesDescription" for="field_matchesDescription">Matches Description</label>
-                    <div class="alert alert-info" role="alert">Description à afficher au dessus des deux photos lors d’un match</div>
-                    <angular-editor name="matchesDescription" id="field_matchesDescription" [(ngModel)]="survey.matchesDescription"  required></angular-editor>
+                    <angular-editor [config]="angularEditorConfig" name="matchesDescription" id="field_matchesDescription" [(ngModel)]="survey.matchesDescription"  required></angular-editor>
                     <div [hidden]="!(editForm.controls.matchesDescription?.dirty && editForm.controls.matchesDescription?.invalid)">
                         <small class="form-text text-danger"
                         [hidden]="!editForm.controls.matchesDescription?.errors?.required" jhiTranslate="entity.validation.required">
@@ -96,9 +123,20 @@
                         </small>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ngbTooltip="Description à afficher au dessus des deux photos lors d’un match pour la 2eme Pool">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.matchesDescriptionPool2" for="field_matchesDescriptionPool2">Matches Description
+                        Pool 2</label>
+                    <angular-editor [config]="angularEditorConfig" name="matchesDescriptionPool2" id="field_matchesDescriptionPool2"
+                        [(ngModel)]="survey.matchesDescriptionPool2" ></angular-editor>
+                </div>
+                <div class="form-group" ngbTooltip="Description à afficher au dessus des deux photos lors d’un match pour la 3eme Pool">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.matchesDescriptionPool3" for="field_matchesDescriptionPool3">Matches Description
+                        Pool 3</label>
+                    <angular-editor [config]="angularEditorConfig" name="matchesDescriptionPool3" id="field_matchesDescriptionPool3"
+                        [(ngModel)]="survey.matchesDescriptionPool3" ></angular-editor>
+                </div>
+                <div class="form-group" ngbTooltip="Indique si la campagne est ouverte et que les visiteurs peuvent y répondre">
                     <label class="form-control-label" jhiTranslate="biodifulApp.survey.open" for="field_open">Open</label>
-                    <div class="alert alert-info" role="alert">Indique si la campagne est ouverte et que les visiteurs peuvent y répondre</div>
                     <input type="checkbox" class="form-control" name="open" id="field_open"
                         [(ngModel)]="survey.open" />
                     <div [hidden]="!(editForm.controls.open?.dirty && editForm.controls.open?.invalid)">
@@ -108,11 +146,36 @@
                         </small>
                     </div>
                 </div>
+                <div class="form-group" ngbTooltip="Langue dans laquel est la campagne (EN, FR ou ES pour Anglais, Français ou Espagnole) afin de changer automatiquement la langue de l’application lorsqu’un visiteur se rends sur la page de présentation de la campagne.">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.language" for="field_language">Language</label>
+                    <select class="form-control" name="language" [(ngModel)]="survey.language" id="field_language"  required>
+                        <option value="FR">{{'biodifulApp.Language.FR' | translate}}</option>
+                        <option value="EN">{{'biodifulApp.Language.EN' | translate}}</option>
+                        <option value="ES">{{'biodifulApp.Language.ES' | translate}}</option>
+                    </select>
+                    <div [hidden]="!(editForm.controls.language?.dirty && editForm.controls.language?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.language?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group" ngbTooltip="Indique que les challengers ne doivent apparaître qu'une seule fois lors des matches présentés au visiteurs qui répondent à une campagne (tirage sans remise)">
+                    <label class="form-control-label" jhiTranslate="biodifulApp.survey.uniqueChallengers" for="field_uniqueChallengers">Unique Challengers</label>
+                    <input type="checkbox" class="form-control" name="uniqueChallengers" id="field_uniqueChallengers"
+                        [(ngModel)]="survey.uniqueChallengers" />
+                    <div [hidden]="!(editForm.controls.uniqueChallengers?.dirty && editForm.controls.uniqueChallengers?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.uniqueChallengers?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
 
             </div>
             <div>
-                <jhi-alert-error></jhi-alert-error>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <jhi-alert-error></jhi-alert-error>
+                    <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
                 <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">

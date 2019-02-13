@@ -50,11 +50,27 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="challengers_url" type="varchar(255)">
+            <column name="challengers_pool_1_url" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
-            <column name="number_of_matches" type="integer">
+            <column name="challengers_pool_2_url" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="challengers_pool_3_url" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="number_of_matches_per_pool" type="integer">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="number_of_matches_per_pool_2" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="number_of_matches_per_pool_3" type="integer">
                 <constraints nullable="true" />
             </column>
 
@@ -62,7 +78,23 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="matches_description_pool_2" type="clob">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="matches_description_pool_3" type="clob">
+                <constraints nullable="true" />
+            </column>
+
             <column name="jhi_open" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="language" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="unique_challengers" type="bit">
                 <constraints nullable="false" />
             </column>
 

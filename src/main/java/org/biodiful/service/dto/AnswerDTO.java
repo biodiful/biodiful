@@ -30,6 +30,9 @@ public class AnswerDTO implements Serializable {
     @NotNull
     private Instant endTime;
 
+    @NotNull
+    private Integer poolNumber;
+
     private Long surveyId;
 
     public Long getId() {
@@ -88,6 +91,14 @@ public class AnswerDTO implements Serializable {
         this.endTime = endTime;
     }
 
+    public Integer getPoolNumber() {
+        return poolNumber;
+    }
+
+    public void setPoolNumber(Integer poolNumber) {
+        this.poolNumber = poolNumber;
+    }
+
     public Long getSurveyId() {
         return surveyId;
     }
@@ -127,6 +138,7 @@ public class AnswerDTO implements Serializable {
             ", winner='" + getWinner() + "'" +
             ", startTime='" + getStartTime() + "'" +
             ", endTime='" + getEndTime() + "'" +
+            ", poolNumber=" + getPoolNumber() +
             ", survey=" + getSurveyId() +
             "}";
     }

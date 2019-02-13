@@ -21,6 +21,7 @@
             <th jhiSortBy="winner"><span jhiTranslate="biodifulApp.answer.winner">Winner</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="startTime"><span jhiTranslate="biodifulApp.answer.startTime">Start Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="endTime"><span jhiTranslate="biodifulApp.answer.endTime">End Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="poolNumber"><span jhiTranslate="biodifulApp.answer.poolNumber">Pool Number</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="surveyId"><span jhiTranslate="biodifulApp.answer.survey">Survey</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
@@ -34,6 +35,7 @@
                 <td>{{answer.winner}}</td>
                 <td>{{answer.startTime | date:'medium'}}</td>
                 <td>{{answer.endTime | date:'medium'}}</td>
+                <td>{{answer.poolNumber}}</td>
                 <td>
                     <div *ngIf="answer.surveyId">
                         <a [routerLink]="['../survey', answer.surveyId , 'view' ]" >{{answer.surveyId}}</a>

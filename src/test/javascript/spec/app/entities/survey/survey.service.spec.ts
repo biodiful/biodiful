@@ -5,7 +5,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { SurveyService } from 'app/entities/survey/survey.service';
-import { ISurvey, Survey } from 'app/shared/model/survey.model';
+import { ISurvey, Survey, Language } from 'app/shared/model/survey.model';
 
 describe('Service Tests', () => {
     describe('Survey Service', () => {
@@ -31,8 +31,16 @@ describe('Service Tests', () => {
                 'AAAAAAA',
                 'AAAAAAA',
                 'AAAAAAA',
+                'AAAAAAA',
+                'AAAAAAA',
+                0,
+                0,
                 0,
                 'AAAAAAA',
+                'AAAAAAA',
+                'AAAAAAA',
+                false,
+                Language.FR,
                 false
             );
         });
@@ -75,10 +83,18 @@ describe('Service Tests', () => {
                         photoURL: 'BBBBBB',
                         logosURL: 'BBBBBB',
                         formURL: 'BBBBBB',
-                        challengersURL: 'BBBBBB',
-                        numberOfMatches: 1,
+                        challengersPool1URL: 'BBBBBB',
+                        challengersPool2URL: 'BBBBBB',
+                        challengersPool3URL: 'BBBBBB',
+                        numberOfMatchesPerPool: 1,
+                        numberOfMatchesPerPool2: 1,
+                        numberOfMatchesPerPool3: 1,
                         matchesDescription: 'BBBBBB',
-                        open: true
+                        matchesDescriptionPool2: 'BBBBBB',
+                        matchesDescriptionPool3: 'BBBBBB',
+                        open: true,
+                        language: 'BBBBBB',
+                        uniqueChallengers: true
                     },
                     elemDefault
                 );
@@ -102,10 +118,18 @@ describe('Service Tests', () => {
                         photoURL: 'BBBBBB',
                         logosURL: 'BBBBBB',
                         formURL: 'BBBBBB',
-                        challengersURL: 'BBBBBB',
-                        numberOfMatches: 1,
+                        challengersPool1URL: 'BBBBBB',
+                        challengersPool2URL: 'BBBBBB',
+                        challengersPool3URL: 'BBBBBB',
+                        numberOfMatchesPerPool: 1,
+                        numberOfMatchesPerPool2: 1,
+                        numberOfMatchesPerPool3: 1,
                         matchesDescription: 'BBBBBB',
-                        open: true
+                        matchesDescriptionPool2: 'BBBBBB',
+                        matchesDescriptionPool3: 'BBBBBB',
+                        open: true,
+                        language: 'BBBBBB',
+                        uniqueChallengers: true
                     },
                     elemDefault
                 );

@@ -1,20 +1,20 @@
 <div class="row justify-content-center">
-    <h1 class="display-4" jhiTranslate="home.title">- BIODIFUL.ORG -</h1>
+    <h1 class="display-4" jhiTranslate="home.title">BIODIFUL.ORG</h1>
 </div>
 
 <div class="row justify-content-center">
     <p class="lead" jhiTranslate="home.subtitle">Un site dédié à l'étude de la perception humaine de la nature</p>
 </div>
 
-<div>
-    <p>
+<div class="about">
+    <p jhiTranslate="about.presentation">
       Ce site mets à disposition de la communauté scientifique une plateforme en ligne pour héberger des
       campagnes d’évaluation de la perception humaine de la nature à partir de questionnaires
       photographiques.
     </p>
-    <p>Ce projet est financé par le <a href="http://www.labex-cemeb.org/" target="_blank">Labex CEMEB</a>.</p>
+    <p><span jhiTranslate="about.financed">Ce projet est financé par le</span> <a href="http://www.labex-cemeb.org/" target="_blank">Labex CEMEB</a>.</p>
     <p>
-        <h3>Liste de publications récentes</h3>
+        <h3 jhiTranslate="about.publications">Liste de publications récentes</h3>
         <ul>
             <li>
                 <a href="http://nicolasmouquet.free.fr/publications/Tribot_et_al-2018-Scientific_Reports.pdf" target="_blank">
@@ -23,31 +23,33 @@
             </li>
             <li>
                 <a href="http://nicolasmouquet.free.fr/publications/Tribot_el_al_2016_Scientific_Reports.pdf" target="_blank">
-                    Tribot, A., et al. (2016). "Taxonomicand functional diversity increase the aesthetic value of coralligenousreefs." Scientific Reports.
+                    Tribot, A., et al. (2016). "Taxonomic and functional diversity increase the aesthetic value of coralligenous reefs." Scientific Reports.
                 </a>
             </li>
         </ul>
     </p>
-    <h3>Contacts</h3>
+    <h3 jhiTranslate="about.contacts">Contacts</h3>
     <div>
-        <h4>Coordination</h4>
+        <p><span jhiTranslate="about.contact.us">Nous contacter: </span>biodiful (@) gmail.com</p>
+
+        <h4 jhiTranslate="about.coordination">Coordination</h4>
         <p>
-            Nicolas Mouquet nicolas.mouquet (@) cnrs.fr
+            Nicolas Mouquet - nicolas.mouquet (@) cnrs.fr
         </p>
-        <h4>Chercheurs associés</h4>
+        <h4 jhiTranslate="about.researchers">Chercheurs associés</h4>
         <p>
             <ul>
-                <li>Julie Deter julie.deter (@) umontpellier.fr</li>
-                <li>Bertrand Schatz bertrand.schatz (@) cefe.cnrs.fr</li>
-                <li>François Guilhaumon francois.guilhaumon (@) ird.fr</li>
+                <li>Julie Deter - julie.deter (@) umontpellier.fr</li>
+                <li>Bertrand Schatz - bertrand.schatz (@) cefe.cnrs.fr</li>
+                <li>François Guilhaumon - francois.guilhaumon (@) ird.fr</li>
             </ul>
         </p>
-        <h4>Réalisons site web</h4>
+        <h4 jhiTranslate="about.website">Réalisons site web</h4>
         <p>
-            Thomas Bouttaz thomas.bouttaz (@) googlemail.com
+            Thomas Bouttaz - tbouttaz (@) gmail.com
         </p>
     </div>
     <div class="py-2">
-        <a href="#" [routerLink]="['/']">Voir la liste des campagnes</a>
+        <a href="#" [routerLink]="['/']" jhiTranslate="about.survey.list">Voir la liste des campagnes</a>
     </div>
 </div>

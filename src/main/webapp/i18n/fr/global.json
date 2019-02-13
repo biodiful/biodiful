@@ -9,6 +9,8 @@
                 "main": "Entités",
                 "survey": "Campagne",
                 "answer": "Réponse",
+                "survey": "Survey",
+                "answer": "Answer",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

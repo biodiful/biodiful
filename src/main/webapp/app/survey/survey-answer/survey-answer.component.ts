@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ISurvey } from 'app/shared/model/survey.model';
 import { Challenger } from 'app/shared/model/challenger.model';
 import { Answer, IAnswer } from 'app/shared/model/answer.model';
@@ -17,17 +17,24 @@ import { JhiAlertService } from 'ng-jhipster';
 })
 export class SurveyAnswerComponent implements OnInit {
     survey: ISurvey;
-    nbOfMatches: number;
+    totalNbOfMatches: number;
     judgeId: string;
-    // winners: Challenger[] = [];
     answers: Answer[] = [];
-    challengers: Challenger[] = [];
+    // 2 dimensions array containing the pools of challengers:
+    challengers: Challenger[][] = [];
+    challengersPool1: Challenger[] = [];
+    challengersPool2: Challenger[] = [];
+    challengersPool3: Challenger[] = [];
+    currentPool = 1;
+    totalNbOfPools = 1;
     challengerOne: Challenger;
     challengerTwo: Challenger;
     isAllMatchesCompleted: boolean = false;
     matchStarts: moment.Moment;
+    socialFormUrl: SafeResourceUrl;
 
     constructor(
+        private router: Router,
         private activatedRoute: ActivatedRoute,
         public sanitizer: DomSanitizer,
         private answerService: AnswerService,
@@ -40,39 +47,43 @@ export class SurveyAnswerComponent implements OnInit {
             this.survey = survey;
         });
 
-        this.initNbOfMatches();
+        //TODO send GA event with survey ID?
 
-        this.initChallangers();
-
-        // this.initNextMatch();
+        this.initChallengers();
 
         this.initJudgeId();
+
+        this.socialFormUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.survey.formURL + this.judgeId);
     }
 
-    initChallangers() {
-        // this.survey.challengersURL;
-        // let flickrUrl = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=7389b9b323b67e62de25f945af7ccaa3&user_id=162158790@N04&photoset_id=72157697901898520&format=json&nojsoncallback=1";
-
-        // let result = this.http.get(flickrUrl);
-        // console.debug("Flickr GET result: " + JSON.stringify(result))
-
-        // this.http.get<FlickrResponse[]>(flickrUrl).map(data => _.values(data))
-        // .do(console.log);
-
-        // this.http.get(flickrUrl).subscribe((data: FlickrResponse) => this.flickrResponse = {
-        //     photoset: data['photoset'],
-        //     stat:  data['stat']
-        // });
-
+    initChallengers() {
         this.http
-            .get(this.survey.challengersURL)
+            .get(this.survey.challengersPool1URL)
             .subscribe(
-                response => this.onGetChallengersSuccess(response),
-                (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers - ' + res.message)
+                response => this.onGetChallengersSuccess(response, this.challengersPool1, 0),
+                (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 1 - ' + res.message)
             );
+
+        if (this.survey.challengersPool2URL) {
+            this.http
+                .get(this.survey.challengersPool2URL)
+                .subscribe(
+                    response => this.onGetChallengersSuccess(response, this.challengersPool2, 1),
+                    (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 2 - ' + res.message)
+                );
+        }
+
+        if (this.survey.challengersPool3URL) {
+            this.http
+                .get(this.survey.challengersPool3URL)
+                .subscribe(
+                    response => this.onGetChallengersSuccess(response, this.challengersPool3, 2),
+                    (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 3 - ' + res.message)
+                );
+        }
     }
 
-    onGetChallengersSuccess(response) {
+    onGetChallengersSuccess(response, challengersPool, poolIndex) {
         // console.debug(JSON.stringify(response));
 
         if (response['stat'] == 'fail') {
@@ -83,36 +94,71 @@ export class SurveyAnswerComponent implements OnInit {
         const photoset = response['photoset'];
         for (const photo of photoset.photo) {
             const photoUrl = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
-            this.challengers.push(new Challenger(photo.title, photoUrl));
+            challengersPool.push(new Challenger(photo.title, photoUrl));
         }
+
+        // this.challengers.push(challengersPool);
+        this.challengers[poolIndex] = challengersPool;
+
+        this.initNbOfMatches();
 
         this.initNextMatch();
     }
 
     initNbOfMatches() {
-        this.nbOfMatches = this.survey.numberOfMatches;
-        if (this.nbOfMatches < 1) {
-            this.nbOfMatches = 10;
+        this.totalNbOfMatches = this.survey.numberOfMatchesPerPool;
+
+        if (this.challengersPool2.length > 0 && this.survey.numberOfMatchesPerPool2 > 0) {
+            this.totalNbOfMatches += this.survey.numberOfMatchesPerPool2;
+            this.totalNbOfPools = 2;
+        }
+
+        if (this.challengersPool3.length > 0 && this.survey.numberOfMatchesPerPool3 > 0) {
+            this.totalNbOfMatches += this.survey.numberOfMatchesPerPool3;
+            this.totalNbOfPools = 3;
+        }
+
+        if (this.totalNbOfMatches < 1) {
+            this.totalNbOfMatches = 10;
         }
     }
 
     initJudgeId() {
         const uniqueString = require('unique-string');
-        this.judgeId = 'judge_' + uniqueString();
+        this.judgeId = 'C_' + this.survey.id + '_judge_' + uniqueString();
     }
 
     initNextMatch() {
-        // Load 2 random challengers
-        this.challengerOne = this.challengers[Math.floor(Math.random() * this.challengers.length)];
-        this.challengerTwo = this.challengers[Math.floor(Math.random() * this.challengers.length)];
-        this.checkChallengersAreDifferent();
+        // Determine the current pool based on how many answers have been recorded
+        // this.currentPool = Math.floor(this.answers.length / this.survey.numberOfMatchesPerPool) + 1;
+
+        // Load 2 random challengers from the right pool
+        this.initNextChallengers(this.challengers[this.currentPool - 1]);
 
         this.matchStarts = moment();
     }
 
-    checkChallengersAreDifferent() {
+    initNextChallengers(challengersPool: Challenger[]) {
+        const randomIndex1 = Math.floor(Math.random() * challengersPool.length);
+        this.challengerOne = challengersPool[randomIndex1];
+
+        // Check whether challengers should only be presented once (tirage sans remise)
+        if (this.survey.uniqueChallengers && challengersPool.length > 0) {
+            challengersPool.splice(randomIndex1, 1);
+        }
+
+        const randomIndex2 = Math.floor(Math.random() * challengersPool.length);
+        this.challengerTwo = challengersPool[randomIndex2];
+
+        // Check that the 2 challengers are different (in case 2 images with the same ID exist in the pool)
         while (this.challengerOne.id == this.challengerTwo.id) {
-            this.challengerTwo = this.challengers[Math.floor(Math.random() * this.challengers.length)];
+            const randomIndex2 = Math.floor(Math.random() * challengersPool.length);
+            this.challengerTwo = challengersPool[randomIndex2];
+        }
+
+        // Check whether challengers should only be presented once (tirage sans remise)
+        if (this.survey.uniqueChallengers && challengersPool.length > 0) {
+            challengersPool.splice(randomIndex2, 1);
         }
     }
 
@@ -129,19 +175,34 @@ export class SurveyAnswerComponent implements OnInit {
                 winner.id,
                 this.matchStarts,
                 matchEnds,
+                this.currentPool,
                 this.survey.id
             )
         );
 
         // Determine whether to display next challengers
-        if (this.answers.length < this.nbOfMatches) {
+        if (this.answers.length < this.totalNbOfMatches) {
+            this.updateCurrentPool();
             this.initNextMatch();
         } else {
             // If we've got enough winners, save the answers and display socio-pro questions
             console.debug('Answers: ' + JSON.stringify(this.answers));
-            this.isAllMatchesCompleted = true;
 
+            this.isAllMatchesCompleted = true;
             this.subscribeToSaveAllResponse(this.answerService.createAll(this.answers));
+        }
+    }
+
+    updateCurrentPool() {
+        // Determine which pool we're on
+        if (this.currentPool == 1 && this.totalNbOfPools > 1 && this.answers.length >= this.survey.numberOfMatchesPerPool) {
+            this.currentPool = 2;
+        } else if (
+            this.currentPool == 2 &&
+            this.totalNbOfPools > 2 &&
+            this.answers.length >= this.survey.numberOfMatchesPerPool + this.survey.numberOfMatchesPerPool2
+        ) {
+            this.currentPool = 3;
         }
     }
 
@@ -149,12 +210,18 @@ export class SurveyAnswerComponent implements OnInit {
         return this.answers.length + 1;
     }
 
-    getPercentAdvancement(): number {
-        return (this.getCurrentMatchNumber() * 100) / this.nbOfMatches;
+    getDescriptionForCurrentPool(): any {
+        if (this.currentPool == 2 && this.survey.matchesDescriptionPool2) {
+            return this.survey.matchesDescriptionPool2;
+        } else if (this.currentPool == 3 && this.survey.matchesDescriptionPool3) {
+            return this.survey.matchesDescriptionPool3;
+        }
+
+        return this.survey.matchesDescription;
     }
 
-    getSocialFormUrl(): SafeResourceUrl {
-        return this.sanitizer.bypassSecurityTrustResourceUrl(this.survey.formURL + this.judgeId);
+    getPercentAdvancement(): number {
+        return (this.getCurrentMatchNumber() * 100) / this.totalNbOfMatches;
     }
 
     private subscribeToSaveAllResponse(result: Observable<HttpResponse<IAnswer[]>>) {
@@ -171,6 +238,7 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     onSaveResponseSuccess(): void {
-        // alert('Save success!');
+        //alert('Save success!');
+        window.location.href = this.survey.formURL + this.judgeId;
     }
 }

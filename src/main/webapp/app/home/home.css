@@ -2,6 +2,10 @@
 Main page styles
 ========================================================================== */
 
+jhi-navbar {
+    display: initial !important;
+}
+
 .home-logo {
     height: 80px;
 }

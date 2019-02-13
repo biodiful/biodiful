@@ -46,4 +46,12 @@ public interface AnswerService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get all the answers for the provided survey ID.
+     *
+     * @param surveyId the id of the survey for which the answers will be returned
+     * @return the list of entities
+     */
+    List<AnswerDTO> findBySurveyId(Long surveyId);
 }
