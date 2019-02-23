@@ -163,7 +163,7 @@ export class SurveyAnswerComponent implements OnInit {
     }
 
     addWinner(winner) {
-        console.debug('Winner added: ' + JSON.stringify(winner));
+        // console.debug('Winner added: ' + JSON.stringify(winner));
         // Add a new Answer from the winner
         const matchEnds = moment();
         this.answers.push(
@@ -186,7 +186,7 @@ export class SurveyAnswerComponent implements OnInit {
             this.initNextMatch();
         } else {
             // If we've got enough winners, save the answers and display socio-pro questions
-            console.debug('Answers: ' + JSON.stringify(this.answers));
+            // console.debug('Answers: ' + JSON.stringify(this.answers));
 
             this.isAllMatchesCompleted = true;
             this.subscribeToSaveAllResponse(this.answerService.createAll(this.answers));
