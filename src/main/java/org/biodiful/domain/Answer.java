@@ -1,28 +1,26 @@
 package org.biodiful.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Answer.
  */
 @Entity
 @Table(name = "answer")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class Answer implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -53,13 +51,18 @@ public class Answer implements Serializable {
     @Column(name = "pool_number", nullable = false)
     private Integer poolNumber;
 
-    @ManyToOne
-    @JsonIgnoreProperties("")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Survey survey;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Answer id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
@@ -67,11 +70,11 @@ public class Answer implements Serializable {
     }
 
     public String getJudgeID() {
-        return judgeID;
+        return this.judgeID;
     }
 
     public Answer judgeID(String judgeID) {
-        this.judgeID = judgeID;
+        this.setJudgeID(judgeID);
         return this;
     }
 
@@ -80,11 +83,11 @@ public class Answer implements Serializable {
     }
 
     public String getChallenger1() {
-        return challenger1;
+        return this.challenger1;
     }
 
     public Answer challenger1(String challenger1) {
-        this.challenger1 = challenger1;
+        this.setChallenger1(challenger1);
         return this;
     }
 
@@ -93,11 +96,11 @@ public class Answer implements Serializable {
     }
 
     public String getChallenger2() {
-        return challenger2;
+        return this.challenger2;
     }
 
     public Answer challenger2(String challenger2) {
-        this.challenger2 = challenger2;
+        this.setChallenger2(challenger2);
         return this;
     }
 
@@ -106,11 +109,11 @@ public class Answer implements Serializable {
     }
 
     public String getWinner() {
-        return winner;
+        return this.winner;
     }
 
     public Answer winner(String winner) {
-        this.winner = winner;
+        this.setWinner(winner);
         return this;
     }
 
@@ -119,11 +122,11 @@ public class Answer implements Serializable {
     }
 
     public Instant getStartTime() {
-        return startTime;
+        return this.startTime;
     }
 
     public Answer startTime(Instant startTime) {
-        this.startTime = startTime;
+        this.setStartTime(startTime);
         return this;
     }
 
@@ -132,11 +135,11 @@ public class Answer implements Serializable {
     }
 
     public Instant getEndTime() {
-        return endTime;
+        return this.endTime;
     }
 
     public Answer endTime(Instant endTime) {
-        this.endTime = endTime;
+        this.setEndTime(endTime);
         return this;
     }
 
@@ -145,11 +148,11 @@ public class Answer implements Serializable {
     }
 
     public Integer getPoolNumber() {
-        return poolNumber;
+        return this.poolNumber;
     }
 
     public Answer poolNumber(Integer poolNumber) {
-        this.poolNumber = poolNumber;
+        this.setPoolNumber(poolNumber);
         return this;
     }
 
@@ -158,39 +161,38 @@ public class Answer implements Serializable {
     }
 
     public Survey getSurvey() {
-        return survey;
-    }
-
-    public Answer survey(Survey survey) {
-        this.survey = survey;
-        return this;
+        return this.survey;
     }
 
     public void setSurvey(Survey survey) {
         this.survey = survey;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Answer survey(Survey survey) {
+        this.setSurvey(survey);
+        return this;
+    }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Answer)) {
             return false;
         }
-        Answer answer = (Answer) o;
-        if (answer.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), answer.getId());
+        return getId() != null && getId().equals(((Answer) o).getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Answer{" +

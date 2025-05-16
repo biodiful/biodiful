@@ -1,127 +1,106 @@
 {
-    "name": "Survey",
-    "fields": [
-        {
-            "fieldName": "surveyName",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "surveyDescription",
-            "fieldType": "byte[]",
-            "fieldTypeBlobContent": "text",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "contactsDescription",
-            "fieldType": "byte[]",
-            "fieldTypeBlobContent": "text"
-        },
-        {
-            "fieldName": "friendlyURL",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "unique"
-            ]
-        },
-        {
-            "fieldName": "photoURL",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "logosURL",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "formURL",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "challengersPool1URL",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "challengersPool2URL",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "challengersPool3URL",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "numberOfMatchesPerPool",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "numberOfMatchesPerPool2",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "numberOfMatchesPerPool3",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "matchesDescription",
-            "fieldType": "byte[]",
-            "fieldTypeBlobContent": "text",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "matchesDescriptionPool2",
-            "fieldType": "byte[]",
-            "fieldTypeBlobContent": "text"
-        },
-        {
-            "fieldName": "matchesDescriptionPool3",
-            "fieldType": "byte[]",
-            "fieldTypeBlobContent": "text"
-        },
-        {
-            "fieldName": "open",
-            "fieldType": "Boolean",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "language",
-            "fieldType": "Language",
-            "fieldValues": "FR,EN,ES",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "uniqueChallengers",
-            "fieldType": "Boolean",
-            "fieldValidateRules": [
-                "required"
-            ]
-        }
-    ],
-    "relationships": [],
-    "changelogDate": "20181126171055",
-    "entityTableName": "survey",
-    "dto": "mapstruct",
-    "pagination": "infinite-scroll",
-    "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "",
-    "applications": "*"
+  "annotations": {
+    "changelogDate": "20181126171055"
+  },
+  "applications": "*",
+  "changelogDate": "20181126171055",
+  "clientRootFolder": "",
+  "dto": "mapstruct",
+  "entityTableName": "survey",
+  "fields": [
+    {
+      "fieldName": "surveyName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "surveyDescription",
+      "fieldType": "TextBlob",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "contactsDescription",
+      "fieldType": "TextBlob"
+    },
+    {
+      "fieldName": "friendlyURL",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique"]
+    },
+    {
+      "fieldName": "photoURL",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "logosURL",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "formURL",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "challengersPool1URL",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "challengersPool2URL",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "challengersPool3URL",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "numberOfMatchesPerPool",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "numberOfMatchesPerPool2",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "numberOfMatchesPerPool3",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "matchesDescription",
+      "fieldType": "TextBlob",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "matchesDescriptionPool2",
+      "fieldType": "TextBlob"
+    },
+    {
+      "fieldName": "matchesDescriptionPool3",
+      "fieldType": "TextBlob"
+    },
+    {
+      "fieldName": "open",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "language",
+      "fieldType": "Language",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "FR,EN,ES"
+    },
+    {
+      "fieldName": "uniqueChallengers",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Survey",
+  "pagination": "infinite-scroll",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
 }

@@ -1,32 +1,35 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "removeComments": false,
-        "noImplicitAny": false,
-        "skipLibCheck": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "outDir": "build/www/app",
-        "lib": ["es7", "dom"],
-        "typeRoots": [
-            "node_modules/@types"
-        ],
-        "baseUrl": "./",
-        "paths": {
-            "app/*": ["src/main/webapp/app/*"]
-        },
-        "importHelpers": true,
-        "allowJs": true
-    },
-    "include": [
-        "src/main/webapp/app",
-        "src/test/javascript/"
-    ],
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "baseUrl": "src/main/webapp/",
+    "outDir": "./build/out-tsc/root",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "useDefineForClassFields": false,
+    "target": "es2022",
+    "module": "es2020",
+    "types": [],
+    "lib": ["es2018", "es2020", "dom"]
+  },
+  "references": [
+    {
+      "path": "tsconfig.spec.json"
+    }
+  ],
+  "angularCompilerOptions": {
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true,
+    "preserveWhitespaces": true
+  }
 }

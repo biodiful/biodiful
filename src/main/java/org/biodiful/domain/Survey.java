@@ -1,35 +1,32 @@
 package org.biodiful.domain;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import java.io.Serializable;
+import org.biodiful.domain.enumeration.Language;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import java.io.Serializable;
-import java.util.Objects;
-
-import org.biodiful.domain.enumeration.Language;
 
 /**
  * A Survey.
  */
 @Entity
 @Table(name = "survey")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class Survey implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
     @Column(name = "survey_name", nullable = false)
     private String surveyName;
 
-    
     @Lob
     @Column(name = "survey_description", nullable = false)
     private String surveyDescription;
@@ -38,7 +35,6 @@ public class Survey implements Serializable {
     @Column(name = "contacts_description")
     private String contactsDescription;
 
-    
     @Column(name = "friendly_url", unique = true)
     private String friendlyURL;
 
@@ -72,7 +68,6 @@ public class Survey implements Serializable {
     @Column(name = "number_of_matches_per_pool_3")
     private Integer numberOfMatchesPerPool3;
 
-    
     @Lob
     @Column(name = "matches_description", nullable = false)
     private String matchesDescription;
@@ -86,7 +81,7 @@ public class Survey implements Serializable {
     private String matchesDescriptionPool3;
 
     @NotNull
-    @Column(name = "jhi_open", nullable = false)
+    @Column(name = "open", nullable = false)
     private Boolean open;
 
     @NotNull
@@ -98,9 +93,15 @@ public class Survey implements Serializable {
     @Column(name = "unique_challengers", nullable = false)
     private Boolean uniqueChallengers;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Survey id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
@@ -108,11 +109,11 @@ public class Survey implements Serializable {
     }
 
     public String getSurveyName() {
-        return surveyName;
+        return this.surveyName;
     }
 
     public Survey surveyName(String surveyName) {
-        this.surveyName = surveyName;
+        this.setSurveyName(surveyName);
         return this;
     }
 
@@ -121,11 +122,11 @@ public class Survey implements Serializable {
     }
 
     public String getSurveyDescription() {
-        return surveyDescription;
+        return this.surveyDescription;
     }
 
     public Survey surveyDescription(String surveyDescription) {
-        this.surveyDescription = surveyDescription;
+        this.setSurveyDescription(surveyDescription);
         return this;
     }
 
@@ -134,11 +135,11 @@ public class Survey implements Serializable {
     }
 
     public String getContactsDescription() {
-        return contactsDescription;
+        return this.contactsDescription;
     }
 
     public Survey contactsDescription(String contactsDescription) {
-        this.contactsDescription = contactsDescription;
+        this.setContactsDescription(contactsDescription);
         return this;
     }
 
@@ -147,11 +148,11 @@ public class Survey implements Serializable {
     }
 
     public String getFriendlyURL() {
-        return friendlyURL;
+        return this.friendlyURL;
     }
 
     public Survey friendlyURL(String friendlyURL) {
-        this.friendlyURL = friendlyURL;
+        this.setFriendlyURL(friendlyURL);
         return this;
     }
 
@@ -160,11 +161,11 @@ public class Survey implements Serializable {
     }
 
     public String getPhotoURL() {
-        return photoURL;
+        return this.photoURL;
     }
 
     public Survey photoURL(String photoURL) {
-        this.photoURL = photoURL;
+        this.setPhotoURL(photoURL);
         return this;
     }
 
@@ -173,11 +174,11 @@ public class Survey implements Serializable {
     }
 
     public String getLogosURL() {
-        return logosURL;
+        return this.logosURL;
     }
 
     public Survey logosURL(String logosURL) {
-        this.logosURL = logosURL;
+        this.setLogosURL(logosURL);
         return this;
     }
 
@@ -186,11 +187,11 @@ public class Survey implements Serializable {
     }
 
     public String getFormURL() {
-        return formURL;
+        return this.formURL;
     }
 
     public Survey formURL(String formURL) {
-        this.formURL = formURL;
+        this.setFormURL(formURL);
         return this;
     }
 
@@ -199,11 +200,11 @@ public class Survey implements Serializable {
     }
 
     public String getChallengersPool1URL() {
-        return challengersPool1URL;
+        return this.challengersPool1URL;
     }
 
     public Survey challengersPool1URL(String challengersPool1URL) {
-        this.challengersPool1URL = challengersPool1URL;
+        this.setChallengersPool1URL(challengersPool1URL);
         return this;
     }
 
@@ -212,11 +213,11 @@ public class Survey implements Serializable {
     }
 
     public String getChallengersPool2URL() {
-        return challengersPool2URL;
+        return this.challengersPool2URL;
     }
 
     public Survey challengersPool2URL(String challengersPool2URL) {
-        this.challengersPool2URL = challengersPool2URL;
+        this.setChallengersPool2URL(challengersPool2URL);
         return this;
     }
 
@@ -225,11 +226,11 @@ public class Survey implements Serializable {
     }
 
     public String getChallengersPool3URL() {
-        return challengersPool3URL;
+        return this.challengersPool3URL;
     }
 
     public Survey challengersPool3URL(String challengersPool3URL) {
-        this.challengersPool3URL = challengersPool3URL;
+        this.setChallengersPool3URL(challengersPool3URL);
         return this;
     }
 
@@ -238,11 +239,11 @@ public class Survey implements Serializable {
     }
 
     public Integer getNumberOfMatchesPerPool() {
-        return numberOfMatchesPerPool;
+        return this.numberOfMatchesPerPool;
     }
 
     public Survey numberOfMatchesPerPool(Integer numberOfMatchesPerPool) {
-        this.numberOfMatchesPerPool = numberOfMatchesPerPool;
+        this.setNumberOfMatchesPerPool(numberOfMatchesPerPool);
         return this;
     }
 
@@ -251,11 +252,11 @@ public class Survey implements Serializable {
     }
 
     public Integer getNumberOfMatchesPerPool2() {
-        return numberOfMatchesPerPool2;
+        return this.numberOfMatchesPerPool2;
     }
 
     public Survey numberOfMatchesPerPool2(Integer numberOfMatchesPerPool2) {
-        this.numberOfMatchesPerPool2 = numberOfMatchesPerPool2;
+        this.setNumberOfMatchesPerPool2(numberOfMatchesPerPool2);
         return this;
     }
 
@@ -264,11 +265,11 @@ public class Survey implements Serializable {
     }
 
     public Integer getNumberOfMatchesPerPool3() {
-        return numberOfMatchesPerPool3;
+        return this.numberOfMatchesPerPool3;
     }
 
     public Survey numberOfMatchesPerPool3(Integer numberOfMatchesPerPool3) {
-        this.numberOfMatchesPerPool3 = numberOfMatchesPerPool3;
+        this.setNumberOfMatchesPerPool3(numberOfMatchesPerPool3);
         return this;
     }
 
@@ -277,11 +278,11 @@ public class Survey implements Serializable {
     }
 
     public String getMatchesDescription() {
-        return matchesDescription;
+        return this.matchesDescription;
     }
 
     public Survey matchesDescription(String matchesDescription) {
-        this.matchesDescription = matchesDescription;
+        this.setMatchesDescription(matchesDescription);
         return this;
     }
 
@@ -290,11 +291,11 @@ public class Survey implements Serializable {
     }
 
     public String getMatchesDescriptionPool2() {
-        return matchesDescriptionPool2;
+        return this.matchesDescriptionPool2;
     }
 
     public Survey matchesDescriptionPool2(String matchesDescriptionPool2) {
-        this.matchesDescriptionPool2 = matchesDescriptionPool2;
+        this.setMatchesDescriptionPool2(matchesDescriptionPool2);
         return this;
     }
 
@@ -303,11 +304,11 @@ public class Survey implements Serializable {
     }
 
     public String getMatchesDescriptionPool3() {
-        return matchesDescriptionPool3;
+        return this.matchesDescriptionPool3;
     }
 
     public Survey matchesDescriptionPool3(String matchesDescriptionPool3) {
-        this.matchesDescriptionPool3 = matchesDescriptionPool3;
+        this.setMatchesDescriptionPool3(matchesDescriptionPool3);
         return this;
     }
 
@@ -315,12 +316,12 @@ public class Survey implements Serializable {
         this.matchesDescriptionPool3 = matchesDescriptionPool3;
     }
 
-    public Boolean isOpen() {
-        return open;
+    public Boolean getOpen() {
+        return this.open;
     }
 
     public Survey open(Boolean open) {
-        this.open = open;
+        this.setOpen(open);
         return this;
     }
 
@@ -329,11 +330,11 @@ public class Survey implements Serializable {
     }
 
     public Language getLanguage() {
-        return language;
+        return this.language;
     }
 
     public Survey language(Language language) {
-        this.language = language;
+        this.setLanguage(language);
         return this;
     }
 
@@ -341,40 +342,39 @@ public class Survey implements Serializable {
         this.language = language;
     }
 
-    public Boolean isUniqueChallengers() {
-        return uniqueChallengers;
+    public Boolean getUniqueChallengers() {
+        return this.uniqueChallengers;
     }
 
     public Survey uniqueChallengers(Boolean uniqueChallengers) {
-        this.uniqueChallengers = uniqueChallengers;
+        this.setUniqueChallengers(uniqueChallengers);
         return this;
     }
 
     public void setUniqueChallengers(Boolean uniqueChallengers) {
         this.uniqueChallengers = uniqueChallengers;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Survey)) {
             return false;
         }
-        Survey survey = (Survey) o;
-        if (survey.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), survey.getId());
+        return getId() != null && getId().equals(((Survey) o).getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Survey{" +
@@ -395,9 +395,9 @@ public class Survey implements Serializable {
             ", matchesDescription='" + getMatchesDescription() + "'" +
             ", matchesDescriptionPool2='" + getMatchesDescriptionPool2() + "'" +
             ", matchesDescriptionPool3='" + getMatchesDescriptionPool3() + "'" +
-            ", open='" + isOpen() + "'" +
+            ", open='" + getOpen() + "'" +
             ", language='" + getLanguage() + "'" +
-            ", uniqueChallengers='" + isUniqueChallengers() + "'" +
+            ", uniqueChallengers='" + getUniqueChallengers() + "'" +
             "}";
     }
 }

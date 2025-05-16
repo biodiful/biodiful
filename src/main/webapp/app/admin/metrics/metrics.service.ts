@@ -1,18 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { SERVER_API_URL } from 'app/app.constants';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import { Metrics, ThreadDump } from './metrics.model';
 
 @Injectable({ providedIn: 'root' })
-export class JhiMetricsService {
-    constructor(private http: HttpClient) {}
+export class MetricsService {
+  private readonly http = inject(HttpClient);
+  private readonly applicationConfigService = inject(ApplicationConfigService);
 
-    getMetrics(): Observable<any> {
-        return this.http.get(SERVER_API_URL + 'management/metrics');
-    }
+  getMetrics(): Observable<Metrics> {
+    return this.http.get<Metrics>(this.applicationConfigService.getEndpointFor('management/jhimetrics'));
+  }
 
-    threadDump(): Observable<any> {
-        return this.http.get(SERVER_API_URL + 'management/threaddump');
-    }
+  threadDump(): Observable<ThreadDump> {
+    return this.http.get<ThreadDump>(this.applicationConfigService.getEndpointFor('management/threaddump'));
+  }
 }

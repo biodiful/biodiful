@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, inject } from '@angular/core';
+import { TranslateDirective } from 'app/shared/language';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
-    selector: 'jhi-footer',
-    templateUrl: './footer.component.html',
-    styleUrls: ['footer.css'],
-    encapsulation: ViewEncapsulation.None
+  selector: 'jhi-footer',
+  templateUrl: './footer.component.html',
+  imports: [TranslateDirective, RouterModule],
+  styleUrls: ['./footer.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
-export class FooterComponent {
-    constructor(public router: Router) {}
+export default class FooterComponent {
+  public readonly router = inject(Router);
 }

@@ -1,244 +1,277 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ISurvey } from 'app/shared/model/survey.model';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Challenger } from 'app/shared/model/challenger.model';
-import { Answer, IAnswer } from 'app/shared/model/answer.model';
+import { catchError, tap } from 'rxjs';
+import { NewAnswer } from 'app/entities/answer/answer.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import moment from 'moment/src/moment';
-import { AnswerService } from 'app/entities/answer';
-import { Observable } from 'rxjs';
-import { HttpResponse, HttpErrorResponse, HttpClient } from '@angular/common/http';
-import { JhiAlertService } from 'ng-jhipster';
+import { ISurvey } from 'app/entities/survey/survey.model';
+import dayjs from 'dayjs/esm';
+import { SurveyAnswerMatchComponent } from 'app/survey/survey-answer-match/survey-answer-match.component';
+import { AnswerService } from 'app/entities/answer/service/answer.service';
+import { v4 as uuidv4 } from 'uuid';
+import { HttpClient } from '@angular/common/http';
+import SharedModule from 'app/shared/shared.module';
+
+interface FlickrPhotoset {
+  photo: {
+    id: string;
+    secret: string;
+    server: string;
+    farm: number;
+    title: string;
+  }[];
+}
+
+interface FlickrResponse {
+  photoset: FlickrPhotoset;
+  stat: string;
+  message: string;
+}
 
 @Component({
-    selector: 'jhi-survey-answer',
-    templateUrl: './survey-answer.component.html',
-    styles: []
+  selector: 'jhi-survey-answer',
+  templateUrl: './survey-answer.component.html',
+  styles: [],
+  standalone: true,
+  imports: [SharedModule, SurveyAnswerMatchComponent],
 })
 export class SurveyAnswerComponent implements OnInit {
-    survey: ISurvey;
-    totalNbOfMatches: number;
-    judgeId: string;
-    answers: Answer[] = [];
-    // 2 dimensions array containing the pools of challengers:
-    challengers: Challenger[][] = [];
-    challengersPool1: Challenger[] = [];
-    challengersPool2: Challenger[] = [];
-    challengersPool3: Challenger[] = [];
-    currentPool = 1;
-    totalNbOfPools = 1;
-    challengerOne: Challenger;
-    challengerTwo: Challenger;
-    isAllMatchesCompleted: boolean = false;
-    matchStarts: moment.Moment;
-    socialFormUrl: SafeResourceUrl;
+  survey!: ISurvey;
+  totalNbOfMatches!: number;
+  judgeId = signal('');
+  answers = signal<NewAnswer[]>([]);
+  // 2 dimensions array containing the pools of challengers:
+  challengers = signal<Challenger[][]>([]);
+  challengersPool1 = signal<Challenger[]>([]);
+  challengersPool2 = signal<Challenger[]>([]);
+  challengersPool3 = signal<Challenger[]>([]);
+  currentPool = 1;
+  totalNbOfPools = 1;
+  challengerOne = signal<Challenger | undefined>(undefined);
+  challengerTwo = signal<Challenger | undefined>(undefined);
+  isAllMatchesCompleted = signal(false);
+  matchStarts!: dayjs.Dayjs;
+  socialFormUrl!: SafeResourceUrl;
 
-    constructor(
-        private router: Router,
-        private activatedRoute: ActivatedRoute,
-        public sanitizer: DomSanitizer,
-        private answerService: AnswerService,
-        private http: HttpClient,
-        private jhiAlertService: JhiAlertService
-    ) {}
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly answerService = inject(AnswerService);
+  private readonly http = inject(HttpClient);
 
-    ngOnInit() {
-        this.activatedRoute.data.subscribe(({ survey }) => {
-            this.survey = survey;
-        });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ survey }) => {
+      this.survey = survey;
+    });
 
-        //TODO send GA event with survey ID?
+    //TODO send GA event with survey ID?
 
-        this.initChallengers();
+    this.initChallengers();
 
-        this.initJudgeId();
+    this.initJudgeId();
 
-        this.socialFormUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.survey.formURL + this.judgeId);
+    this.socialFormUrl = this.sanitizer.bypassSecurityTrustResourceUrl((this.survey.formURL ?? '') + this.judgeId());
+  }
+
+  initChallengers(): void {
+    if (this.survey.challengersPool1URL) {
+      this.http
+        .get<FlickrResponse>(this.survey.challengersPool1URL)
+        .pipe(
+          tap(response => this.onGetChallengersSuccess(response, this.challengersPool1(), 0)),
+          catchError(error => {
+            this.onError(`Failed to retrieve challengers for Pool 1 - ${error.message || 'Unknown error'}`);
+            throw error;
+          }),
+        )
+        .subscribe();
     }
 
-    initChallengers() {
-        this.http
-            .get(this.survey.challengersPool1URL)
-            .subscribe(
-                response => this.onGetChallengersSuccess(response, this.challengersPool1, 0),
-                (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 1 - ' + res.message)
-            );
-
-        if (this.survey.challengersPool2URL) {
-            this.http
-                .get(this.survey.challengersPool2URL)
-                .subscribe(
-                    response => this.onGetChallengersSuccess(response, this.challengersPool2, 1),
-                    (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 2 - ' + res.message)
-                );
-        }
-
-        if (this.survey.challengersPool3URL) {
-            this.http
-                .get(this.survey.challengersPool3URL)
-                .subscribe(
-                    response => this.onGetChallengersSuccess(response, this.challengersPool3, 2),
-                    (res: HttpErrorResponse) => this.onError('Failed to retrieve challengers for Pool 3 - ' + res.message)
-                );
-        }
+    if (this.survey.challengersPool2URL) {
+      this.http
+        .get<FlickrResponse>(this.survey.challengersPool2URL)
+        .pipe(
+          tap(response => this.onGetChallengersSuccess(response, this.challengersPool2(), 1)),
+          catchError(error => {
+            this.onError(`Failed to retrieve challengers for Pool 2 -  ${error.message || 'Unknown error'}`);
+            throw error;
+          }),
+        )
+        .subscribe();
     }
 
-    onGetChallengersSuccess(response, challengersPool, poolIndex) {
-        // console.debug(JSON.stringify(response));
+    if (this.survey.challengersPool3URL) {
+      this.http
+        .get<FlickrResponse>(this.survey.challengersPool3URL)
+        .pipe(
+          tap(response => this.onGetChallengersSuccess(response, this.challengersPool3(), 2)),
+          catchError(error => {
+            this.onError(`Failed to retrieve challengers for Pool 3 -  ${error.message || 'Unknown error'}`);
+            throw error;
+          }),
+        )
+        .subscribe();
+    }
+  }
 
-        if (response['stat'] == 'fail') {
-            this.onError('Failed to retrieve challengers: ' + response['message']);
-            return;
-        }
+  onGetChallengersSuccess(response: FlickrResponse, challengersPool: Challenger[], poolIndex: number): void {
+    // console.debug(JSON.stringify(response));
 
-        const photoset = response['photoset'];
-        for (const photo of photoset.photo) {
-            const photoUrl = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
-            challengersPool.push(new Challenger(photo.title, photoUrl));
-        }
-
-        // this.challengers.push(challengersPool);
-        this.challengers[poolIndex] = challengersPool;
-
-        this.initNbOfMatches();
-
-        this.initNextMatch();
+    if (response.stat === 'fail') {
+      this.onError('Failed to retrieve challengers: ' + response.message);
+      return;
     }
 
-    initNbOfMatches() {
-        this.totalNbOfMatches = this.survey.numberOfMatchesPerPool;
-
-        if (this.challengersPool2.length > 0 && this.survey.numberOfMatchesPerPool2 > 0) {
-            this.totalNbOfMatches += this.survey.numberOfMatchesPerPool2;
-            this.totalNbOfPools = 2;
-        }
-
-        if (this.challengersPool3.length > 0 && this.survey.numberOfMatchesPerPool3 > 0) {
-            this.totalNbOfMatches += this.survey.numberOfMatchesPerPool3;
-            this.totalNbOfPools = 3;
-        }
-
-        if (this.totalNbOfMatches < 1) {
-            this.totalNbOfMatches = 10;
-        }
+    const photoset = response.photoset;
+    for (const photo of photoset.photo) {
+      const photoUrl = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
+      challengersPool.push(new Challenger(photo.title, photoUrl));
     }
 
-    initJudgeId() {
-        const uniqueString = require('unique-string');
-        this.judgeId = 'C_' + this.survey.id + '_judge_' + uniqueString();
+    // this.challengers().push(challengersPool);
+    this.challengers()[poolIndex] = challengersPool;
+
+    this.initNbOfMatches();
+
+    this.initNextMatch();
+  }
+
+  initNbOfMatches(): void {
+    this.totalNbOfMatches = this.survey.numberOfMatchesPerPool ?? 0;
+    if (this.challengersPool2.length > 0 && this.survey.numberOfMatchesPerPool2 && this.survey.numberOfMatchesPerPool2 > 0) {
+      this.totalNbOfMatches += this.survey.numberOfMatchesPerPool2 ?? 0;
+      this.totalNbOfPools = 2;
+    }
+    if (this.challengersPool3.length > 0 && this.survey.numberOfMatchesPerPool3 && this.survey.numberOfMatchesPerPool3 > 0) {
+      this.totalNbOfMatches += this.survey.numberOfMatchesPerPool3 ?? 0;
+      this.totalNbOfPools = 3;
     }
 
-    initNextMatch() {
-        // Determine the current pool based on how many answers have been recorded
-        // this.currentPool = Math.floor(this.answers.length / this.survey.numberOfMatchesPerPool) + 1;
+    if (this.totalNbOfMatches < 1) {
+      this.totalNbOfMatches = 10;
+    }
+  }
 
-        // Load 2 random challengers from the right pool
-        this.initNextChallengers(this.challengers[this.currentPool - 1]);
+  initJudgeId(): void {
+    this.judgeId.set(`C_${this.survey.id}_judge_${uuidv4()}`);
+  }
 
-        this.matchStarts = moment();
+  initNextMatch(): void {
+    // Determine the current pool based on how many answers have been recorded
+    // this.currentPool = Math.floor(this.answers().length / (this.survey.numberOfMatchesPerPool ?? 0)) + 1;
+
+    // Load 2 random challengers from the right pool
+    this.initNextChallengers(this.challengers()[this.currentPool - 1]);
+
+    this.matchStarts = dayjs();
+  }
+
+  initNextChallengers(challengersPool: Challenger[]): void {
+    const randomIndex1 = Math.floor(Math.random() * challengersPool.length);
+    this.challengerOne.set(challengersPool[randomIndex1]);
+
+    // Check whether challengers should only be presented once (tirage sans remise)
+    if (this.survey.uniqueChallengers && challengersPool.length > 0) {
+      challengersPool.splice(randomIndex1, 1);
     }
 
-    initNextChallengers(challengersPool: Challenger[]) {
-        const randomIndex1 = Math.floor(Math.random() * challengersPool.length);
-        this.challengerOne = challengersPool[randomIndex1];
+    const randomIndex2 = Math.floor(Math.random() * challengersPool.length);
+    this.challengerTwo.set(challengersPool[randomIndex2]);
 
-        // Check whether challengers should only be presented once (tirage sans remise)
-        if (this.survey.uniqueChallengers && challengersPool.length > 0) {
-            challengersPool.splice(randomIndex1, 1);
-        }
-
-        const randomIndex2 = Math.floor(Math.random() * challengersPool.length);
-        this.challengerTwo = challengersPool[randomIndex2];
-
-        // Check that the 2 challengers are different (in case 2 images with the same ID exist in the pool)
-        while (this.challengerOne.id == this.challengerTwo.id) {
-            const randomIndex2 = Math.floor(Math.random() * challengersPool.length);
-            this.challengerTwo = challengersPool[randomIndex2];
-        }
-
-        // Check whether challengers should only be presented once (tirage sans remise)
-        if (this.survey.uniqueChallengers && challengersPool.length > 0) {
-            challengersPool.splice(randomIndex2, 1);
-        }
+    // Check that the 2 challengers are different (in case 2 images with the same ID exist in the pool)
+    while (this.challengerOne()?.id === this.challengerTwo()?.id) {
+      const randomIndex = Math.floor(Math.random() * challengersPool.length);
+      this.challengerTwo.set(challengersPool[randomIndex]);
     }
 
-    addWinner(winner) {
-        // console.debug('Winner added: ' + JSON.stringify(winner));
-        // Add a new Answer from the winner
-        const matchEnds = moment();
-        this.answers.push(
-            new Answer(
-                undefined,
-                this.judgeId,
-                this.challengerOne.id,
-                this.challengerTwo.id,
-                winner.id,
-                this.matchStarts,
-                matchEnds,
-                this.currentPool,
-                this.survey.id
-            )
-        );
+    // Check whether challengers should only be presented once (tirage sans remise)
+    if (this.survey.uniqueChallengers && challengersPool.length > 0) {
+      challengersPool.splice(randomIndex2, 1);
+    }
+  }
 
-        // Determine whether to display next challengers
-        if (this.answers.length < this.totalNbOfMatches) {
-            this.updateCurrentPool();
-            this.initNextMatch();
-        } else {
-            // If we've got enough winners, save the answers and display socio-pro questions
-            // console.debug('Answers: ' + JSON.stringify(this.answers));
+  addWinner(winner: Challenger): void {
+    // console.debug('Winner added: ' + JSON.stringify(winner));
+    // Add a new Answer from the winner
+    const matchEnds = dayjs();
+    const newAnswer: NewAnswer = {
+      id: null,
+      judgeID: this.judgeId(),
+      challenger1: this.challengerOne()?.id ?? null,
+      challenger2: this.challengerTwo()?.id ?? null,
+      winner: winner.id,
+      startTime: this.matchStarts,
+      endTime: matchEnds,
+      poolNumber: this.currentPool,
+      survey: { id: this.survey.id },
+    };
 
-            this.isAllMatchesCompleted = true;
-            this.subscribeToSaveAllResponse(this.answerService.createAll(this.answers));
-        }
+    this.answers().push(newAnswer);
+
+    // Determine whether to display next challengers
+    if (this.answers().length < this.totalNbOfMatches) {
+      this.updateCurrentPool();
+      this.initNextMatch();
+    } else {
+      // If we've got enough winners, save the answers and display socio-pro questions
+      // console.debug('Answers: ' + JSON.stringify(this.answers()));
+
+      this.isAllMatchesCompleted.set(true);
+      this.answerService
+        .createAll(this.answers())
+        .pipe(
+          tap(() => {
+            this.onSaveResponseSuccess();
+          }),
+          catchError(error => {
+            this.onError(`Failed to save the list of responses -  ${error.message || 'Unknown error'}`);
+            throw error;
+          }),
+        )
+        .subscribe();
+    }
+  }
+
+  updateCurrentPool(): void {
+    // Determine which pool we're on
+    if (this.currentPool === 1 && this.totalNbOfPools > 1 && this.answers().length >= (this.survey.numberOfMatchesPerPool ?? 0)) {
+      this.currentPool = 2;
+    } else if (
+      this.currentPool === 2 &&
+      this.totalNbOfPools > 2 &&
+      this.answers().length >= (this.survey.numberOfMatchesPerPool ?? 0) + (this.survey.numberOfMatchesPerPool2 ?? 0)
+    ) {
+      this.currentPool = 3;
+    }
+  }
+
+  getCurrentMatchNumber(): number {
+    return this.answers().length + 1;
+  }
+
+  getDescriptionForCurrentPool(): any {
+    if (this.currentPool === 2 && this.survey.matchesDescriptionPool2) {
+      return this.survey.matchesDescriptionPool2;
+    } else if (this.currentPool === 3 && this.survey.matchesDescriptionPool3) {
+      return this.survey.matchesDescriptionPool3;
     }
 
-    updateCurrentPool() {
-        // Determine which pool we're on
-        if (this.currentPool == 1 && this.totalNbOfPools > 1 && this.answers.length >= this.survey.numberOfMatchesPerPool) {
-            this.currentPool = 2;
-        } else if (
-            this.currentPool == 2 &&
-            this.totalNbOfPools > 2 &&
-            this.answers.length >= this.survey.numberOfMatchesPerPool + this.survey.numberOfMatchesPerPool2
-        ) {
-            this.currentPool = 3;
-        }
-    }
+    return this.survey.matchesDescription;
+  }
 
-    getCurrentMatchNumber(): number {
-        return this.answers.length + 1;
-    }
+  getPercentAdvancement(): number {
+    return (this.getCurrentMatchNumber() * 100) / this.totalNbOfMatches;
+  }
 
-    getDescriptionForCurrentPool(): any {
-        if (this.currentPool == 2 && this.survey.matchesDescriptionPool2) {
-            return this.survey.matchesDescriptionPool2;
-        } else if (this.currentPool == 3 && this.survey.matchesDescriptionPool3) {
-            return this.survey.matchesDescriptionPool3;
-        }
+  private onError(errorMessage: string): void {
+    // eslint-disable-next-line no-console
+    console.log(errorMessage);
+    alert('An error occurred. Please try again later.');
+  }
 
-        return this.survey.matchesDescription;
+  private onSaveResponseSuccess(): void {
+    // alert('Save success!');
+    if (this.survey.formURL) {
+      window.location.href = this.survey.formURL + this.judgeId();
     }
-
-    getPercentAdvancement(): number {
-        return (this.getCurrentMatchNumber() * 100) / this.totalNbOfMatches;
-    }
-
-    private subscribeToSaveAllResponse(result: Observable<HttpResponse<IAnswer[]>>) {
-        result.subscribe(
-            (res: HttpResponse<IAnswer[]>) => this.onSaveResponseSuccess(),
-            (res: HttpErrorResponse) => this.onError('Failed to save the list of responses - ' + res.message)
-        );
-    }
-
-    private onError(errorMessage: string) {
-        console.log(errorMessage);
-        alert('An error occurred. Please try again later.');
-        //this.jhiAlertService.addAlert({type: 'danger', msg: 'error.generic', timeout: 2000}, []);
-    }
-
-    onSaveResponseSuccess(): void {
-        //alert('Save success!');
-        window.location.href = this.survey.formURL + this.judgeId;
-    }
+  }
 }

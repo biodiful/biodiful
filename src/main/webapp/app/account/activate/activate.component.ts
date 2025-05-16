@@ -1,37 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { mergeMap } from 'rxjs/operators';
 
-import { LoginModalService } from 'app/core';
+import SharedModule from 'app/shared/shared.module';
 import { ActivateService } from './activate.service';
 
 @Component({
-    selector: 'jhi-activate',
-    templateUrl: './activate.component.html'
+  selector: 'jhi-activate',
+  imports: [SharedModule, RouterModule],
+  templateUrl: './activate.component.html',
 })
-export class ActivateComponent implements OnInit {
-    error: string;
-    success: string;
-    modalRef: NgbModalRef;
+export default class ActivateComponent implements OnInit {
+  error = signal(false);
+  success = signal(false);
 
-    constructor(private activateService: ActivateService, private loginModalService: LoginModalService, private route: ActivatedRoute) {}
+  private readonly activateService = inject(ActivateService);
+  private readonly route = inject(ActivatedRoute);
 
-    ngOnInit() {
-        this.route.queryParams.subscribe(params => {
-            this.activateService.get(params['key']).subscribe(
-                () => {
-                    this.error = null;
-                    this.success = 'OK';
-                },
-                () => {
-                    this.success = null;
-                    this.error = 'ERROR';
-                }
-            );
-        });
-    }
-
-    login() {
-        this.modalRef = this.loginModalService.open();
-    }
+  ngOnInit(): void {
+    this.route.queryParams.pipe(mergeMap(params => this.activateService.get(params.key))).subscribe({
+      next: () => this.success.set(true),
+      error: () => this.error.set(true),
+    });
+  }
 }

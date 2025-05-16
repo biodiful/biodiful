@@ -1,11 +1,9 @@
 package org.biodiful.config;
 
 import org.biodiful.aop.logging.LoggingAspect;
-
-import io.github.jhipster.config.JHipsterConstants;
-
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import tech.jhipster.config.JHipsterConstants;
 
 @Configuration
 @EnableAspectJAutoProxy

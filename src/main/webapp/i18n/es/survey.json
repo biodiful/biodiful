@@ -1,44 +1,47 @@
 {
-    "biodifulApp": {
-        "survey": {
-            "home": {
-                "title": "Surveys",
-                "createLabel": "Crear nuevo Survey",
-                "createOrEditLabel": "Crear o editar Survey"
-            },
-            "created": "Un nuevo Survey ha sido creado con el identificador {{ param }}",
-            "updated": "Un Survey ha sido actualizado con el identificador {{ param }}",
-            "deleted": "Un Survey ha sido eliminado con el identificador {{ param }}",
-            "delete": {
-                "question": "¿Seguro que quiere eliminar Survey {{ id }}?"
-            },
-            "detail": {
-                "title": "Survey"
-            },
-            "surveyName": "Survey Name",
-            "surveyDescription": "Survey Description",
-            "contactsDescription": "Contacts Description",
-            "friendlyURL": "Friendly URL",
-            "photoURL": "Photo URL",
-            "logosURL": "Logos URL",
-            "formURL": "Form URL",
-            "challengersPool1URL": "Challengers Pool 1 URL",
-            "challengersPool2URL": "Challengers Pool 2 URL",
-            "challengersPool3URL": "Challengers Pool 3 URL",
-            "numberOfMatchesPerPool": "Number Of Matches Per Pool",
-            "numberOfMatchesPerPool2": "Number Of Matches Per Pool 2",
-            "numberOfMatchesPerPool3": "Number Of Matches Per Pool 3",
-            "matchesDescription": "Matches Description",
-            "matchesDescriptionPool2": "Matches Description Pool 2",
-            "matchesDescriptionPool3": "Matches Description Pool 3",
-            "open": "Open",
-            "language": "Language",
-            "uniqueChallengers": "Unique Challengers",
-            "answer": "Responde la encuesta",
-            "judgesCount": "personas ya han participado!",
-            "moreInfo": "Para más información, puedes contactar:",
-            "closedSurvey": "Este encuesta está actualmente cerrado.",
-            "share": "Ayúdanos a compartir este estudio:"
-        }
+  "biodifulApp": {
+    "survey": {
+      "home": {
+        "title": "Surveys",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Survey",
+        "createOrEditLabel": "Crear o editar Survey",
+        "notFound": "Ningún Surveys encontrado"
+      },
+      "created": "Un nuevo Survey ha sido creado con el identificador {{ param }}",
+      "updated": "Un Survey ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Survey ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Survey {{ id }}?"
+      },
+      "detail": {
+        "title": "Survey"
+      },
+      "id": "ID",
+      "surveyName": "Survey Name",
+      "surveyDescription": "Survey Description",
+      "contactsDescription": "Contacts Description",
+      "friendlyURL": "Friendly URL",
+      "photoURL": "Photo URL",
+      "logosURL": "Logos URL",
+      "formURL": "Form URL",
+      "challengersPool1URL": "Challengers Pool 1 URL",
+      "challengersPool2URL": "Challengers Pool 2 URL",
+      "challengersPool3URL": "Challengers Pool 3 URL",
+      "numberOfMatchesPerPool": "Number Of Matches Per Pool 1",
+      "numberOfMatchesPerPool2": "Number Of Matches Per Pool 2",
+      "numberOfMatchesPerPool3": "Number Of Matches Per Pool 3",
+      "matchesDescription": "Matches Description Pool 1",
+      "matchesDescriptionPool2": "Matches Description Pool 2",
+      "matchesDescriptionPool3": "Matches Description Pool 3",
+      "open": "Open",
+      "answer": "Responde la encuesta",
+      "judgesCount": "personas ya han participado!",
+      "moreInfo": "Para más información, puedes contactar:",
+      "closedSurvey": "Este encuesta está actualmente cerrado.",
+      "share": "Ayúdanos a compartir este estudio:",
+      "language": "Language",
+      "uniqueChallengers": "Unique Challengers"
     }
+  }
 }

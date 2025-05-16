@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (answer(); as answerRef) {
+      <div>
+        <h2 data-cy="answerDetailsHeading"><span jhiTranslate="biodifulApp.answer.detail.title">Answer</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ answerRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.answer.judgeID">Judge ID</span></dt>
+          <dd>
+            <span>{{ answerRef.judgeID }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.answer.challenger1">Challenger 1</span></dt>
+          <dd>
+            <span>{{ answerRef.challenger1 }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.answer.challenger2">Challenger 2</span></dt>
+          <dd>
+            <span>{{ answerRef.challenger2 }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.answer.winner">Winner</span></dt>
+          <dd>
+            <span>{{ answerRef.winner }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.answer.startTime">Start Time</span></dt>
+          <dd>
+            <span>{{ answerRef.startTime | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.answer.endTime">End Time</span></dt>
+          <dd>
+            <span>{{ answerRef.endTime | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.answer.poolNumber">Pool Number</span></dt>
+          <dd>
+            <span>{{ answerRef.poolNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.answer.survey">Survey</span></dt>
+          <dd>
+            @if (answer()!.survey) {
+              <div>
+                <a [routerLink]="['/survey', answer()!.survey?.id, 'view']">{{ answerRef.survey?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/answer', answerRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

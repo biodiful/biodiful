@@ -1,43 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { JhiConfigurationService } from './configuration.service';
+import SharedModule from 'app/shared/shared.module';
+import { SortByDirective, SortDirective, SortService, sortStateSignal } from 'app/shared/sort';
+import { ConfigurationService } from './configuration.service';
+import { Bean, PropertySource } from './configuration.model';
 
 @Component({
-    selector: 'jhi-configuration',
-    templateUrl: './configuration.component.html'
+  selector: 'jhi-configuration',
+  templateUrl: './configuration.component.html',
+  imports: [SharedModule, FormsModule, SortDirective, SortByDirective],
 })
-export class JhiConfigurationComponent implements OnInit {
-    allConfiguration: any = null;
-    configuration: any = null;
-    configKeys: any[];
-    filter: string;
-    orderProp: string;
-    reverse: boolean;
-
-    constructor(private configurationService: JhiConfigurationService) {
-        this.configKeys = [];
-        this.filter = '';
-        this.orderProp = 'prefix';
-        this.reverse = false;
+export default class ConfigurationComponent implements OnInit {
+  allBeans = signal<Bean[] | undefined>(undefined);
+  beansFilter = signal<string>('');
+  propertySources = signal<PropertySource[]>([]);
+  sortState = sortStateSignal({ predicate: 'prefix', order: 'asc' });
+  beans = computed(() => {
+    let data = this.allBeans() ?? [];
+    const beansFilter = this.beansFilter();
+    if (beansFilter) {
+      data = data.filter(bean => bean.prefix.toLowerCase().includes(beansFilter.toLowerCase()));
     }
 
-    keys(dict): Array<string> {
-        return dict === undefined ? [] : Object.keys(dict);
+    const { order, predicate } = this.sortState();
+    if (predicate && order) {
+      data = data.sort(this.sortService.startSort({ predicate, order }));
     }
+    return data;
+  });
 
-    ngOnInit() {
-        this.configurationService.get().subscribe(configuration => {
-            this.configuration = configuration;
+  private readonly sortService = inject(SortService);
+  private readonly configurationService = inject(ConfigurationService);
 
-            for (const config of configuration) {
-                if (config.properties !== undefined) {
-                    this.configKeys.push(Object.keys(config.properties));
-                }
-            }
-        });
+  ngOnInit(): void {
+    this.configurationService.getBeans().subscribe(beans => {
+      this.allBeans.set(beans);
+    });
 
-        this.configurationService.getEnv().subscribe(configuration => {
-            this.allConfiguration = configuration;
-        });
-    }
+    this.configurationService.getPropertySources().subscribe(propertySources => this.propertySources.set(propertySources));
+  }
 }

@@ -1,46 +1,53 @@
 import { Injectable } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage';
 
 @Injectable({ providedIn: 'root' })
 export class StateStorageService {
-    constructor(private $sessionStorage: SessionStorageService) {}
+  private readonly previousUrlKey = 'previousUrl';
+  private readonly authenticationKey = 'jhi-authenticationToken';
+  private readonly localeKey = 'locale';
 
-    getPreviousState() {
-        return this.$sessionStorage.retrieve('previousState');
-    }
+  storeUrl(url: string): void {
+    sessionStorage.setItem(this.previousUrlKey, JSON.stringify(url));
+  }
 
-    resetPreviousState() {
-        this.$sessionStorage.clear('previousState');
-    }
+  getUrl(): string | null {
+    const previousUrl = sessionStorage.getItem(this.previousUrlKey);
+    return previousUrl ? (JSON.parse(previousUrl) as string | null) : previousUrl;
+  }
 
-    storePreviousState(previousStateName, previousStateParams) {
-        const previousState = { name: previousStateName, params: previousStateParams };
-        this.$sessionStorage.store('previousState', previousState);
-    }
+  clearUrl(): void {
+    sessionStorage.removeItem(this.previousUrlKey);
+  }
 
-    getDestinationState() {
-        return this.$sessionStorage.retrieve('destinationState');
+  storeAuthenticationToken(authenticationToken: string, rememberMe: boolean): void {
+    authenticationToken = JSON.stringify(authenticationToken);
+    this.clearAuthenticationToken();
+    if (rememberMe) {
+      localStorage.setItem(this.authenticationKey, authenticationToken);
+    } else {
+      sessionStorage.setItem(this.authenticationKey, authenticationToken);
     }
+  }
 
-    storeUrl(url: string) {
-        this.$sessionStorage.store('previousUrl', url);
-    }
+  getAuthenticationToken(): string | null {
+    const authenticationToken = localStorage.getItem(this.authenticationKey) ?? sessionStorage.getItem(this.authenticationKey);
+    return authenticationToken ? (JSON.parse(authenticationToken) as string | null) : authenticationToken;
+  }
 
-    getUrl() {
-        return this.$sessionStorage.retrieve('previousUrl');
-    }
+  clearAuthenticationToken(): void {
+    sessionStorage.removeItem(this.authenticationKey);
+    localStorage.removeItem(this.authenticationKey);
+  }
 
-    storeDestinationState(destinationState, destinationStateParams, fromState) {
-        const destinationInfo = {
-            destination: {
-                name: destinationState.name,
-                data: destinationState.data
-            },
-            params: destinationStateParams,
-            from: {
-                name: fromState.name
-            }
-        };
-        this.$sessionStorage.store('destinationState', destinationInfo);
-    }
+  storeLocale(locale: string): void {
+    sessionStorage.setItem(this.localeKey, locale);
+  }
+
+  getLocale(): string | null {
+    return sessionStorage.getItem(this.localeKey);
+  }
+
+  clearLocale(): void {
+    sessionStorage.removeItem(this.localeKey);
+  }
 }

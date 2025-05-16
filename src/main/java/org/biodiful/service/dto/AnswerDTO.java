@@ -1,13 +1,14 @@
 package org.biodiful.service.dto;
 
-import java.time.Instant;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
- * A DTO for the Answer entity.
+ * A DTO for the {@link org.biodiful.domain.Answer} entity.
  */
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class AnswerDTO implements Serializable {
 
     private Long id;
@@ -33,7 +34,7 @@ public class AnswerDTO implements Serializable {
     @NotNull
     private Integer poolNumber;
 
-    private Long surveyId;
+    private SurveyDTO survey;
 
     public Long getId() {
         return id;
@@ -99,12 +100,12 @@ public class AnswerDTO implements Serializable {
         this.poolNumber = poolNumber;
     }
 
-    public Long getSurveyId() {
-        return surveyId;
+    public SurveyDTO getSurvey() {
+        return survey;
     }
 
-    public void setSurveyId(Long surveyId) {
-        this.surveyId = surveyId;
+    public void setSurvey(SurveyDTO survey) {
+        this.survey = survey;
     }
 
     @Override
@@ -112,22 +113,23 @@ public class AnswerDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof AnswerDTO)) {
             return false;
         }
 
         AnswerDTO answerDTO = (AnswerDTO) o;
-        if (answerDTO.getId() == null || getId() == null) {
+        if (this.id == null) {
             return false;
         }
-        return Objects.equals(getId(), answerDTO.getId());
+        return Objects.equals(this.id, answerDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hash(this.id);
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "AnswerDTO{" +
@@ -139,7 +141,7 @@ public class AnswerDTO implements Serializable {
             ", startTime='" + getStartTime() + "'" +
             ", endTime='" + getEndTime() + "'" +
             ", poolNumber=" + getPoolNumber() +
-            ", survey=" + getSurveyId() +
+            ", survey=" + getSurvey() +
             "}";
     }
 }
