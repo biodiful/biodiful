@@ -1,5 +1,6 @@
-import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { Principal } from 'app/core/auth/principal.service';
+import { Directive, TemplateRef, ViewContainerRef, computed, effect, inject, input } from '@angular/core';
+
+import { AccountService } from 'app/core/auth/account.service';
 
 /**
  * @whatItDoes Conditionally includes an HTML element if current user has any
@@ -13,27 +14,25 @@ import { Principal } from 'app/core/auth/principal.service';
  * ```
  */
 @Directive({
-    selector: '[jhiHasAnyAuthority]'
+  selector: '[jhiHasAnyAuthority]',
 })
-export class HasAnyAuthorityDirective {
-    private authorities: string[];
+export default class HasAnyAuthorityDirective {
+  public authorities = input<string | string[]>([], { alias: 'jhiHasAnyAuthority' });
 
-    constructor(private principal: Principal, private templateRef: TemplateRef<any>, private viewContainerRef: ViewContainerRef) {}
+  private readonly templateRef = inject(TemplateRef<any>);
+  private readonly viewContainerRef = inject(ViewContainerRef);
 
-    @Input()
-    set jhiHasAnyAuthority(value: string | string[]) {
-        this.authorities = typeof value === 'string' ? [value] : value;
-        this.updateView();
-        // Get notified each time authentication state changes.
-        this.principal.getAuthenticationState().subscribe(identity => this.updateView());
-    }
+  constructor() {
+    const accountService = inject(AccountService);
+    const currentAccount = accountService.trackCurrentAccount();
+    const hasPermission = computed(() => currentAccount()?.authorities && accountService.hasAnyAuthority(this.authorities()));
 
-    private updateView(): void {
-        this.principal.hasAnyAuthority(this.authorities).then(result => {
-            this.viewContainerRef.clear();
-            if (result) {
-                this.viewContainerRef.createEmbeddedView(this.templateRef);
-            }
-        });
-    }
+    effect(() => {
+      if (hasPermission()) {
+        this.viewContainerRef.createEmbeddedView(this.templateRef);
+      } else {
+        this.viewContainerRef.clear();
+      }
+    });
+  }
 }

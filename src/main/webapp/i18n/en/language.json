@@ -1,10 +1,10 @@
 {
-    "biodifulApp": {
-        "Language": {
-            "null": "",
-            "FR": "FR",
-            "EN": "EN",
-            "ES": "ES"
-        }
+  "biodifulApp": {
+    "Language": {
+      "null": "",
+      "FR": "FR",
+      "EN": "EN",
+      "ES": "ES"
     }
+  }
 }

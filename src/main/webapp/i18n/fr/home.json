@@ -1,22 +1,22 @@
 {
-    "home": {
-        "title": "BIODIFUL.ORG",
-        "subtitle": "Un site dédié à l'étude de la perception humaine de la nature",
-        "survey.open": "Campagnes en cours :",
-        "survey.closed": "Campagnes fermées :",
-        "logged": {
-            "message": "Vous êtes connecté en tant que \"{{username}}\"."
-        },
-        "question": "Si vous avez des questions à propos de JHipster :",
-        "link": {
-            "homepage": "Page d'accueil de JHipster",
-            "stackoverflow": "JHipster sur Stack Overflow",
-            "bugtracker": "JHipster bug tracker",
-            "chat": "JHipster public chat room",
-            "follow": "Suivez @java_hipster sur Twitter"
-        },
-        "more": "En savoir plus",
-        "more.footer": "En savoir<br> plus",
-        "github": "GitHub "
-    }
+  "home": {
+    "title": "BIODIFUL.ORG",
+    "subtitle": "Un site dédié à l'étude de la perception humaine de la nature",
+    "survey.open": "Campagnes en cours :",
+    "survey.closed": "Campagnes fermées :",
+    "logged": {
+      "message": "Vous êtes connecté en tant que \"{{username}}\"."
+    },
+    "question": "Si vous avez des questions à propos de JHipster :",
+    "link": {
+      "homepage": "Page d'accueil de JHipster",
+      "stackoverflow": "JHipster sur Stack Overflow",
+      "bugtracker": "JHipster bug tracker",
+      "chat": "JHipster public chat room",
+      "follow": "Suivez @jhipster sur Twitter"
+    },
+    "more": "En savoir plus",
+    "more.footer": "En savoir<br> plus",
+    "github": "GitHub "
+  }
 }

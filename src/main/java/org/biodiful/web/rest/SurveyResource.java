@@ -1,62 +1,67 @@
 package org.biodiful.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-
+import jakarta.annotation.security.PermitAll;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import org.biodiful.repository.SurveyRepository;
 import org.biodiful.security.AuthoritiesConstants;
 import org.biodiful.service.SurveyService;
-import org.biodiful.web.rest.errors.BadRequestAlertException;
-import org.biodiful.web.rest.errors.CustomParameterizedException;
-import org.biodiful.web.rest.util.HeaderUtil;
-import org.biodiful.web.rest.util.PaginationUtil;
 import org.biodiful.service.dto.SurveyDTO;
-import io.github.jhipster.web.util.ResponseUtil;
+import org.biodiful.web.rest.errors.BadRequestAlertException;
+import org.biodiful.web.rest.errors.FriendlyURLExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.security.PermitAll;
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing Survey.
+ * REST controller for managing {@link org.biodiful.domain.Survey}.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/surveys")
 public class SurveyResource {
 
-    private final Logger log = LoggerFactory.getLogger(SurveyResource.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SurveyResource.class);
 
     private static final String ENTITY_NAME = "survey";
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     private final SurveyService surveyService;
 
-    public SurveyResource(SurveyService surveyService) {
+    private final SurveyRepository surveyRepository;
+
+    public SurveyResource(SurveyService surveyService, SurveyRepository surveyRepository) {
         this.surveyService = surveyService;
+        this.surveyRepository = surveyRepository;
     }
 
     /**
-     * POST  /surveys : Create a new survey.
+     * {@code POST  /surveys} : Create a new survey.
      *
-     * @param surveyDTO the surveyDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new surveyDTO, or with status 400 (Bad Request) if the survey has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param surveyDTO the surveyDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new surveyDTO, or with status {@code 400 (Bad Request)} if the survey has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/surveys")
-    @Timed
+    @PostMapping("")
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<SurveyDTO> createSurvey(@Valid @RequestBody SurveyDTO surveyDTO) throws URISyntaxException {
-        log.debug("REST request to save Survey : {}", surveyDTO);
+        LOG.debug("REST request to save Survey : {}", surveyDTO);
         if (surveyDTO.getId() != null) {
             throw new BadRequestAlertException("A new survey cannot already have an ID", ENTITY_NAME, "idexists");
         }
@@ -65,32 +70,42 @@ public class SurveyResource {
             Optional<SurveyDTO> surveyWithSameFriendlyURL = surveyService.findOneByFriendlyURL(surveyDTO.getFriendlyURL());
             if (surveyWithSameFriendlyURL.isPresent()) {
                 SurveyDTO sameURL = surveyWithSameFriendlyURL.get();
-                throw new CustomParameterizedException("error.friendlyurlexists", sameURL.getSurveyName(), sameURL.getFriendlyURL());
+                throw new FriendlyURLExistsException(sameURL.getSurveyName(), sameURL.getFriendlyURL());
             }
         }
 
-        SurveyDTO result = surveyService.save(surveyDTO);
-        return ResponseEntity.created(new URI("/api/surveys/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        surveyDTO = surveyService.save(surveyDTO);
+        return ResponseEntity.created(new URI("/api/surveys/" + surveyDTO.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, surveyDTO.getId().toString()))
+            .body(surveyDTO);
     }
 
     /**
-     * PUT  /surveys : Updates an existing survey.
+     * {@code PUT  /surveys/:id} : Updates an existing survey.
      *
-     * @param surveyDTO the surveyDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated surveyDTO,
-     * or with status 400 (Bad Request) if the surveyDTO is not valid,
-     * or with status 500 (Internal Server Error) if the surveyDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param id the id of the surveyDTO to save.
+     * @param surveyDTO the surveyDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated surveyDTO,
+     * or with status {@code 400 (Bad Request)} if the surveyDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the surveyDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/surveys")
-    @Timed
+    @PutMapping("/{id}")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<SurveyDTO> updateSurvey(@Valid @RequestBody SurveyDTO surveyDTO) throws URISyntaxException {
-        log.debug("REST request to update Survey : {}", surveyDTO);
+    public ResponseEntity<SurveyDTO> updateSurvey(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody SurveyDTO surveyDTO
+    ) throws URISyntaxException {
+        LOG.debug("REST request to update Survey : {}, {}", id, surveyDTO);
         if (surveyDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, surveyDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!surveyRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
         if (surveyDTO.getFriendlyURL() != null) {
@@ -99,45 +114,80 @@ public class SurveyResource {
                 SurveyDTO sameURL = surveyWithSameFriendlyURL.get();
 
                 // Check that the survey with the same URL is not the one we're currently editing
-                if (surveyDTO.getId() != sameURL.getId()) {
-                    throw new CustomParameterizedException("error.friendlyurlexists", sameURL.getSurveyName(), sameURL.getFriendlyURL());
+                if (!Objects.equals(surveyDTO.getId(), sameURL.getId())) {
+                    throw new FriendlyURLExistsException(sameURL.getSurveyName(), sameURL.getFriendlyURL());
                 }
             }
         }
 
-        SurveyDTO result = surveyService.save(surveyDTO);
+        surveyDTO = surveyService.update(surveyDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, surveyDTO.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, surveyDTO.getId().toString()))
+            .body(surveyDTO);
     }
 
     /**
-     * GET  /surveys : get all the surveys.
+     * {@code PATCH  /surveys/:id} : Partial updates given fields of an existing survey, field will ignore if it is null
      *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of surveys in body
+     * @param id the id of the surveyDTO to save.
+     * @param surveyDTO the surveyDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated surveyDTO,
+     * or with status {@code 400 (Bad Request)} if the surveyDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the surveyDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the surveyDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @GetMapping("/surveys")
-    @Timed
+    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<SurveyDTO> partialUpdateSurvey(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody SurveyDTO surveyDTO
+    ) throws URISyntaxException {
+        LOG.debug("REST request to partial update Survey partially : {}, {}", id, surveyDTO);
+        if (surveyDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, surveyDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!surveyRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<SurveyDTO> result = surveyService.partialUpdate(surveyDTO);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, surveyDTO.getId().toString())
+        );
+    }
+
+    /**
+     * {@code GET  /surveys} : get all the surveys.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of surveys in body.
+     */
+    @GetMapping("")
     @PermitAll
-    public ResponseEntity<List<SurveyDTO>> getAllSurveys(Pageable pageable) {
-        log.debug("REST request to get a page of Surveys");
+    public ResponseEntity<List<SurveyDTO>> getAllSurveys(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of Surveys");
         Page<SurveyDTO> page = surveyService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/surveys");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
-     * GET  /surveys/:id : get the "id" survey.
+     * {@code GET  /surveys/:id} : get the "id" survey.
      *
-     * @param id the id of the surveyDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the surveyDTO, or with status 404 (Not Found)
+     * @param id the id of the surveyDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the surveyDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/surveys/{id}")
-    @Timed
+    @GetMapping("/{id}")
     @PermitAll
-    public ResponseEntity<SurveyDTO> getSurvey(@PathVariable Long id) {
-        log.debug("REST request to get Survey : {}", id);
+    public ResponseEntity<SurveyDTO> getSurvey(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get Survey : {}", id);
         Optional<SurveyDTO> surveyDTO = surveyService.findOne(id);
         return ResponseUtil.wrapOrNotFound(surveyDTO);
     }
@@ -148,11 +198,10 @@ public class SurveyResource {
      * @param friendlyURL the friendlyURL of the surveyDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the surveyDTO, or with status 404 (Not Found)
      */
-    @GetMapping("/surveys/friendly-url/{friendlyURL}")
-    @Timed
+    @GetMapping("/friendly-url/{friendlyURL}")
     @PermitAll
     public ResponseEntity<SurveyDTO> getSurvey(@PathVariable String friendlyURL) {
-        log.debug("REST request to get Survey from friendlyURL: {}", friendlyURL);
+        LOG.debug("REST request to get Survey from friendlyURL: {}", friendlyURL);
         Optional<SurveyDTO> surveyDTO = surveyService.findOneByFriendlyURL(friendlyURL);
         return ResponseUtil.wrapOrNotFound(surveyDTO);
     }
@@ -163,26 +212,26 @@ public class SurveyResource {
      * @param id the id of the survey
      * @return the ResponseEntity with status 200 (OK) and with body the number of judges that have answered this survey
      */
-    @GetMapping("/surveys/{id}/judges-count")
-    @Timed
+    @GetMapping("/{id}/judges-count")
     @PermitAll
     public ResponseEntity<Long> getSurveyJudgesCount(@PathVariable Long id) {
-        log.debug("REST request to get the number of jusges that have answered the Survey : {}", id);
+        LOG.debug("REST request to get the number of jusges that have answered the Survey : {}", id);
         return ResponseEntity.ok().body(surveyService.countJudgesForSurvey(id));
     }
 
     /**
-     * DELETE  /surveys/:id : delete the "id" survey.
+     * {@code DELETE  /surveys/:id} : delete the "id" survey.
      *
-     * @param id the id of the surveyDTO to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the surveyDTO to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/surveys/{id}")
-    @Timed
+    @DeleteMapping("/{id}")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<Void> deleteSurvey(@PathVariable Long id) {
-        log.debug("REST request to delete Survey : {}", id);
+    public ResponseEntity<Void> deleteSurvey(@PathVariable("id") Long id) {
+        LOG.debug("REST request to delete Survey : {}", id);
         surveyService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

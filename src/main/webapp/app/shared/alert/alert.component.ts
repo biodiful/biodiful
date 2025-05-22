@@ -1,34 +1,36 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { JhiAlertService } from 'ng-jhipster';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { Alert, AlertService } from 'app/core/util/alert.service';
 
 @Component({
-    selector: 'jhi-alert',
-    template: `
-        <div class="alerts" role="alert">
-            <div *ngFor="let alert of alerts" [ngClass]="setClasses(alert)">
-                <ngb-alert *ngIf="alert && alert.type && alert.msg" [type]="alert.type" (close)="alert.close(alerts)">
-                    <pre [innerHTML]="alert.msg"></pre>
-                </ngb-alert>
-            </div>
-        </div>`
+  selector: 'jhi-alert',
+  templateUrl: './alert.component.html',
+  imports: [CommonModule, NgbModule],
 })
-export class JhiAlertComponent implements OnInit, OnDestroy {
-    alerts: any[];
+export class AlertComponent implements OnInit, OnDestroy {
+  alerts = signal<Alert[]>([]);
 
-    constructor(private alertService: JhiAlertService) {}
+  private readonly alertService = inject(AlertService);
 
-    ngOnInit() {
-        this.alerts = this.alertService.get();
+  ngOnInit(): void {
+    this.alerts.set(this.alertService.get());
+  }
+
+  setClasses(alert: Alert): Record<string, boolean> {
+    const classes = { 'jhi-toast': Boolean(alert.toast) };
+    if (alert.position) {
+      return { ...classes, [alert.position]: true };
     }
+    return classes;
+  }
 
-    setClasses(alert) {
-        return {
-            toast: !!alert.toast,
-            [alert.position]: true
-        };
-    }
+  ngOnDestroy(): void {
+    this.alertService.clear();
+  }
 
-    ngOnDestroy() {
-        this.alerts = [];
-    }
+  close(alert: Alert): void {
+    alert.close?.(this.alerts());
+  }
 }

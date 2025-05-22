@@ -1,15 +1,16 @@
 {
-    "error": {
-        "title": "Page d'erreur !",
-        "http": {
-            "400": "Mauvaise requête.",
-            "403": "Vous n'avez pas les droits pour accéder à cette page.",
-            "405": "Le verbe HTTP que vous avez utilisé n'est pas reconnu par cet URL.",
-            "500": "Erreur interne du serveur."
-        },
-        "concurrencyFailure": "Un autre utilisateur a modifié ces données en même temps que vous. Vos changements n'ont pas été sauvegardés.",
-        "validation": "Erreur de validation côté serveur.",
-        "friendlyurlexists": "La valeure du champ Friendly URL doit etre unique. La campagne {{param0}} existe deja avec la meme Friendly URL {{param1}}.",
-        "generic": "An error has occurred. Please try again later"
-    }
+  "error": {
+    "title": "Page d'erreur !",
+    "http": {
+      "400": "Mauvaise requête.",
+      "403": "Vous n'avez pas les droits pour accéder à cette page.",
+      "404": "La page n'existe pas.",
+      "405": "Le verbe HTTP que vous avez utilisé n'est pas reconnu par cet URL.",
+      "500": "Erreur interne du serveur."
+    },
+    "concurrencyFailure": "Un autre utilisateur a modifié ces données en même temps que vous. Vos changements n'ont pas été sauvegardés.",
+    "validation": "Erreur de validation côté serveur.",
+    "friendlyurlexists": "La valeure du champ Friendly URL doit etre unique. La campagne {{param0}} existe deja avec la meme Friendly URL {{param1}}.",
+    "generic": "An error has occurred. Please try again later"
+  }
 }

@@ -1,59 +1,40 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 
-import { SERVER_API_URL } from 'app/app.constants';
+import { Login } from 'app/login/login.model';
+import { ApplicationConfigService } from '../config/application-config.service';
+import { StateStorageService } from './state-storage.service';
+
+type JwtToken = {
+  id_token: string;
+};
 
 @Injectable({ providedIn: 'root' })
 export class AuthServerProvider {
-    constructor(private http: HttpClient, private $localStorage: LocalStorageService, private $sessionStorage: SessionStorageService) {}
+  private readonly http = inject(HttpClient);
+  private readonly stateStorageService = inject(StateStorageService);
+  private readonly applicationConfigService = inject(ApplicationConfigService);
 
-    getToken() {
-        return this.$localStorage.retrieve('authenticationToken') || this.$sessionStorage.retrieve('authenticationToken');
-    }
+  getToken(): string {
+    return this.stateStorageService.getAuthenticationToken() ?? '';
+  }
 
-    login(credentials): Observable<any> {
-        const data = {
-            username: credentials.username,
-            password: credentials.password,
-            rememberMe: credentials.rememberMe
-        };
-        return this.http.post(SERVER_API_URL + 'api/authenticate', data, { observe: 'response' }).pipe(map(authenticateSuccess.bind(this)));
+  login(credentials: Login): Observable<void> {
+    return this.http
+      .post<JwtToken>(this.applicationConfigService.getEndpointFor('api/authenticate'), credentials)
+      .pipe(map(response => this.authenticateSuccess(response, credentials.rememberMe)));
+  }
 
-        function authenticateSuccess(resp) {
-            const bearerToken = resp.headers.get('Authorization');
-            if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
-                const jwt = bearerToken.slice(7, bearerToken.length);
-                this.storeAuthenticationToken(jwt, credentials.rememberMe);
-                return jwt;
-            }
-        }
-    }
+  logout(): Observable<void> {
+    return new Observable(observer => {
+      this.stateStorageService.clearAuthenticationToken();
+      observer.complete();
+    });
+  }
 
-    loginWithToken(jwt, rememberMe) {
-        if (jwt) {
-            this.storeAuthenticationToken(jwt, rememberMe);
-            return Promise.resolve(jwt);
-        } else {
-            return Promise.reject('auth-jwt-service Promise reject'); // Put appropriate error message here
-        }
-    }
-
-    storeAuthenticationToken(jwt, rememberMe) {
-        if (rememberMe) {
-            this.$localStorage.store('authenticationToken', jwt);
-        } else {
-            this.$sessionStorage.store('authenticationToken', jwt);
-        }
-    }
-
-    logout(): Observable<any> {
-        return new Observable(observer => {
-            this.$localStorage.clear('authenticationToken');
-            this.$sessionStorage.clear('authenticationToken');
-            observer.complete();
-        });
-    }
+  private authenticateSuccess(response: JwtToken, rememberMe: boolean): void {
+    this.stateStorageService.storeAuthenticationToken(response.id_token, rememberMe);
+  }
 }

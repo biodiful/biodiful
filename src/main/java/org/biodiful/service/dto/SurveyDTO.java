@@ -1,14 +1,15 @@
 package org.biodiful.service.dto;
 
-import javax.validation.constraints.*;
+import jakarta.persistence.Lob;
+import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Lob;
 import org.biodiful.domain.enumeration.Language;
 
 /**
- * A DTO for the Survey entity.
+ * A DTO for the {@link org.biodiful.domain.Survey} entity.
  */
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class SurveyDTO implements Serializable {
 
     private Long id;
@@ -16,14 +17,12 @@ public class SurveyDTO implements Serializable {
     @NotNull
     private String surveyName;
 
-    
     @Lob
     private String surveyDescription;
 
     @Lob
     private String contactsDescription;
 
-    
     private String friendlyURL;
 
     private String photoURL;
@@ -47,7 +46,6 @@ public class SurveyDTO implements Serializable {
 
     private Integer numberOfMatchesPerPool3;
 
-    
     @Lob
     private String matchesDescription;
 
@@ -202,7 +200,7 @@ public class SurveyDTO implements Serializable {
         this.matchesDescriptionPool3 = matchesDescriptionPool3;
     }
 
-    public Boolean isOpen() {
+    public Boolean getOpen() {
         return open;
     }
 
@@ -218,7 +216,7 @@ public class SurveyDTO implements Serializable {
         this.language = language;
     }
 
-    public Boolean isUniqueChallengers() {
+    public Boolean getUniqueChallengers() {
         return uniqueChallengers;
     }
 
@@ -231,22 +229,23 @@ public class SurveyDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof SurveyDTO)) {
             return false;
         }
 
         SurveyDTO surveyDTO = (SurveyDTO) o;
-        if (surveyDTO.getId() == null || getId() == null) {
+        if (this.id == null) {
             return false;
         }
-        return Objects.equals(getId(), surveyDTO.getId());
+        return Objects.equals(this.id, surveyDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hash(this.id);
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "SurveyDTO{" +
@@ -267,9 +266,9 @@ public class SurveyDTO implements Serializable {
             ", matchesDescription='" + getMatchesDescription() + "'" +
             ", matchesDescriptionPool2='" + getMatchesDescriptionPool2() + "'" +
             ", matchesDescriptionPool3='" + getMatchesDescriptionPool3() + "'" +
-            ", open='" + isOpen() + "'" +
+            ", open='" + getOpen() + "'" +
             ", language='" + getLanguage() + "'" +
-            ", uniqueChallengers='" + isUniqueChallengers() + "'" +
+            ", uniqueChallengers='" + getUniqueChallengers() + "'" +
             "}";
     }
 }

@@ -1,13 +1,13 @@
 {
-    "about": {
-        "presentation": "Este sitio pone a disposición de la comunidad científica una plataforma en línea para alojar campañas de evaluación de la percepción humana de la naturaleza gracias a encuestas fotográficas.",
-        "financed": "Este proyecto es financiado por el",
-        "publications": "Lista de publicaciones recientes",
-        "contacts": "Contactos",
-        "contact.us": "Contáctenos: ",
-        "coordination": "Coordinación",
-        "researchers": "Investigadores asociados",
-        "website": "Realización del sitio web",
-        "survey.list": "Ver la lista de las campañas"
-    }
+  "about": {
+    "presentation": "Este sitio pone a disposición de la comunidad científica una plataforma en línea para alojar campañas de evaluación de la percepción humana de la naturaleza gracias a encuestas fotográficas.",
+    "financed": "Este proyecto es financiado por el",
+    "publications": "Lista de publicaciones recientes",
+    "contacts": "Contactos",
+    "contact.us": "Contáctenos: ",
+    "coordination": "Coordinación",
+    "researchers": "Investigadores asociados",
+    "website": "Realización del sitio web",
+    "survey.list": "Ver la lista de las campañas"
+  }
 }

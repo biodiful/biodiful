@@ -1,44 +1,47 @@
 {
-    "biodifulApp": {
-        "survey": {
-            "home": {
-                "title": "Campagnes",
-                "createLabel": "Créer une nouvelle campagne (Survey)",
-                "createOrEditLabel": "Créer ou éditer une campagne (Survey)"
-            },
-            "created": "Une nouvelle campagne a été créé avec l'identifiant {{ param }}",
-            "updated": "La campagne avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "La campagne avec l'identifiant {{ param }} a été supprimé",
-            "delete": {
-                "question": "Etes-vous certain de vouloir supprimer la campagne {{ id }} ?"
-            },
-            "detail": {
-                "title": "Survey"
-            },
-            "surveyName": "Survey Name",
-            "surveyDescription": "Survey Description",
-            "contactsDescription": "Contacts Description",
-            "friendlyURL": "Friendly URL",
-            "photoURL": "Photo URL",
-            "logosURL": "Logos URL",
-            "formURL": "Form URL",
-            "challengersPool1URL": "Challengers Pool 1 URL",
-            "challengersPool2URL": "Challengers Pool 2 URL",
-            "challengersPool3URL": "Challengers Pool 3 URL",
-            "numberOfMatchesPerPool": "Number Of Matches Per Pool",
-            "numberOfMatchesPerPool2": "Number Of Matches Per Pool 2",
-            "numberOfMatchesPerPool3": "Number Of Matches Per Pool 3",
-            "matchesDescription": "Matches Description",
-            "matchesDescriptionPool2": "Matches Description Pool 2",
-            "matchesDescriptionPool3": "Matches Description Pool 3",
-            "open": "Open",
-            "language": "Language",
-            "uniqueChallengers": "Unique Challengers",
-            "answer": "Répondre à la campagne",
-            "judgesCount": "personnes ont déjà participé !",
-            "moreInfo": "Pour plus d'information, vous pouvez contacter:",
-            "closedSurvey": "Cette campagne est actuellement fermée.",
-            "share": "Aidez nous à faire circuler cette étude:"
-        }
+  "biodifulApp": {
+    "survey": {
+      "home": {
+        "title": "Campagnes",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer une nouvelle campagne (Survey)",
+        "createOrEditLabel": "Créer ou éditer une campagne (Survey)",
+        "notFound": "Aucun Survey trouvé"
+      },
+      "created": "Une nouvelle campagne a été créé avec l'identifiant {{ param }}",
+      "updated": "La campagne avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "La campagne avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer la campagne {{ id }} ?"
+      },
+      "detail": {
+        "title": "Survey"
+      },
+      "id": "ID",
+      "surveyName": "Survey Name",
+      "surveyDescription": "Survey Description",
+      "contactsDescription": "Contacts Description",
+      "friendlyURL": "Friendly URL (unique)",
+      "photoURL": "Photo URL",
+      "logosURL": "Logos URL",
+      "formURL": "Form URL",
+      "challengersPool1URL": "Challengers Pool 1 URL",
+      "challengersPool2URL": "Challengers Pool 2 URL",
+      "challengersPool3URL": "Challengers Pool 3 URL",
+      "numberOfMatchesPerPool": "Number Of Matches Per Pool 1",
+      "numberOfMatchesPerPool2": "Number Of Matches Per Pool 2",
+      "numberOfMatchesPerPool3": "Number Of Matches Per Pool 3",
+      "matchesDescription": "Matches Description Pool 1",
+      "matchesDescriptionPool2": "Matches Description Pool 2",
+      "matchesDescriptionPool3": "Matches Description Pool 3",
+      "open": "Open",
+      "answer": "Répondre à la campagne",
+      "judgesCount": "personnes ont déjà participé !",
+      "moreInfo": "Pour plus d'information, vous pouvez contacter:",
+      "closedSurvey": "Cette campagne est actuellement fermée.",
+      "share": "Aidez nous à faire circuler cette étude:",
+      "language": "Language",
+      "uniqueChallengers": "Unique Challengers"
     }
+  }
 }

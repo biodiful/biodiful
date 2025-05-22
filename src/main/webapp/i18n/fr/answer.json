@@ -1,28 +1,31 @@
 {
-    "biodifulApp": {
-        "answer": {
-            "home": {
-                "title": "Answers",
-                "createLabel": "Créer un nouveau Answer",
-                "createOrEditLabel": "Créer ou éditer un Answer"
-            },
-            "created": "Un nouveau Answer a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Answer avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Answer avec l'identifiant {{ param }} a été supprimé",
-            "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Answer {{ id }} ?"
-            },
-            "detail": {
-                "title": "Answer"
-            },
-            "judgeID": "Judge ID",
-            "challenger1": "Challenger 1",
-            "challenger2": "Challenger 2",
-            "winner": "Winner",
-            "startTime": "Start Time",
-            "endTime": "End Time",
-            "poolNumber": "Pool Number",
-            "survey": "Survey"
-        }
+  "biodifulApp": {
+    "answer": {
+      "home": {
+        "title": "Answers",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Answer",
+        "createOrEditLabel": "Créer ou éditer un Answer",
+        "notFound": "Aucun Answer trouvé"
+      },
+      "created": "Un nouveau Answer a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Answer avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Answer avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Answer {{ id }} ?"
+      },
+      "detail": {
+        "title": "Answer"
+      },
+      "id": "ID",
+      "judgeID": "Judge ID",
+      "challenger1": "Challenger 1",
+      "challenger2": "Challenger 2",
+      "winner": "Winner",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "poolNumber": "Pool Number",
+      "survey": "Survey"
     }
+  }
 }

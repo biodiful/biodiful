@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { TranslateDirective } from 'app/shared/language';
 
 @Component({
-    selector: 'jhi-about',
-    templateUrl: './about.component.html',
-    styleUrls: ['about.css']
+  selector: 'jhi-about',
+  templateUrl: './about.component.html',
+  styleUrl: './about.scss',
+  standalone: true,
+  imports: [CommonModule, TranslateDirective, RouterModule],
 })
-export class AboutComponent implements OnInit {
-    constructor() {}
-
-    ngOnInit() {}
-}
+export default class AboutComponent {}

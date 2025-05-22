@@ -1,28 +1,21 @@
 package org.biodiful.service.mapper;
 
-import org.biodiful.domain.*;
+import org.biodiful.domain.Answer;
+import org.biodiful.domain.Survey;
 import org.biodiful.service.dto.AnswerDTO;
-
+import org.biodiful.service.dto.SurveyDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity Answer and its DTO AnswerDTO.
+ * Mapper for the entity {@link Answer} and its DTO {@link AnswerDTO}.
  */
-@Mapper(componentModel = "spring", uses = {SurveyMapper.class})
+@Mapper(componentModel = "spring")
 public interface AnswerMapper extends EntityMapper<AnswerDTO, Answer> {
+    @Mapping(target = "survey", source = "survey", qualifiedByName = "surveyId")
+    AnswerDTO toDto(Answer s);
 
-    @Mapping(source = "survey.id", target = "surveyId")
-    AnswerDTO toDto(Answer answer);
-
-    @Mapping(source = "surveyId", target = "survey")
-    Answer toEntity(AnswerDTO answerDTO);
-
-    default Answer fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Answer answer = new Answer();
-        answer.setId(id);
-        return answer;
-    }
+    @Named("surveyId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    SurveyDTO toDtoSurveyId(Survey survey);
 }

@@ -1,6 +1,6 @@
 package org.biodiful.repository.timezone;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.*;
 import java.util.Objects;
@@ -118,6 +118,7 @@ public class DateTimeWrapper implements Serializable {
         return Objects.hashCode(getId());
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "TimeZoneTest{" +

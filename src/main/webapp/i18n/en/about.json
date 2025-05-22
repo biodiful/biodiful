@@ -1,13 +1,13 @@
 {
-    "about": {
-        "presentation": "This website provides to the scientific community an online platform to host evaluation campaigns on the human perception of nature, based on photographic surveys.",
-        "financed": "This project is funded by the",
-        "publications": "Recent publications",
-        "contacts": "Contacts",
-        "contact.us": "Contact us: ",
-        "coordination": "Coordination",
-        "researchers": "Associate researchers",
-        "website": "Website realization",
-        "survey.list": "See the list surveys"
-    }
+  "about": {
+    "presentation": "This website provides to the scientific community an online platform to host evaluation campaigns on the human perception of nature, based on photographic surveys.",
+    "financed": "This project is funded by the",
+    "publications": "Recent publications",
+    "contacts": "Contacts",
+    "contact.us": "Contact us: ",
+    "coordination": "Coordination",
+    "researchers": "Associate researchers",
+    "website": "Website realization",
+    "survey.list": "See the list surveys"
+  }
 }

@@ -1,29 +1,26 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Challenger } from 'app/shared/model/challenger.model';
 
 @Component({
-    selector: 'jhi-survey-answer-match',
-    templateUrl: './survey-answer-match.component.html',
-    styleUrls: ['survey-answer-match.css']
+  selector: 'jhi-survey-answer-match',
+  templateUrl: './survey-answer-match.component.html',
+  standalone: true,
+  styleUrl: './survey-answer-match.scss',
 })
-export class SurveyAnswerMatchComponent implements OnInit {
-    @Input()
-    challengerOne: Challenger;
-    @Input()
-    challengerTwo: Challenger;
-    @Output()
-    winnerSelected = new EventEmitter<Challenger>();
+export class SurveyAnswerMatchComponent {
+  // Show loader while retrieving images from Flickr
+  challengerOne = input<Challenger | undefined, Challenger | undefined>(undefined, {
+    transform: value => value ?? new Challenger('UNDEFINED_1', '/content/images/loader.gif'),
+  });
 
-    constructor() {}
+  challengerTwo = input<Challenger | undefined, Challenger | undefined>(undefined, {
+    transform: value => value ?? new Challenger('UNDEFINED_2', '/content/images/loader.gif'),
+  });
 
-    ngOnInit() {
-        // Show loader while retrieving images from Flickr
-        this.challengerOne = new Challenger('UNDEFINED_1', '/content/images/loader.gif');
-        this.challengerTwo = new Challenger('UNDEFINED_2', '/content/images/loader.gif');
-    }
+  winnerSelected = output<Challenger>();
 
-    challengerClicked(challenger) {
-        //TODO add start and end date to challenges
-        this.winnerSelected.emit(challenger);
-    }
+  challengerClicked(challenger: Challenger): void {
+    // TODO add start and end date to challenges
+    this.winnerSelected.emit(challenger);
+  }
 }

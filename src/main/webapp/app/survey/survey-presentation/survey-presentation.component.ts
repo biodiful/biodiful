@@ -1,123 +1,137 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SurveyService } from 'app/entities/survey';
-import { ISurvey } from 'app/shared/model/survey.model';
-import { Observable } from 'rxjs';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import moment from 'moment/src/moment';
-import { Principal } from 'app/core';
-import { SessionStorageService } from 'ngx-webstorage';
-import { JhiLanguageService } from 'ng-jhipster';
+import { Component, OnInit, ViewEncapsulation, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ISurvey } from 'app/entities/survey/survey.model';
+import { Subject, catchError, tap } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { SurveyService } from 'app/entities/survey/service/survey.service';
+import { CommonModule } from '@angular/common';
+import SharedModule from 'app/shared/shared.module';
+import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { TranslateService } from '@ngx-translate/core';
 import { Meta } from '@angular/platform-browser';
 
 @Component({
-    selector: 'jhi-survey-presentation',
-    templateUrl: './survey-presentation.component.html',
-    styleUrls: ['survey-presentation.css'],
-    encapsulation: ViewEncapsulation.None
+  selector: 'jhi-survey-presentation',
+  templateUrl: './survey-presentation.component.html',
+  styleUrl: 'survey-presentation.scss',
+  standalone: true,
+  imports: [CommonModule, RouterModule, SharedModule],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SurveyPresentationComponent implements OnInit {
-    survey: ISurvey;
-    surveyJudgesCount: number;
-    surveyAbsoluteUrl: string;
-    surveyAbsoluteUrlEncoded: string;
+  survey!: ISurvey;
+  surveyJudgesCount!: number;
+  surveyAbsoluteUrl!: string;
+  surveyAbsoluteUrlEncoded!: string;
+  account = signal<Account | null>(null);
 
-    constructor(
-        private principal: Principal,
-        private surveyService: SurveyService,
-        private activatedRoute: ActivatedRoute,
-        private sessionStorage: SessionStorageService,
-        private languageService: JhiLanguageService,
-        private router: Router,
-        private meta: Meta
-    ) {}
+  private readonly destroy$ = new Subject<void>();
 
-    ngOnInit() {
-        this.reloadParentIframe();
+  private readonly surveyService = inject(SurveyService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly accountService = inject(AccountService);
+  private readonly languageService = inject(TranslateService);
+  private readonly router = inject(Router);
+  private readonly meta = inject(Meta);
 
-        this.activatedRoute.data.subscribe(({ survey }) => {
-            this.survey = survey;
+  ngOnInit(): void {
+    this.reloadParentIframe();
 
-            this.subscribeToCountResponse(this.surveyService.getSurveyJudgesCount(this.survey.id));
+    this.activatedRoute.data.subscribe(({ survey }) => {
+      this.accountService
+        .getAuthenticationState()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(account => this.account.set(account));
 
-            this.initSurveyAbsoluteUrl();
+      this.survey = survey;
 
-            this.updateMetaTags();
+      this.surveyService
+        .getSurveyJudgesCount(survey.id)
+        .pipe(
+          tap(res => {
+            this.onCountSuccess(res);
+          }),
+          catchError(error => {
+            this.onError();
+            throw error;
+          }),
+        )
+        .subscribe();
 
-            this.initLocale();
-        });
+      this.initSurveyAbsoluteUrl();
+
+      this.updateMetaTags();
+
+      this.initLocale();
+    });
+  }
+
+  updateMetaTags(): void {
+    // Issue with dynamically updating Meta-tags: Facebook's crawler doesnt interprets javascript
+    // Work-around: Use angular universal's Server Side Rendering, but this technology is not ready for java yet
+    // (see https://github.com/swaechter/angularj-universal )
+    this.meta.updateTag({ name: 'og:url', content: this.surveyAbsoluteUrl });
+    this.meta.updateTag({ name: 'og:title', content: this.survey.surveyName ?? '' });
+    // this.meta.updateTag({ name: 'og:description', content: this.firstSentence(this.survey.surveyDescription ?? '') });
+  }
+
+  // firstSentence(text: string): string {
+  //   return this.htmlToPlaintext(text).split('.')[0];
+  // }
+
+  htmlToPlaintext(text: string): string {
+    return text ? String(text).replace(/<[^>]+>/gm, ' ') : '';
+  }
+
+  reloadParentIframe(): void {
+    // Detect whether we're in an iframe (i.e. if we follow the link at the end of the google form)
+    if (window.frameElement) {
+      // Reload parent with curent path
+      window.parent.location.href = '#/' + this.router.url;
+    }
+  }
+
+  initSurveyAbsoluteUrl(): void {
+    this.surveyAbsoluteUrl = 'https://www.biodiful.org/#';
+    // eslint-disable-next-line no-console
+    console.log(this.activatedRoute.snapshot.url);
+    if (this.survey.friendlyURL) {
+      this.surveyAbsoluteUrl += '/' + this.survey.friendlyURL;
+    } else {
+      this.surveyAbsoluteUrl += this.router.url;
     }
 
-    updateMetaTags() {
-        // Issue with dynamically updating Meta-tags: Facebook's crawler doesnt interprets javascript
-        // Work-around: Use angular universal's Server Side Rendering, but this technology is not ready for java yet
-        // (see https://github.com/swaechter/angularj-universal )
-        this.meta.updateTag({ name: 'og:url', content: this.surveyAbsoluteUrl });
-        this.meta.updateTag({ name: 'og:title', content: this.survey.surveyName });
-        // this.meta.updateTag({ name: 'og:description', content: this.firstSentence(this.survey.surveyDescription) });
-    }
+    this.surveyAbsoluteUrlEncoded = encodeURIComponent(this.surveyAbsoluteUrl);
+  }
 
-    // firstSentence(text) {
-    //     return this.htmlToPlaintext(text).split('.')[0];
-    // }
+  initLocale(): void {
+    const languageKey = this.survey.language?.toLowerCase() ?? 'en';
+    sessionStorage.setItem('locale', languageKey);
+    this.languageService.use(languageKey);
+  }
 
-    // htmlToPlaintext(text) {
-    //     return text ? String(text).replace(/<[^>]+>/gm, ' ') : '';
-    // }
+  onError(): void {
+    // eslint-disable-next-line no-console
+    console.debug('Failed to retrieve the number of judges for this survey');
+    // alert('An error occurred. Please try again later.');
+  }
 
-    reloadParentIframe() {
-        // Detect whether we're in an iframe (i.e. if we follow the link at the end of the google form)
-        if (window.frameElement) {
-            // Reload parent with curent path
-            window.parent.location.href = '#/' + this.router.url;
-        }
-    }
+  onCountSuccess(response: number): void {
+    // eslint-disable-next-line no-console
+    console.debug('Number of distinct judges for this survey: ', response);
+    this.surveyJudgesCount = response;
+  }
 
-    initSurveyAbsoluteUrl() {
-        this.surveyAbsoluteUrl = 'https://www.biodiful.org/#';
-        console.log(this.activatedRoute.snapshot.url);
-        if (this.survey.friendlyURL) {
-            this.surveyAbsoluteUrl += '/' + this.survey.friendlyURL;
-        } else {
-            this.surveyAbsoluteUrl += this.router.url;
-        }
+  getFacebookUrl(): string {
+    return `https://www.facebook.com/sharer/sharer.php?u=${this.surveyAbsoluteUrlEncoded}&amp;src=sdkpreparse`;
+  }
 
-        this.surveyAbsoluteUrlEncoded = encodeURIComponent(this.surveyAbsoluteUrl);
-    }
+  getTwitterUrl(): string {
+    return `https://twitter.com/intent/tweet?text=${this.surveyAbsoluteUrlEncoded}`;
+  }
 
-    initLocale() {
-        const languageKey = this.survey.language.toLowerCase();
-        this.sessionStorage.store('locale', languageKey);
-        this.languageService.changeLanguage(languageKey);
-    }
-
-    private subscribeToCountResponse(result: Observable<Object>) {
-        result.subscribe((res: HttpResponse<number>) => this.onCountSuccess(res), (res: HttpErrorResponse) => this.onError());
-    }
-
-    onError(): void {
-        console.debug('Failed to retrieve the number of judges for this survey');
-        //alert('An error occurred. Please try again later.');
-    }
-
-    onCountSuccess(response): void {
-        console.debug('Number of distinct judges for this survey: ' + JSON.stringify(response));
-        this.surveyJudgesCount = response.toString();
-    }
-
-    isAuthenticated() {
-        return this.principal.isAuthenticated();
-    }
-
-    getFacebookUrl(): String {
-        return `https://www.facebook.com/sharer/sharer.php?u=${this.surveyAbsoluteUrlEncoded}&amp;src=sdkpreparse`;
-    }
-
-    getTwitterUrl(): String {
-        return `https://twitter.com/intent/tweet?text=${this.surveyAbsoluteUrlEncoded}`;
-    }
-
-    getMailToHref(): String {
-        return `mailto:?Subject=${encodeURIComponent(this.survey.surveyName)}&body=${this.surveyAbsoluteUrlEncoded}`;
-    }
+  getMailToHref(): string {
+    return `mailto:?Subject=${encodeURIComponent(this.survey.surveyName ?? '')}&body=${this.surveyAbsoluteUrlEncoded}`;
+  }
 }
