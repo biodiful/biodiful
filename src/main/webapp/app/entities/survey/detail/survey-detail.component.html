@@ -1,0 +1,108 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (survey(); as surveyRef) {
+      <div>
+        <h2 data-cy="surveyDetailsHeading"><span jhiTranslate="biodifulApp.survey.detail.title">Survey</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ surveyRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.surveyName">Survey Name</span></dt>
+          <dd>
+            <span>{{ surveyRef.surveyName }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.surveyDescription">Survey Description</span></dt>
+          <dd>
+            <span>{{ surveyRef.surveyDescription }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.contactsDescription">Contacts Description</span></dt>
+          <dd>
+            <span>{{ surveyRef.contactsDescription }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.friendlyURL">Friendly URL</span></dt>
+          <dd>
+            <span>{{ surveyRef.friendlyURL }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.photoURL">Photo URL</span></dt>
+          <dd>
+            <span>{{ surveyRef.photoURL }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.logosURL">Logos URL</span></dt>
+          <dd>
+            <span>{{ surveyRef.logosURL }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.formURL">Form URL</span></dt>
+          <dd>
+            <span>{{ surveyRef.formURL }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.challengersPool1URL">Challengers Pool 1 URL</span></dt>
+          <dd>
+            <span>{{ surveyRef.challengersPool1URL }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.challengersPool2URL">Challengers Pool 2 URL</span></dt>
+          <dd>
+            <span>{{ surveyRef.challengersPool2URL }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.challengersPool3URL">Challengers Pool 3 URL</span></dt>
+          <dd>
+            <span>{{ surveyRef.challengersPool3URL }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool">Number Of Matches Per Pool</span></dt>
+          <dd>
+            <span>{{ surveyRef.numberOfMatchesPerPool }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool2">Number Of Matches Per Pool 2</span></dt>
+          <dd>
+            <span>{{ surveyRef.numberOfMatchesPerPool2 }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool3">Number Of Matches Per Pool 3</span></dt>
+          <dd>
+            <span>{{ surveyRef.numberOfMatchesPerPool3 }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.matchesDescription">Matches Description</span></dt>
+          <dd>
+            <span>{{ surveyRef.matchesDescription }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.matchesDescriptionPool2">Matches Description Pool 2</span></dt>
+          <dd>
+            <span>{{ surveyRef.matchesDescriptionPool2 }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.matchesDescriptionPool3">Matches Description Pool 3</span></dt>
+          <dd>
+            <span>{{ surveyRef.matchesDescriptionPool3 }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.open">Open</span></dt>
+          <dd>
+            <span>{{ surveyRef.open }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.language">Language</span></dt>
+          <dd>
+            <span [jhiTranslate]="'biodifulApp.Language.' + (surveyRef.language ?? 'null')">{{
+              { null: '', FR: 'FR', EN: 'EN', ES: 'ES' }[surveyRef.language ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="biodifulApp.survey.uniqueChallengers">Unique Challengers</span></dt>
+          <dd>
+            <span>{{ surveyRef.uniqueChallengers }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/survey', surveyRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

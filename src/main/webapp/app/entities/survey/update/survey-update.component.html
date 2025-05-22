@@ -1,0 +1,335 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-survey-heading" data-cy="SurveyCreateUpdateHeading" jhiTranslate="biodifulApp.survey.home.createOrEditLabel">
+        Créer ou éditer un Survey
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="biodifulApp.survey.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let surveyNameRef = editForm.get('surveyName')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_surveyName" jhiTranslate="biodifulApp.survey.surveyName">Survey Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="surveyName"
+            id="field_surveyName"
+            data-cy="surveyName"
+            formControlName="surveyName"
+          />
+          @if (surveyNameRef.invalid && (surveyNameRef.dirty || surveyNameRef.touched)) {
+            <div>
+              @if (editForm.get('surveyName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let surveyDescriptionRef = editForm.get('surveyDescription')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_surveyDescription" jhiTranslate="biodifulApp.survey.surveyDescription"
+            >Survey Description</label
+          >
+          <textarea
+            class="form-control"
+            name="surveyDescription"
+            id="field_surveyDescription"
+            data-cy="surveyDescription"
+            formControlName="surveyDescription"
+          ></textarea>
+          @if (surveyDescriptionRef.invalid && (surveyDescriptionRef.dirty || surveyDescriptionRef.touched)) {
+            <div>
+              @if (editForm.get('surveyDescription')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_contactsDescription" jhiTranslate="biodifulApp.survey.contactsDescription"
+            >Contacts Description</label
+          >
+          <textarea
+            class="form-control"
+            name="contactsDescription"
+            id="field_contactsDescription"
+            data-cy="contactsDescription"
+            formControlName="contactsDescription"
+          ></textarea>
+        </div>
+
+        @let friendlyURLRef = editForm.get('friendlyURL')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_friendlyURL" jhiTranslate="biodifulApp.survey.friendlyURL">Friendly URL</label>
+          <input
+            type="text"
+            class="form-control"
+            name="friendlyURL"
+            id="field_friendlyURL"
+            data-cy="friendlyURL"
+            formControlName="friendlyURL"
+          />
+          @if (friendlyURLRef.invalid && (friendlyURLRef.dirty || friendlyURLRef.touched)) {
+            <div></div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_photoURL" jhiTranslate="biodifulApp.survey.photoURL">Photo URL</label>
+          <input type="text" class="form-control" name="photoURL" id="field_photoURL" data-cy="photoURL" formControlName="photoURL" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_logosURL" jhiTranslate="biodifulApp.survey.logosURL">Logos URL</label>
+          <input type="text" class="form-control" name="logosURL" id="field_logosURL" data-cy="logosURL" formControlName="logosURL" />
+        </div>
+
+        @let formURLRef = editForm.get('formURL')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_formURL" jhiTranslate="biodifulApp.survey.formURL">Form URL</label>
+          <input type="text" class="form-control" name="formURL" id="field_formURL" data-cy="formURL" formControlName="formURL" />
+          @if (formURLRef.invalid && (formURLRef.dirty || formURLRef.touched)) {
+            <div>
+              @if (editForm.get('formURL')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let challengersPool1URLRef = editForm.get('challengersPool1URL')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_challengersPool1URL" jhiTranslate="biodifulApp.survey.challengersPool1URL"
+            >Challengers Pool 1 URL</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="challengersPool1URL"
+            id="field_challengersPool1URL"
+            data-cy="challengersPool1URL"
+            formControlName="challengersPool1URL"
+          />
+          @if (challengersPool1URLRef.invalid && (challengersPool1URLRef.dirty || challengersPool1URLRef.touched)) {
+            <div>
+              @if (editForm.get('challengersPool1URL')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_challengersPool2URL" jhiTranslate="biodifulApp.survey.challengersPool2URL"
+            >Challengers Pool 2 URL</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="challengersPool2URL"
+            id="field_challengersPool2URL"
+            data-cy="challengersPool2URL"
+            formControlName="challengersPool2URL"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_challengersPool3URL" jhiTranslate="biodifulApp.survey.challengersPool3URL"
+            >Challengers Pool 3 URL</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="challengersPool3URL"
+            id="field_challengersPool3URL"
+            data-cy="challengersPool3URL"
+            formControlName="challengersPool3URL"
+          />
+        </div>
+
+        @let numberOfMatchesPerPoolRef = editForm.get('numberOfMatchesPerPool')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_numberOfMatchesPerPool" jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool"
+            >Number Of Matches Per Pool</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="numberOfMatchesPerPool"
+            id="field_numberOfMatchesPerPool"
+            data-cy="numberOfMatchesPerPool"
+            formControlName="numberOfMatchesPerPool"
+          />
+          @if (numberOfMatchesPerPoolRef.invalid && (numberOfMatchesPerPoolRef.dirty || numberOfMatchesPerPoolRef.touched)) {
+            <div>
+              @if (editForm.get('numberOfMatchesPerPool')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('numberOfMatchesPerPool')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_numberOfMatchesPerPool2" jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool2"
+            >Number Of Matches Per Pool 2</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="numberOfMatchesPerPool2"
+            id="field_numberOfMatchesPerPool2"
+            data-cy="numberOfMatchesPerPool2"
+            formControlName="numberOfMatchesPerPool2"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_numberOfMatchesPerPool3" jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool3"
+            >Number Of Matches Per Pool 3</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="numberOfMatchesPerPool3"
+            id="field_numberOfMatchesPerPool3"
+            data-cy="numberOfMatchesPerPool3"
+            formControlName="numberOfMatchesPerPool3"
+          />
+        </div>
+
+        @let matchesDescriptionRef = editForm.get('matchesDescription')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_matchesDescription" jhiTranslate="biodifulApp.survey.matchesDescription"
+            >Matches Description</label
+          >
+          <textarea
+            class="form-control"
+            name="matchesDescription"
+            id="field_matchesDescription"
+            data-cy="matchesDescription"
+            formControlName="matchesDescription"
+          ></textarea>
+          @if (matchesDescriptionRef.invalid && (matchesDescriptionRef.dirty || matchesDescriptionRef.touched)) {
+            <div>
+              @if (editForm.get('matchesDescription')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_matchesDescriptionPool2" jhiTranslate="biodifulApp.survey.matchesDescriptionPool2"
+            >Matches Description Pool 2</label
+          >
+          <textarea
+            class="form-control"
+            name="matchesDescriptionPool2"
+            id="field_matchesDescriptionPool2"
+            data-cy="matchesDescriptionPool2"
+            formControlName="matchesDescriptionPool2"
+          ></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_matchesDescriptionPool3" jhiTranslate="biodifulApp.survey.matchesDescriptionPool3"
+            >Matches Description Pool 3</label
+          >
+          <textarea
+            class="form-control"
+            name="matchesDescriptionPool3"
+            id="field_matchesDescriptionPool3"
+            data-cy="matchesDescriptionPool3"
+            formControlName="matchesDescriptionPool3"
+          ></textarea>
+        </div>
+
+        @let openRef = editForm.get('open')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_open" jhiTranslate="biodifulApp.survey.open">Open</label>
+          <input type="checkbox" class="form-check" name="open" id="field_open" data-cy="open" formControlName="open" />
+          @if (openRef.invalid && (openRef.dirty || openRef.touched)) {
+            <div>
+              @if (editForm.get('open')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let languageRef = editForm.get('language')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_language" jhiTranslate="biodifulApp.survey.language">Language</label>
+          <select class="form-control" name="language" formControlName="language" id="field_language" data-cy="language">
+            <option [ngValue]="null">{{ 'biodifulApp.Language.null' | translate }}</option>
+            @for (language of languageValues; track $index) {
+              <option [value]="language">{{ 'biodifulApp.Language.' + language | translate }}</option>
+            }
+          </select>
+          @if (languageRef.invalid && (languageRef.dirty || languageRef.touched)) {
+            <div>
+              @if (editForm.get('language')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let uniqueChallengersRef = editForm.get('uniqueChallengers')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_uniqueChallengers" jhiTranslate="biodifulApp.survey.uniqueChallengers"
+            >Unique Challengers</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="uniqueChallengers"
+            id="field_uniqueChallengers"
+            data-cy="uniqueChallengers"
+            formControlName="uniqueChallengers"
+          />
+          @if (uniqueChallengersRef.invalid && (uniqueChallengersRef.dirty || uniqueChallengersRef.touched)) {
+            <div>
+              @if (editForm.get('uniqueChallengers')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
