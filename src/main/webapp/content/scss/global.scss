@@ -254,6 +254,13 @@ body {
   max-width: inherit !important;
 }
 
+.container-fluid.survey-list-component {
+  width: 100%;
+  max-width: inherit !important;
+  overflow: auto;
+  height: calc(100vh - 62px);
+}
+
 .card.jh-card {
   padding: 70px;
   padding-top: 40px;

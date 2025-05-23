@@ -29,7 +29,7 @@
       <span jhiTranslate="biodifulApp.survey.home.notFound">No Surveys found</span>
     </div>
   } @else {
-    <div class="table-responsive table-entities" id="entities">
+    <div class="table-entities" id="entities">
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
@@ -176,7 +176,13 @@
             <th scope="col"></th>
           </tr>
         </thead>
-        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
+        <tbody
+          infinite-scroll
+          (scrolled)="loadNextPage()"
+          [infiniteScrollDisabled]="!hasMorePage()"
+          [infiniteScrollContainer]="'.survey-list-component'"
+          [fromRoot]="true"
+        >
           @for (survey of surveys(); track trackId(survey)) {
             <tr data-cy="entityTable">
               <td>

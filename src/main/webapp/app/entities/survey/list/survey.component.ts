@@ -111,7 +111,7 @@ export class SurveyComponent implements OnInit {
       const surveysNew = this.surveys();
       if (data) {
         for (const d of data) {
-          if (surveysNew.some(op => op.id === d.id)) {
+          if (surveysNew.some(op => op.id !== d.id)) {
             surveysNew.push(d);
           }
         }

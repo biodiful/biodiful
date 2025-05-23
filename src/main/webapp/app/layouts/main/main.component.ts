@@ -11,6 +11,7 @@ import { filter } from 'rxjs/operators';
 import { SurveyAnswerComponent } from 'app/survey/survey-answer/survey-answer.component';
 import { SurveyPresentationComponent } from 'app/survey/survey-presentation/survey-presentation.component';
 import HomeComponent from 'app/home/home.component';
+import { SurveyComponent } from 'app/entities/survey/list/survey.component';
 
 @Component({
   selector: 'jhi-main',
@@ -55,6 +56,8 @@ export default class MainComponent implements OnInit {
           this.containerClass = 'container-fluid survey-presentation';
         } else if (component === SurveyAnswerComponent) {
           this.containerClass = 'container-fluid survey-answer';
+        } else if (component === SurveyComponent) {
+          this.containerClass = 'container-fluid survey-list-component';
         } else {
           this.containerClass = 'container-fluid';
         }
