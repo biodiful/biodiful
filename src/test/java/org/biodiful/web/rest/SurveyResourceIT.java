@@ -733,10 +733,15 @@ class SurveyResourceIT {
     @Transactional
     @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
     void deleteSurvey() throws Exception {
+        Answer answer = AnswerResourceIT.createEntity();
+        answer.setSurvey(survey);
+
         // Initialize the database
         insertedSurvey = surveyRepository.saveAndFlush(survey);
+        answerRepository.saveAndFlush(answer);
 
         long databaseSizeBeforeDelete = getRepositoryCount();
+        long answersCount = answerRepository.count();
 
         // Delete the survey
         restSurveyMockMvc
@@ -745,6 +750,8 @@ class SurveyResourceIT {
 
         // Validate the database contains one less item
         assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
+        // Validate the answer has been deleted
+        assertDecrementedAnswerRepositoryCount(answersCount);
     }
 
     protected long getRepositoryCount() {
@@ -757,6 +764,10 @@ class SurveyResourceIT {
 
     protected void assertDecrementedRepositoryCount(long countBefore) {
         assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
+    }
+
+    protected void assertDecrementedAnswerRepositoryCount(long countBefore) {
+        assertThat(countBefore - 1).isEqualTo(answerRepository.count());
     }
 
     protected void assertSameRepositoryCount(long countBefore) {

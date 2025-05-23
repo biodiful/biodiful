@@ -16,4 +16,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query("select a from Answer a where a.survey.id = :surveyId")
     List<Answer> findBySurveyId(long surveyId);
+
+    void deleteBySurveyId(Long surveyId);
 }

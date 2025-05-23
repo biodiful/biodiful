@@ -94,6 +94,7 @@ public class SurveyServiceImpl implements SurveyService {
     @Override
     public void delete(Long id) {
         LOG.debug("Request to delete Survey : {}", id);
+        answerRepository.deleteBySurveyId(id);
         surveyRepository.deleteById(id);
     }
 }
