@@ -22,7 +22,7 @@ const surveyResolve = (route: ActivatedRouteSnapshot): Observable<null | ISurvey
         }),
       );
   }
-  const friendlyUrl = route.params['friendlyUrl'] ? route.params['friendlyUrl'] : null;
+  const friendlyUrl = route.params['friendlyUrl'] ?? null;
   if (friendlyUrl) {
     return inject(SurveyService)
       .findByFriendlyUrl(friendlyUrl)

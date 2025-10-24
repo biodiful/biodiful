@@ -63,7 +63,7 @@ export class SurveyAnswerComponent implements OnInit {
       this.survey = survey;
     });
 
-    //TODO send GA event with survey ID?
+    // TODO send GA event with survey ID?
 
     this.initChallengers();
 
@@ -79,7 +79,7 @@ export class SurveyAnswerComponent implements OnInit {
         .pipe(
           tap(response => this.onGetChallengersSuccess(response, this.challengersPool1(), 0)),
           catchError(error => {
-            this.onError(`Failed to retrieve challengers for Pool 1 - ${error.message || 'Unknown error'}`);
+            this.onError(`Failed to retrieve challengers for Pool 1 - ${error.message ?? 'Unknown error'}`);
             throw error;
           }),
         )
@@ -92,7 +92,7 @@ export class SurveyAnswerComponent implements OnInit {
         .pipe(
           tap(response => this.onGetChallengersSuccess(response, this.challengersPool2(), 1)),
           catchError(error => {
-            this.onError(`Failed to retrieve challengers for Pool 2 -  ${error.message || 'Unknown error'}`);
+            this.onError(`Failed to retrieve challengers for Pool 2 -  ${error.message ?? 'Unknown error'}`);
             throw error;
           }),
         )
@@ -105,7 +105,7 @@ export class SurveyAnswerComponent implements OnInit {
         .pipe(
           tap(response => this.onGetChallengersSuccess(response, this.challengersPool3(), 2)),
           catchError(error => {
-            this.onError(`Failed to retrieve challengers for Pool 3 -  ${error.message || 'Unknown error'}`);
+            this.onError(`Failed to retrieve challengers for Pool 3 -  ${error.message ?? 'Unknown error'}`);
             throw error;
           }),
         )
@@ -223,7 +223,7 @@ export class SurveyAnswerComponent implements OnInit {
             this.onSaveResponseSuccess();
           }),
           catchError(error => {
-            this.onError(`Failed to save the list of responses -  ${error.message || 'Unknown error'}`);
+            this.onError(`Failed to save the list of responses -  ${error.message ?? 'Unknown error'}`);
             throw error;
           }),
         )
