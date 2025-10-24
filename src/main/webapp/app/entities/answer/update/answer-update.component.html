@@ -1,0 +1,203 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-answer-heading" data-cy="AnswerCreateUpdateHeading" jhiTranslate="biodifulApp.answer.home.createOrEditLabel">
+        Créer ou éditer un Answer
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="biodifulApp.answer.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let judgeIDRef = editForm.get('judgeID')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_judgeID" jhiTranslate="biodifulApp.answer.judgeID">Judge ID</label>
+          <input type="text" class="form-control" name="judgeID" id="field_judgeID" data-cy="judgeID" formControlName="judgeID" />
+          @if (judgeIDRef.invalid && (judgeIDRef.dirty || judgeIDRef.touched)) {
+            <div>
+              @if (editForm.get('judgeID')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let challenger1Ref = editForm.get('challenger1')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_challenger1" jhiTranslate="biodifulApp.answer.challenger1">Challenger 1</label>
+          <input
+            type="text"
+            class="form-control"
+            name="challenger1"
+            id="field_challenger1"
+            data-cy="challenger1"
+            formControlName="challenger1"
+          />
+          @if (challenger1Ref.invalid && (challenger1Ref.dirty || challenger1Ref.touched)) {
+            <div>
+              @if (editForm.get('challenger1')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let challenger2Ref = editForm.get('challenger2')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_challenger2" jhiTranslate="biodifulApp.answer.challenger2">Challenger 2</label>
+          <input
+            type="text"
+            class="form-control"
+            name="challenger2"
+            id="field_challenger2"
+            data-cy="challenger2"
+            formControlName="challenger2"
+          />
+          @if (challenger2Ref.invalid && (challenger2Ref.dirty || challenger2Ref.touched)) {
+            <div>
+              @if (editForm.get('challenger2')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let winnerRef = editForm.get('winner')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_winner" jhiTranslate="biodifulApp.answer.winner">Winner</label>
+          <input type="text" class="form-control" name="winner" id="field_winner" data-cy="winner" formControlName="winner" />
+          @if (winnerRef.invalid && (winnerRef.dirty || winnerRef.touched)) {
+            <div>
+              @if (editForm.get('winner')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let startTimeRef = editForm.get('startTime')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_startTime" jhiTranslate="biodifulApp.answer.startTime">Start Time</label>
+          <div class="d-flex">
+            <input
+              id="field_startTime"
+              data-cy="startTime"
+              type="datetime-local"
+              class="form-control"
+              name="startTime"
+              formControlName="startTime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (startTimeRef.invalid && (startTimeRef.dirty || startTimeRef.touched)) {
+            <div>
+              @if (editForm.get('startTime')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('startTime')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let endTimeRef = editForm.get('endTime')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_endTime" jhiTranslate="biodifulApp.answer.endTime">End Time</label>
+          <div class="d-flex">
+            <input
+              id="field_endTime"
+              data-cy="endTime"
+              type="datetime-local"
+              class="form-control"
+              name="endTime"
+              formControlName="endTime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (endTimeRef.invalid && (endTimeRef.dirty || endTimeRef.touched)) {
+            <div>
+              @if (editForm.get('endTime')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('endTime')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let poolNumberRef = editForm.get('poolNumber')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_poolNumber" jhiTranslate="biodifulApp.answer.poolNumber">Pool Number</label>
+          <input
+            type="number"
+            class="form-control"
+            name="poolNumber"
+            id="field_poolNumber"
+            data-cy="poolNumber"
+            formControlName="poolNumber"
+          />
+          @if (poolNumberRef.invalid && (poolNumberRef.dirty || poolNumberRef.touched)) {
+            <div>
+              @if (editForm.get('poolNumber')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('poolNumber')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_survey" jhiTranslate="biodifulApp.answer.survey">Survey</label>
+          <select
+            class="form-control"
+            id="field_survey"
+            data-cy="survey"
+            name="survey"
+            formControlName="survey"
+            [compareWith]="compareSurvey"
+          >
+            <option [ngValue]="null"></option>
+            @for (surveyOption of surveysSharedCollection; track $index) {
+              <option [ngValue]="surveyOption">{{ surveyOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,230 @@
+<div>
+  <h2 id="page-heading" data-cy="SurveyHeading">
+    <span jhiTranslate="biodifulApp.survey.home.title">Surveys</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="biodifulApp.survey.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-survey"
+        [routerLink]="['/survey/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="biodifulApp.survey.home.createLabel">Créer un nouveau Survey</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (surveys().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="biodifulApp.survey.home.notFound">Aucun Survey trouvé</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="surveyName">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.surveyName">Survey Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="surveyDescription">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.surveyDescription">Survey Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="contactsDescription">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.contactsDescription">Contacts Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="friendlyURL">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.friendlyURL">Friendly URL</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="photoURL">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.photoURL">Photo URL</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="logosURL">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.logosURL">Logos URL</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="formURL">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.formURL">Form URL</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="challengersPool1URL">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.challengersPool1URL">Challengers Pool 1 URL</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="challengersPool2URL">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.challengersPool2URL">Challengers Pool 2 URL</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="challengersPool3URL">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.challengersPool3URL">Challengers Pool 3 URL</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="numberOfMatchesPerPool">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool">Number Of Matches Per Pool</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="numberOfMatchesPerPool2">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool2">Number Of Matches Per Pool 2</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="numberOfMatchesPerPool3">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool3">Number Of Matches Per Pool 3</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="matchesDescription">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.matchesDescription">Matches Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="matchesDescriptionPool2">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.matchesDescriptionPool2">Matches Description Pool 2</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="matchesDescriptionPool3">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.matchesDescriptionPool3">Matches Description Pool 3</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="open">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.open">Open</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="language">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.language">Language</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="uniqueChallengers">
+              <div class="d-flex">
+                <span jhiTranslate="biodifulApp.survey.uniqueChallengers">Unique Challengers</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
+          @for (survey of surveys(); track trackId(survey)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/survey', survey.id, 'view']">{{ survey.id }}</a>
+              </td>
+              <td>{{ survey.surveyName }}</td>
+              <td>{{ survey.surveyDescription }}</td>
+              <td>{{ survey.contactsDescription }}</td>
+              <td>{{ survey.friendlyURL }}</td>
+              <td>{{ survey.photoURL }}</td>
+              <td>{{ survey.logosURL }}</td>
+              <td>{{ survey.formURL }}</td>
+              <td>{{ survey.challengersPool1URL }}</td>
+              <td>{{ survey.challengersPool2URL }}</td>
+              <td>{{ survey.challengersPool3URL }}</td>
+              <td>{{ survey.numberOfMatchesPerPool }}</td>
+              <td>{{ survey.numberOfMatchesPerPool2 }}</td>
+              <td>{{ survey.numberOfMatchesPerPool3 }}</td>
+              <td>{{ survey.matchesDescription }}</td>
+              <td>{{ survey.matchesDescriptionPool2 }}</td>
+              <td>{{ survey.matchesDescriptionPool3 }}</td>
+              <td>{{ survey.open }}</td>
+              <td [jhiTranslate]="'biodifulApp.Language.' + (survey.language ?? 'null')">
+                {{ { null: '', FR: 'FR', EN: 'EN', ES: 'ES' }[survey.language ?? 'null'] }}
+              </td>
+              <td>{{ survey.uniqueChallengers }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/survey', survey.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+                  </a>
+
+                  <a [routerLink]="['/survey', survey.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(survey)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

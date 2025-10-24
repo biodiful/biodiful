@@ -1,0 +1,42 @@
+{
+  "biodifulApp": {
+    "survey": {
+      "home": {
+        "title": "Surveys",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Survey",
+        "createOrEditLabel": "Créer ou éditer un Survey",
+        "notFound": "Aucun Survey trouvé"
+      },
+      "created": "Un nouveau Survey a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Survey avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Survey avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Survey {{ id }} ?"
+      },
+      "detail": {
+        "title": "Survey"
+      },
+      "id": "ID",
+      "surveyName": "Survey Name",
+      "surveyDescription": "Survey Description",
+      "contactsDescription": "Contacts Description",
+      "friendlyURL": "Friendly URL",
+      "photoURL": "Photo URL",
+      "logosURL": "Logos URL",
+      "formURL": "Form URL",
+      "challengersPool1URL": "Challengers Pool 1 URL",
+      "challengersPool2URL": "Challengers Pool 2 URL",
+      "challengersPool3URL": "Challengers Pool 3 URL",
+      "numberOfMatchesPerPool": "Number Of Matches Per Pool",
+      "numberOfMatchesPerPool2": "Number Of Matches Per Pool 2",
+      "numberOfMatchesPerPool3": "Number Of Matches Per Pool 3",
+      "matchesDescription": "Matches Description",
+      "matchesDescriptionPool2": "Matches Description Pool 2",
+      "matchesDescriptionPool3": "Matches Description Pool 3",
+      "open": "Open",
+      "language": "Language",
+      "uniqueChallengers": "Unique Challengers"
+    }
+  }
+}
