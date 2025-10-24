@@ -78,7 +78,7 @@ describe('Survey Management Component', () => {
       );
   });
 
-  it('Should call load all on init', () => {
+  it('should call load all on init', () => {
     // WHEN
     comp.ngOnInit();
 
@@ -88,7 +88,7 @@ describe('Survey Management Component', () => {
   });
 
   describe('trackId', () => {
-    it('Should forward to surveyService', () => {
+    it('should forward to surveyService', () => {
       const entity = { id: 18911 };
       jest.spyOn(service, 'getSurveyIdentifier');
       const id = comp.trackId(entity);
