@@ -20,7 +20,7 @@
     "herokuAppName": "biodiful-app",
     "herokuDeployType": "git",
     "herokuJavaVersion": "17",
-    "jhipsterVersion": "8.9.0",
+    "jhipsterVersion": "8.11.0",
     "jwtSecretKey": "NDlkMTRiY2ZiYjcyYjk4Yjg2NzY3YTFmNzljZGM5ZGZlYjc0M2Q0ZDhjZmI5NTQ1MmU0MTliMTc1ZmIxNjRlYTQzYWMwMjIzZTUwNGZhNTBlYjYyNDdmNDNkMzQwMzc4ZDQ2MzI0MjVhYTA3YWI0MWFhMTAxMzcwOGZkNWE2NzM=",
     "languages": ["fr", "en", "es"],
     "microfrontend": null,

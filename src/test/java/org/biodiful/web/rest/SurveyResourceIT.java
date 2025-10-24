@@ -176,12 +176,12 @@ class SurveyResourceIT {
     }
 
     @BeforeEach
-    public void initTest() {
+    void initTest() {
         survey = createEntity();
     }
 
     @AfterEach
-    public void cleanup() {
+    void cleanup() {
         if (insertedSurvey != null) {
             surveyRepository.delete(insertedSurvey);
             insertedSurvey = null;
