@@ -43,7 +43,7 @@ describe('Survey Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should update editForm', () => {
+    it('should update editForm', () => {
       const survey: ISurvey = { id: 18583 };
 
       activatedRoute.data = of({ survey });
@@ -54,7 +54,7 @@ describe('Survey Management Update Component', () => {
   });
 
   describe('save', () => {
-    it('Should call update service on save for existing entity', () => {
+    it('should call update service on save for existing entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<ISurvey>>();
       const survey = { id: 18911 };
@@ -77,7 +77,7 @@ describe('Survey Management Update Component', () => {
       expect(comp.isSaving).toEqual(false);
     });
 
-    it('Should call create service on save for new entity', () => {
+    it('should call create service on save for new entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<ISurvey>>();
       const survey = { id: 18911 };
@@ -100,7 +100,7 @@ describe('Survey Management Update Component', () => {
       expect(comp.previousState).toHaveBeenCalled();
     });
 
-    it('Should set isSaving to false on error', () => {
+    it('should set isSaving to false on error', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<ISurvey>>();
       const survey = { id: 18911 };

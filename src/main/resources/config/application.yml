@@ -214,6 +214,9 @@ jhipster:
     license-url:
   security:
     content-security-policy: "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com https://www.google-analytics.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://*.staticflickr.com https://www.google-analytics.com https://stats.g.doubleclick.net https://www.google.fr https://www.google.com; connect-src 'self' https://api.flickr.com https://www.google-analytics.com https://www.googletagmanager.com https://stats.g.doubleclick.net; font-src 'self' data: https://fonts.gstatic.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com;"
+
+# jhipster-needle-add-application-yaml-document
+---
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

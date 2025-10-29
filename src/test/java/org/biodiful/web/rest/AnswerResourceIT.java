@@ -131,12 +131,12 @@ class AnswerResourceIT {
     }
 
     @BeforeEach
-    public void initTest() {
+    void initTest() {
         answer = createEntity();
     }
 
     @AfterEach
-    public void cleanup() {
+    void cleanup() {
         if (insertedAnswer != null) {
             answerRepository.delete(insertedAnswer);
             insertedAnswer = null;

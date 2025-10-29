@@ -47,7 +47,7 @@ describe('Answer Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call Survey query and add missing value', () => {
+    it('should call Survey query and add missing value', () => {
       const answer: IAnswer = { id: 25690 };
       const survey: ISurvey = { id: 18911 };
       answer.survey = survey;
@@ -69,7 +69,7 @@ describe('Answer Management Update Component', () => {
       expect(comp.surveysSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should update editForm', () => {
+    it('should update editForm', () => {
       const answer: IAnswer = { id: 25690 };
       const survey: ISurvey = { id: 18911 };
       answer.survey = survey;
@@ -83,7 +83,7 @@ describe('Answer Management Update Component', () => {
   });
 
   describe('save', () => {
-    it('Should call update service on save for existing entity', () => {
+    it('should call update service on save for existing entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IAnswer>>();
       const answer = { id: 19540 };
@@ -106,7 +106,7 @@ describe('Answer Management Update Component', () => {
       expect(comp.isSaving).toEqual(false);
     });
 
-    it('Should call create service on save for new entity', () => {
+    it('should call create service on save for new entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IAnswer>>();
       const answer = { id: 19540 };
@@ -129,7 +129,7 @@ describe('Answer Management Update Component', () => {
       expect(comp.previousState).toHaveBeenCalled();
     });
 
-    it('Should set isSaving to false on error', () => {
+    it('should set isSaving to false on error', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IAnswer>>();
       const answer = { id: 19540 };
@@ -152,7 +152,7 @@ describe('Answer Management Update Component', () => {
 
   describe('Compare relationships', () => {
     describe('compareSurvey', () => {
-      it('Should forward to surveyService', () => {
+      it('should forward to surveyService', () => {
         const entity = { id: 18911 };
         const entity2 = { id: 18583 };
         jest.spyOn(surveyService, 'compareSurvey');

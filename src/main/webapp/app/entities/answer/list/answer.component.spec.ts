@@ -78,7 +78,7 @@ describe('Answer Management Component', () => {
       );
   });
 
-  it('Should call load all on init', () => {
+  it('should call load all on init', () => {
     // WHEN
     comp.ngOnInit();
 
@@ -88,7 +88,7 @@ describe('Answer Management Component', () => {
   });
 
   describe('trackId', () => {
-    it('Should forward to answerService', () => {
+    it('should forward to answerService', () => {
       const entity = { id: 19540 };
       jest.spyOn(service, 'getAnswerIdentifier');
       const id = comp.trackId(entity);
