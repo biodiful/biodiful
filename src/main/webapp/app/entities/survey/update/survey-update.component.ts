@@ -6,7 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormArray } from '@angular/forms';
 
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
@@ -14,7 +14,7 @@ import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { Language } from 'app/entities/enumerations/language.model';
 import { SurveyService } from '../service/survey.service';
 import { ISurvey } from '../survey.model';
-import { SurveyFormGroup, SurveyFormService } from './survey-form.service';
+import { SurveyFormGroup, SurveyFormService, ChallengerPoolFormGroup } from './survey-form.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
@@ -80,6 +80,25 @@ export class SurveyUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.surveyService.create(survey));
     }
+  }
+
+  get challengerPoolsFormArray(): FormArray<ChallengerPoolFormGroup> {
+    return this.editForm.controls.challengerPools;
+  }
+
+  addChallengerPool(): void {
+    const nextOrder = this.challengerPoolsFormArray.length + 1;
+    const newPool = this.surveyFormService.createChallengerPoolFormGroup(null);
+    newPool.patchValue({ poolOrder: nextOrder });
+    this.challengerPoolsFormArray.push(newPool);
+  }
+
+  removeChallengerPool(index: number): void {
+    this.challengerPoolsFormArray.removeAt(index);
+    // Update poolOrder for remaining pools
+    this.challengerPoolsFormArray.controls.forEach((control, idx) => {
+      control.patchValue({ poolOrder: idx + 1 });
+    });
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ISurvey>>): void {

@@ -56,40 +56,6 @@ public class SurveyAsserts {
             .satisfies(a -> assertThat(a.getPhotoURL()).as("check photoURL").isEqualTo(expected.getPhotoURL()))
             .satisfies(a -> assertThat(a.getLogosURL()).as("check logosURL").isEqualTo(expected.getLogosURL()))
             .satisfies(a -> assertThat(a.getFormURL()).as("check formURL").isEqualTo(expected.getFormURL()))
-            .satisfies(a ->
-                assertThat(a.getChallengersPool1URL()).as("check challengersPool1URL").isEqualTo(expected.getChallengersPool1URL())
-            )
-            .satisfies(a ->
-                assertThat(a.getChallengersPool2URL()).as("check challengersPool2URL").isEqualTo(expected.getChallengersPool2URL())
-            )
-            .satisfies(a ->
-                assertThat(a.getChallengersPool3URL()).as("check challengersPool3URL").isEqualTo(expected.getChallengersPool3URL())
-            )
-            .satisfies(a ->
-                assertThat(a.getNumberOfMatchesPerPool()).as("check numberOfMatchesPerPool").isEqualTo(expected.getNumberOfMatchesPerPool())
-            )
-            .satisfies(a ->
-                assertThat(a.getNumberOfMatchesPerPool2())
-                    .as("check numberOfMatchesPerPool2")
-                    .isEqualTo(expected.getNumberOfMatchesPerPool2())
-            )
-            .satisfies(a ->
-                assertThat(a.getNumberOfMatchesPerPool3())
-                    .as("check numberOfMatchesPerPool3")
-                    .isEqualTo(expected.getNumberOfMatchesPerPool3())
-            )
-            .satisfies(a -> assertThat(a.getMatchesDescription()).as("check matchesDescription").isEqualTo(expected.getMatchesDescription())
-            )
-            .satisfies(a ->
-                assertThat(a.getMatchesDescriptionPool2())
-                    .as("check matchesDescriptionPool2")
-                    .isEqualTo(expected.getMatchesDescriptionPool2())
-            )
-            .satisfies(a ->
-                assertThat(a.getMatchesDescriptionPool3())
-                    .as("check matchesDescriptionPool3")
-                    .isEqualTo(expected.getMatchesDescriptionPool3())
-            )
             .satisfies(a -> assertThat(a.getOpen()).as("check open").isEqualTo(expected.getOpen()))
             .satisfies(a -> assertThat(a.getLanguage()).as("check language").isEqualTo(expected.getLanguage()))
             .satisfies(a -> assertThat(a.getUniqueChallengers()).as("check uniqueChallengers").isEqualTo(expected.getUniqueChallengers()));
@@ -102,6 +68,8 @@ public class SurveyAsserts {
      * @param actual the actual entity
      */
     public static void assertSurveyUpdatableRelationshipsEquals(Survey expected, Survey actual) {
-        // empty method
+        assertThat(actual)
+            .as("Verify Survey relationships")
+            .satisfies(a -> assertThat(a.getChallengerPools()).as("check challengerPools").hasSameSizeAs(expected.getChallengerPools()));
     }
 }

@@ -1,8 +1,11 @@
 package org.biodiful.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import org.biodiful.domain.enumeration.Language;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -48,37 +51,10 @@ public class Survey implements Serializable {
     @Column(name = "form_url", nullable = false)
     private String formURL;
 
-    @NotNull
-    @Column(name = "challengers_pool_1_url", nullable = false)
-    private String challengersPool1URL;
-
-    @Column(name = "challengers_pool_2_url")
-    private String challengersPool2URL;
-
-    @Column(name = "challengers_pool_3_url")
-    private String challengersPool3URL;
-
-    @NotNull
-    @Column(name = "number_of_matches_per_pool", nullable = false)
-    private Integer numberOfMatchesPerPool;
-
-    @Column(name = "number_of_matches_per_pool_2")
-    private Integer numberOfMatchesPerPool2;
-
-    @Column(name = "number_of_matches_per_pool_3")
-    private Integer numberOfMatchesPerPool3;
-
-    @Lob
-    @Column(name = "matches_description", nullable = false)
-    private String matchesDescription;
-
-    @Lob
-    @Column(name = "matches_description_pool_2")
-    private String matchesDescriptionPool2;
-
-    @Lob
-    @Column(name = "matches_description_pool_3")
-    private String matchesDescriptionPool3;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "survey" }, allowSetters = true)
+    private Set<ChallengerPool> challengerPools = new HashSet<>();
 
     @NotNull
     @Column(name = "open", nullable = false)
@@ -199,121 +175,35 @@ public class Survey implements Serializable {
         this.formURL = formURL;
     }
 
-    public String getChallengersPool1URL() {
-        return this.challengersPool1URL;
+    public Set<ChallengerPool> getChallengerPools() {
+        return this.challengerPools;
     }
 
-    public Survey challengersPool1URL(String challengersPool1URL) {
-        this.setChallengersPool1URL(challengersPool1URL);
+    public void setChallengerPools(Set<ChallengerPool> challengerPools) {
+        if (this.challengerPools != null) {
+            this.challengerPools.forEach(i -> i.setSurvey(null));
+        }
+        if (challengerPools != null) {
+            challengerPools.forEach(i -> i.setSurvey(this));
+        }
+        this.challengerPools = challengerPools;
+    }
+
+    public Survey challengerPools(Set<ChallengerPool> challengerPools) {
+        this.setChallengerPools(challengerPools);
         return this;
     }
 
-    public void setChallengersPool1URL(String challengersPool1URL) {
-        this.challengersPool1URL = challengersPool1URL;
-    }
-
-    public String getChallengersPool2URL() {
-        return this.challengersPool2URL;
-    }
-
-    public Survey challengersPool2URL(String challengersPool2URL) {
-        this.setChallengersPool2URL(challengersPool2URL);
+    public Survey addChallengerPool(ChallengerPool challengerPool) {
+        this.challengerPools.add(challengerPool);
+        challengerPool.setSurvey(this);
         return this;
     }
 
-    public void setChallengersPool2URL(String challengersPool2URL) {
-        this.challengersPool2URL = challengersPool2URL;
-    }
-
-    public String getChallengersPool3URL() {
-        return this.challengersPool3URL;
-    }
-
-    public Survey challengersPool3URL(String challengersPool3URL) {
-        this.setChallengersPool3URL(challengersPool3URL);
+    public Survey removeChallengerPool(ChallengerPool challengerPool) {
+        this.challengerPools.remove(challengerPool);
+        challengerPool.setSurvey(null);
         return this;
-    }
-
-    public void setChallengersPool3URL(String challengersPool3URL) {
-        this.challengersPool3URL = challengersPool3URL;
-    }
-
-    public Integer getNumberOfMatchesPerPool() {
-        return this.numberOfMatchesPerPool;
-    }
-
-    public Survey numberOfMatchesPerPool(Integer numberOfMatchesPerPool) {
-        this.setNumberOfMatchesPerPool(numberOfMatchesPerPool);
-        return this;
-    }
-
-    public void setNumberOfMatchesPerPool(Integer numberOfMatchesPerPool) {
-        this.numberOfMatchesPerPool = numberOfMatchesPerPool;
-    }
-
-    public Integer getNumberOfMatchesPerPool2() {
-        return this.numberOfMatchesPerPool2;
-    }
-
-    public Survey numberOfMatchesPerPool2(Integer numberOfMatchesPerPool2) {
-        this.setNumberOfMatchesPerPool2(numberOfMatchesPerPool2);
-        return this;
-    }
-
-    public void setNumberOfMatchesPerPool2(Integer numberOfMatchesPerPool2) {
-        this.numberOfMatchesPerPool2 = numberOfMatchesPerPool2;
-    }
-
-    public Integer getNumberOfMatchesPerPool3() {
-        return this.numberOfMatchesPerPool3;
-    }
-
-    public Survey numberOfMatchesPerPool3(Integer numberOfMatchesPerPool3) {
-        this.setNumberOfMatchesPerPool3(numberOfMatchesPerPool3);
-        return this;
-    }
-
-    public void setNumberOfMatchesPerPool3(Integer numberOfMatchesPerPool3) {
-        this.numberOfMatchesPerPool3 = numberOfMatchesPerPool3;
-    }
-
-    public String getMatchesDescription() {
-        return this.matchesDescription;
-    }
-
-    public Survey matchesDescription(String matchesDescription) {
-        this.setMatchesDescription(matchesDescription);
-        return this;
-    }
-
-    public void setMatchesDescription(String matchesDescription) {
-        this.matchesDescription = matchesDescription;
-    }
-
-    public String getMatchesDescriptionPool2() {
-        return this.matchesDescriptionPool2;
-    }
-
-    public Survey matchesDescriptionPool2(String matchesDescriptionPool2) {
-        this.setMatchesDescriptionPool2(matchesDescriptionPool2);
-        return this;
-    }
-
-    public void setMatchesDescriptionPool2(String matchesDescriptionPool2) {
-        this.matchesDescriptionPool2 = matchesDescriptionPool2;
-    }
-
-    public String getMatchesDescriptionPool3() {
-        return this.matchesDescriptionPool3;
-    }
-
-    public Survey matchesDescriptionPool3(String matchesDescriptionPool3) {
-        this.setMatchesDescriptionPool3(matchesDescriptionPool3);
-        return this;
-    }
-
-    public void setMatchesDescriptionPool3(String matchesDescriptionPool3) {
-        this.matchesDescriptionPool3 = matchesDescriptionPool3;
     }
 
     public Boolean getOpen() {
@@ -386,15 +276,6 @@ public class Survey implements Serializable {
             ", photoURL='" + getPhotoURL() + "'" +
             ", logosURL='" + getLogosURL() + "'" +
             ", formURL='" + getFormURL() + "'" +
-            ", challengersPool1URL='" + getChallengersPool1URL() + "'" +
-            ", challengersPool2URL='" + getChallengersPool2URL() + "'" +
-            ", challengersPool3URL='" + getChallengersPool3URL() + "'" +
-            ", numberOfMatchesPerPool=" + getNumberOfMatchesPerPool() +
-            ", numberOfMatchesPerPool2=" + getNumberOfMatchesPerPool2() +
-            ", numberOfMatchesPerPool3=" + getNumberOfMatchesPerPool3() +
-            ", matchesDescription='" + getMatchesDescription() + "'" +
-            ", matchesDescriptionPool2='" + getMatchesDescriptionPool2() + "'" +
-            ", matchesDescriptionPool3='" + getMatchesDescriptionPool3() + "'" +
             ", open='" + getOpen() + "'" +
             ", language='" + getLanguage() + "'" +
             ", uniqueChallengers='" + getUniqueChallengers() + "'" +

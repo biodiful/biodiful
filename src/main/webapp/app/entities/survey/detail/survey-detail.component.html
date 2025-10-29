@@ -43,41 +43,34 @@
           <dd>
             <span>{{ surveyRef.formURL }}</span>
           </dd>
-          <dt><span jhiTranslate="biodifulApp.survey.challengersPool1URL">Challengers Pool 1 URL</span></dt>
+          <dt><span jhiTranslate="biodifulApp.survey.challengersPools.title">Challenger Pools</span></dt>
           <dd>
-            <span>{{ surveyRef.challengersPool1URL }}</span>
-          </dd>
-          <dt><span jhiTranslate="biodifulApp.survey.challengersPool2URL">Challengers Pool 2 URL</span></dt>
-          <dd>
-            <span>{{ surveyRef.challengersPool2URL }}</span>
-          </dd>
-          <dt><span jhiTranslate="biodifulApp.survey.challengersPool3URL">Challengers Pool 3 URL</span></dt>
-          <dd>
-            <span>{{ surveyRef.challengersPool3URL }}</span>
-          </dd>
-          <dt><span jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool">Number Of Matches Per Pool 1</span></dt>
-          <dd>
-            <span>{{ surveyRef.numberOfMatchesPerPool }}</span>
-          </dd>
-          <dt><span jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool2">Number Of Matches Per Pool 2</span></dt>
-          <dd>
-            <span>{{ surveyRef.numberOfMatchesPerPool2 }}</span>
-          </dd>
-          <dt><span jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool3">Number Of Matches Per Pool 3</span></dt>
-          <dd>
-            <span>{{ surveyRef.numberOfMatchesPerPool3 }}</span>
-          </dd>
-          <dt><span jhiTranslate="biodifulApp.survey.matchesDescription">Matches Description Pool 1</span></dt>
-          <dd>
-            <span>{{ surveyRef.matchesDescription }}</span>
-          </dd>
-          <dt><span jhiTranslate="biodifulApp.survey.matchesDescriptionPool2">Matches Description Pool 2</span></dt>
-          <dd>
-            <span>{{ surveyRef.matchesDescriptionPool2 }}</span>
-          </dd>
-          <dt><span jhiTranslate="biodifulApp.survey.matchesDescriptionPool3">Matches Description Pool 3</span></dt>
-          <dd>
-            <span>{{ surveyRef.matchesDescriptionPool3 }}</span>
+            @if (surveyRef.challengerPools && surveyRef.challengerPools.length > 0) {
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th jhiTranslate="biodifulApp.survey.challengersPools.order">Order</th>
+                      <th jhiTranslate="biodifulApp.survey.challengersPools.url">URL</th>
+                      <th jhiTranslate="biodifulApp.survey.challengersPools.numberOfMatches">Number Of Matches</th>
+                      <th jhiTranslate="biodifulApp.survey.challengersPools.description">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (pool of surveyRef.challengerPools; track pool.id) {
+                      <tr>
+                        <td>{{ pool.poolOrder }}</td>
+                        <td>{{ pool.challengersURL }}</td>
+                        <td>{{ pool.numberOfMatches }}</td>
+                        <td>{{ pool.matchesDescription }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            } @else {
+              <span class="text-muted" jhiTranslate="biodifulApp.survey.noPools">No pools defined</span>
+            }
           </dd>
           <dt><span jhiTranslate="biodifulApp.survey.open">Open</span></dt>
           <dd>

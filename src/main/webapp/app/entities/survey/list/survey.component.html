@@ -89,67 +89,9 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="challengersPool1URL">
+            <th scope="col">
               <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.challengersPool1URL">Challengers Pool 1 URL</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="challengersPool2URL">
-              <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.challengersPool2URL">Challengers Pool 2 URL</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="challengersPool3URL">
-              <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.challengersPool3URL">Challengers Pool 3 URL</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="numberOfMatchesPerPool">
-              <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool">Number Of Matches Per Pool 1</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="numberOfMatchesPerPool2">
-              <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool2">Number Of Matches Per Pool 2</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="numberOfMatchesPerPool3">
-              <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool3">Number Of Matches Per Pool 3</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="matchesDescription">
-              <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.matchesDescription">Matches Description Pool 1</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="matchesDescriptionPool2">
-              <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.matchesDescriptionPool2">Matches Description Pool 2</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="matchesDescriptionPool3">
-              <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.matchesDescriptionPool3">Matches Description Pool 3</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
+                <span jhiTranslate="biodifulApp.survey.poolCount">Pools Count</span>
               </div>
             </th>
             <th scope="col" jhiSortBy="open">
@@ -195,15 +137,7 @@
               <td>{{ survey.photoURL }}</td>
               <td>{{ survey.logosURL }}</td>
               <td>{{ survey.formURL }}</td>
-              <td>{{ survey.challengersPool1URL }}</td>
-              <td>{{ survey.challengersPool2URL }}</td>
-              <td>{{ survey.challengersPool3URL }}</td>
-              <td>{{ survey.numberOfMatchesPerPool }}</td>
-              <td>{{ survey.numberOfMatchesPerPool2 }}</td>
-              <td>{{ survey.numberOfMatchesPerPool3 }}</td>
-              <td>{{ survey.matchesDescription }}</td>
-              <td>{{ survey.matchesDescriptionPool2 }}</td>
-              <td>{{ survey.matchesDescriptionPool3 }}</td>
+              <td>{{ survey.challengerPools?.length || 0 }}</td>
               <td>{{ survey.open }}</td>
               <td [jhiTranslate]="'biodifulApp.Language.' + (survey.language ?? 'null')">
                 {{ { null: '', FR: 'FR', EN: 'EN', ES: 'ES' }[survey.language ?? 'null'] }}

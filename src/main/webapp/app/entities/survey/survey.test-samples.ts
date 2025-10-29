@@ -5,12 +5,18 @@ export const sampleWithRequiredData: ISurvey = {
   surveyName: 'but better',
   surveyDescription: '../fake-data/blob/hipster.txt',
   formURL: 'yuck so',
-  challengersPool1URL: 'that fortunately',
-  numberOfMatchesPerPool: 6745,
-  matchesDescription: '../fake-data/blob/hipster.txt',
   open: true,
   language: 'FR',
   uniqueChallengers: true,
+  challengerPools: [
+    {
+      id: 1,
+      poolOrder: 1,
+      challengersURL: 'https://api.flickr.com/pool1',
+      numberOfMatches: 10,
+      matchesDescription: '../fake-data/blob/hipster.txt',
+    },
+  ],
 };
 
 export const sampleWithPartialData: ISurvey = {
@@ -19,14 +25,25 @@ export const sampleWithPartialData: ISurvey = {
   surveyDescription: '../fake-data/blob/hipster.txt',
   logosURL: 'excepting reproachfully mmm',
   formURL: 'against',
-  challengersPool1URL: 'gown extremely',
-  challengersPool2URL: 'generously so',
-  numberOfMatchesPerPool: 21441,
-  matchesDescription: '../fake-data/blob/hipster.txt',
-  matchesDescriptionPool3: '../fake-data/blob/hipster.txt',
   open: true,
   language: 'ES',
   uniqueChallengers: true,
+  challengerPools: [
+    {
+      id: 2,
+      poolOrder: 1,
+      challengersURL: 'https://api.flickr.com/pool1',
+      numberOfMatches: 15,
+      matchesDescription: '../fake-data/blob/hipster.txt',
+    },
+    {
+      id: 3,
+      poolOrder: 2,
+      challengersURL: 'https://api.flickr.com/pool2',
+      numberOfMatches: 20,
+      matchesDescription: '../fake-data/blob/hipster.txt',
+    },
+  ],
 };
 
 export const sampleWithFullData: ISurvey = {
@@ -38,30 +55,49 @@ export const sampleWithFullData: ISurvey = {
   photoURL: 'deafening',
   logosURL: 'offset off whoever',
   formURL: 'advertisement even rule',
-  challengersPool1URL: 'major awkwardly',
-  challengersPool2URL: 'partial nor hassle',
-  challengersPool3URL: 'against ouch fast',
-  numberOfMatchesPerPool: 4032,
-  numberOfMatchesPerPool2: 22003,
-  numberOfMatchesPerPool3: 5321,
-  matchesDescription: '../fake-data/blob/hipster.txt',
-  matchesDescriptionPool2: '../fake-data/blob/hipster.txt',
-  matchesDescriptionPool3: '../fake-data/blob/hipster.txt',
   open: true,
   language: 'FR',
   uniqueChallengers: false,
+  challengerPools: [
+    {
+      id: 4,
+      poolOrder: 1,
+      challengersURL: 'https://api.flickr.com/pool1',
+      numberOfMatches: 10,
+      matchesDescription: '../fake-data/blob/hipster.txt',
+    },
+    {
+      id: 5,
+      poolOrder: 2,
+      challengersURL: 'https://api.flickr.com/pool2',
+      numberOfMatches: 15,
+      matchesDescription: '../fake-data/blob/hipster.txt',
+    },
+    {
+      id: 6,
+      poolOrder: 3,
+      challengersURL: 'https://api.flickr.com/pool3',
+      numberOfMatches: 20,
+      matchesDescription: '../fake-data/blob/hipster.txt',
+    },
+  ],
 };
 
 export const sampleWithNewData: NewSurvey = {
   surveyName: 'spiteful wisely',
   surveyDescription: '../fake-data/blob/hipster.txt',
   formURL: 'after',
-  challengersPool1URL: 'loudly',
-  numberOfMatchesPerPool: 356,
-  matchesDescription: '../fake-data/blob/hipster.txt',
   open: true,
   language: 'ES',
   uniqueChallengers: false,
+  challengerPools: [
+    {
+      poolOrder: 1,
+      challengersURL: 'https://api.flickr.com/pool1',
+      numberOfMatches: 10,
+      matchesDescription: '../fake-data/blob/hipster.txt',
+    },
+  ],
   id: null,
 };
 

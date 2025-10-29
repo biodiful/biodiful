@@ -3,7 +3,9 @@ package org.biodiful.service.dto;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import org.biodiful.domain.enumeration.Language;
 
 /**
@@ -32,28 +34,7 @@ public class SurveyDTO implements Serializable {
     @NotNull
     private String formURL;
 
-    @NotNull
-    private String challengersPool1URL;
-
-    private String challengersPool2URL;
-
-    private String challengersPool3URL;
-
-    @NotNull
-    private Integer numberOfMatchesPerPool;
-
-    private Integer numberOfMatchesPerPool2;
-
-    private Integer numberOfMatchesPerPool3;
-
-    @Lob
-    private String matchesDescription;
-
-    @Lob
-    private String matchesDescriptionPool2;
-
-    @Lob
-    private String matchesDescriptionPool3;
+    private Set<ChallengerPoolDTO> challengerPools = new HashSet<>();
 
     @NotNull
     private Boolean open;
@@ -128,76 +109,12 @@ public class SurveyDTO implements Serializable {
         this.formURL = formURL;
     }
 
-    public String getChallengersPool1URL() {
-        return challengersPool1URL;
+    public Set<ChallengerPoolDTO> getChallengerPools() {
+        return challengerPools;
     }
 
-    public void setChallengersPool1URL(String challengersPool1URL) {
-        this.challengersPool1URL = challengersPool1URL;
-    }
-
-    public String getChallengersPool2URL() {
-        return challengersPool2URL;
-    }
-
-    public void setChallengersPool2URL(String challengersPool2URL) {
-        this.challengersPool2URL = challengersPool2URL;
-    }
-
-    public String getChallengersPool3URL() {
-        return challengersPool3URL;
-    }
-
-    public void setChallengersPool3URL(String challengersPool3URL) {
-        this.challengersPool3URL = challengersPool3URL;
-    }
-
-    public Integer getNumberOfMatchesPerPool() {
-        return numberOfMatchesPerPool;
-    }
-
-    public void setNumberOfMatchesPerPool(Integer numberOfMatchesPerPool) {
-        this.numberOfMatchesPerPool = numberOfMatchesPerPool;
-    }
-
-    public Integer getNumberOfMatchesPerPool2() {
-        return numberOfMatchesPerPool2;
-    }
-
-    public void setNumberOfMatchesPerPool2(Integer numberOfMatchesPerPool2) {
-        this.numberOfMatchesPerPool2 = numberOfMatchesPerPool2;
-    }
-
-    public Integer getNumberOfMatchesPerPool3() {
-        return numberOfMatchesPerPool3;
-    }
-
-    public void setNumberOfMatchesPerPool3(Integer numberOfMatchesPerPool3) {
-        this.numberOfMatchesPerPool3 = numberOfMatchesPerPool3;
-    }
-
-    public String getMatchesDescription() {
-        return matchesDescription;
-    }
-
-    public void setMatchesDescription(String matchesDescription) {
-        this.matchesDescription = matchesDescription;
-    }
-
-    public String getMatchesDescriptionPool2() {
-        return matchesDescriptionPool2;
-    }
-
-    public void setMatchesDescriptionPool2(String matchesDescriptionPool2) {
-        this.matchesDescriptionPool2 = matchesDescriptionPool2;
-    }
-
-    public String getMatchesDescriptionPool3() {
-        return matchesDescriptionPool3;
-    }
-
-    public void setMatchesDescriptionPool3(String matchesDescriptionPool3) {
-        this.matchesDescriptionPool3 = matchesDescriptionPool3;
+    public void setChallengerPools(Set<ChallengerPoolDTO> challengerPools) {
+        this.challengerPools = challengerPools;
     }
 
     public Boolean getOpen() {
@@ -257,15 +174,7 @@ public class SurveyDTO implements Serializable {
             ", photoURL='" + getPhotoURL() + "'" +
             ", logosURL='" + getLogosURL() + "'" +
             ", formURL='" + getFormURL() + "'" +
-            ", challengersPool1URL='" + getChallengersPool1URL() + "'" +
-            ", challengersPool2URL='" + getChallengersPool2URL() + "'" +
-            ", challengersPool3URL='" + getChallengersPool3URL() + "'" +
-            ", numberOfMatchesPerPool=" + getNumberOfMatchesPerPool() +
-            ", numberOfMatchesPerPool2=" + getNumberOfMatchesPerPool2() +
-            ", numberOfMatchesPerPool3=" + getNumberOfMatchesPerPool3() +
-            ", matchesDescription='" + getMatchesDescription() + "'" +
-            ", matchesDescriptionPool2='" + getMatchesDescriptionPool2() + "'" +
-            ", matchesDescriptionPool3='" + getMatchesDescriptionPool3() + "'" +
+            ", challengerPools=" + getChallengerPools() +
             ", open='" + getOpen() + "'" +
             ", language='" + getLanguage() + "'" +
             ", uniqueChallengers='" + getUniqueChallengers() + "'" +

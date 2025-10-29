@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.biodiful.IntegrationTest;
 import org.biodiful.domain.Answer;
+import org.biodiful.domain.ChallengerPool;
 import org.biodiful.domain.Survey;
 import org.biodiful.domain.enumeration.Language;
 import org.biodiful.repository.AnswerRepository;
@@ -59,33 +60,6 @@ class SurveyResourceIT {
     private static final String DEFAULT_FORM_URL = "AAAAAAAAAA";
     private static final String UPDATED_FORM_URL = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CHALLENGERS_POOL_1_URL = "AAAAAAAAAA";
-    private static final String UPDATED_CHALLENGERS_POOL_1_URL = "BBBBBBBBBB";
-
-    private static final String DEFAULT_CHALLENGERS_POOL_2_URL = "AAAAAAAAAA";
-    private static final String UPDATED_CHALLENGERS_POOL_2_URL = "BBBBBBBBBB";
-
-    private static final String DEFAULT_CHALLENGERS_POOL_3_URL = "AAAAAAAAAA";
-    private static final String UPDATED_CHALLENGERS_POOL_3_URL = "BBBBBBBBBB";
-
-    private static final Integer DEFAULT_NUMBER_OF_MATCHES_PER_POOL = 1;
-    private static final Integer UPDATED_NUMBER_OF_MATCHES_PER_POOL = 2;
-
-    private static final Integer DEFAULT_NUMBER_OF_MATCHES_PER_POOL_2 = 1;
-    private static final Integer UPDATED_NUMBER_OF_MATCHES_PER_POOL_2 = 2;
-
-    private static final Integer DEFAULT_NUMBER_OF_MATCHES_PER_POOL_3 = 1;
-    private static final Integer UPDATED_NUMBER_OF_MATCHES_PER_POOL_3 = 2;
-
-    private static final String DEFAULT_MATCHES_DESCRIPTION = "AAAAAAAAAA";
-    private static final String UPDATED_MATCHES_DESCRIPTION = "BBBBBBBBBB";
-
-    private static final String DEFAULT_MATCHES_DESCRIPTION_POOL_2 = "AAAAAAAAAA";
-    private static final String UPDATED_MATCHES_DESCRIPTION_POOL_2 = "BBBBBBBBBB";
-
-    private static final String DEFAULT_MATCHES_DESCRIPTION_POOL_3 = "AAAAAAAAAA";
-    private static final String UPDATED_MATCHES_DESCRIPTION_POOL_3 = "BBBBBBBBBB";
-
     private static final Boolean DEFAULT_OPEN = false;
     private static final Boolean UPDATED_OPEN = true;
 
@@ -130,7 +104,7 @@ class SurveyResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Survey createEntity() {
-        return new Survey()
+        Survey survey = new Survey()
             .surveyName(DEFAULT_SURVEY_NAME)
             .surveyDescription(DEFAULT_SURVEY_DESCRIPTION)
             .contactsDescription(DEFAULT_CONTACTS_DESCRIPTION)
@@ -138,18 +112,18 @@ class SurveyResourceIT {
             .photoURL(DEFAULT_PHOTO_URL)
             .logosURL(DEFAULT_LOGOS_URL)
             .formURL(DEFAULT_FORM_URL)
-            .challengersPool1URL(DEFAULT_CHALLENGERS_POOL_1_URL)
-            .challengersPool2URL(DEFAULT_CHALLENGERS_POOL_2_URL)
-            .challengersPool3URL(DEFAULT_CHALLENGERS_POOL_3_URL)
-            .numberOfMatchesPerPool(DEFAULT_NUMBER_OF_MATCHES_PER_POOL)
-            .numberOfMatchesPerPool2(DEFAULT_NUMBER_OF_MATCHES_PER_POOL_2)
-            .numberOfMatchesPerPool3(DEFAULT_NUMBER_OF_MATCHES_PER_POOL_3)
-            .matchesDescription(DEFAULT_MATCHES_DESCRIPTION)
-            .matchesDescriptionPool2(DEFAULT_MATCHES_DESCRIPTION_POOL_2)
-            .matchesDescriptionPool3(DEFAULT_MATCHES_DESCRIPTION_POOL_3)
             .open(DEFAULT_OPEN)
             .language(DEFAULT_LANGUAGE)
             .uniqueChallengers(DEFAULT_UNIQUE_CHALLENGERS);
+
+        ChallengerPool pool1 = new ChallengerPool()
+            .poolOrder(1)
+            .challengersURL("https://api.flickr.com/pool1")
+            .numberOfMatches(10)
+            .matchesDescription("Test pool 1 description");
+        survey.addChallengerPool(pool1);
+
+        return survey;
     }
 
     /**
@@ -159,7 +133,7 @@ class SurveyResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Survey createUpdatedEntity() {
-        return new Survey()
+        Survey survey = new Survey()
             .surveyName(UPDATED_SURVEY_NAME)
             .surveyDescription(UPDATED_SURVEY_DESCRIPTION)
             .contactsDescription(UPDATED_CONTACTS_DESCRIPTION)
@@ -167,18 +141,18 @@ class SurveyResourceIT {
             .photoURL(UPDATED_PHOTO_URL)
             .logosURL(UPDATED_LOGOS_URL)
             .formURL(UPDATED_FORM_URL)
-            .challengersPool1URL(UPDATED_CHALLENGERS_POOL_1_URL)
-            .challengersPool2URL(UPDATED_CHALLENGERS_POOL_2_URL)
-            .challengersPool3URL(UPDATED_CHALLENGERS_POOL_3_URL)
-            .numberOfMatchesPerPool(UPDATED_NUMBER_OF_MATCHES_PER_POOL)
-            .numberOfMatchesPerPool2(UPDATED_NUMBER_OF_MATCHES_PER_POOL_2)
-            .numberOfMatchesPerPool3(UPDATED_NUMBER_OF_MATCHES_PER_POOL_3)
-            .matchesDescription(UPDATED_MATCHES_DESCRIPTION)
-            .matchesDescriptionPool2(UPDATED_MATCHES_DESCRIPTION_POOL_2)
-            .matchesDescriptionPool3(UPDATED_MATCHES_DESCRIPTION_POOL_3)
             .open(UPDATED_OPEN)
             .language(UPDATED_LANGUAGE)
             .uniqueChallengers(UPDATED_UNIQUE_CHALLENGERS);
+
+        ChallengerPool pool1 = new ChallengerPool()
+            .poolOrder(1)
+            .challengersURL("https://api.flickr.com/pool1-updated")
+            .numberOfMatches(20)
+            .matchesDescription("Updated pool 1 description");
+        survey.addChallengerPool(pool1);
+
+        return survey;
     }
 
     @BeforeEach
@@ -289,40 +263,6 @@ class SurveyResourceIT {
 
     @Test
     @Transactional
-    void checkChallengersPool1URLIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        survey.setChallengersPool1URL(null);
-
-        // Create the Survey, which fails.
-        SurveyDTO surveyDTO = surveyMapper.toDto(survey);
-
-        restSurveyMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(surveyDTO)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkNumberOfMatchesPerPoolIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        survey.setNumberOfMatchesPerPool(null);
-
-        // Create the Survey, which fails.
-        SurveyDTO surveyDTO = surveyMapper.toDto(survey);
-
-        restSurveyMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(surveyDTO)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void checkOpenIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -391,15 +331,6 @@ class SurveyResourceIT {
             .andExpect(jsonPath("$.[*].photoURL").value(hasItem(DEFAULT_PHOTO_URL)))
             .andExpect(jsonPath("$.[*].logosURL").value(hasItem(DEFAULT_LOGOS_URL)))
             .andExpect(jsonPath("$.[*].formURL").value(hasItem(DEFAULT_FORM_URL)))
-            .andExpect(jsonPath("$.[*].challengersPool1URL").value(hasItem(DEFAULT_CHALLENGERS_POOL_1_URL)))
-            .andExpect(jsonPath("$.[*].challengersPool2URL").value(hasItem(DEFAULT_CHALLENGERS_POOL_2_URL)))
-            .andExpect(jsonPath("$.[*].challengersPool3URL").value(hasItem(DEFAULT_CHALLENGERS_POOL_3_URL)))
-            .andExpect(jsonPath("$.[*].numberOfMatchesPerPool").value(hasItem(DEFAULT_NUMBER_OF_MATCHES_PER_POOL)))
-            .andExpect(jsonPath("$.[*].numberOfMatchesPerPool2").value(hasItem(DEFAULT_NUMBER_OF_MATCHES_PER_POOL_2)))
-            .andExpect(jsonPath("$.[*].numberOfMatchesPerPool3").value(hasItem(DEFAULT_NUMBER_OF_MATCHES_PER_POOL_3)))
-            .andExpect(jsonPath("$.[*].matchesDescription").value(hasItem(DEFAULT_MATCHES_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].matchesDescriptionPool2").value(hasItem(DEFAULT_MATCHES_DESCRIPTION_POOL_2)))
-            .andExpect(jsonPath("$.[*].matchesDescriptionPool3").value(hasItem(DEFAULT_MATCHES_DESCRIPTION_POOL_3)))
             .andExpect(jsonPath("$.[*].open").value(hasItem(DEFAULT_OPEN)))
             .andExpect(jsonPath("$.[*].language").value(hasItem(DEFAULT_LANGUAGE.toString())))
             .andExpect(jsonPath("$.[*].uniqueChallengers").value(hasItem(DEFAULT_UNIQUE_CHALLENGERS)));
@@ -424,18 +355,10 @@ class SurveyResourceIT {
             .andExpect(jsonPath("$.photoURL").value(DEFAULT_PHOTO_URL))
             .andExpect(jsonPath("$.logosURL").value(DEFAULT_LOGOS_URL))
             .andExpect(jsonPath("$.formURL").value(DEFAULT_FORM_URL))
-            .andExpect(jsonPath("$.challengersPool1URL").value(DEFAULT_CHALLENGERS_POOL_1_URL))
-            .andExpect(jsonPath("$.challengersPool2URL").value(DEFAULT_CHALLENGERS_POOL_2_URL))
-            .andExpect(jsonPath("$.challengersPool3URL").value(DEFAULT_CHALLENGERS_POOL_3_URL))
-            .andExpect(jsonPath("$.numberOfMatchesPerPool").value(DEFAULT_NUMBER_OF_MATCHES_PER_POOL))
-            .andExpect(jsonPath("$.numberOfMatchesPerPool2").value(DEFAULT_NUMBER_OF_MATCHES_PER_POOL_2))
-            .andExpect(jsonPath("$.numberOfMatchesPerPool3").value(DEFAULT_NUMBER_OF_MATCHES_PER_POOL_3))
-            .andExpect(jsonPath("$.matchesDescription").value(DEFAULT_MATCHES_DESCRIPTION))
-            .andExpect(jsonPath("$.matchesDescriptionPool2").value(DEFAULT_MATCHES_DESCRIPTION_POOL_2))
-            .andExpect(jsonPath("$.matchesDescriptionPool3").value(DEFAULT_MATCHES_DESCRIPTION_POOL_3))
             .andExpect(jsonPath("$.open").value(DEFAULT_OPEN))
             .andExpect(jsonPath("$.language").value(DEFAULT_LANGUAGE.toString()))
-            .andExpect(jsonPath("$.uniqueChallengers").value(DEFAULT_UNIQUE_CHALLENGERS));
+            .andExpect(jsonPath("$.uniqueChallengers").value(DEFAULT_UNIQUE_CHALLENGERS))
+            .andExpect(jsonPath("$.challengerPools.length()").value(1));
     }
 
     @Test
@@ -458,10 +381,8 @@ class SurveyResourceIT {
             .andExpect(jsonPath("$.photoURL").value(DEFAULT_PHOTO_URL.toString()))
             .andExpect(jsonPath("$.logosURL").value(DEFAULT_LOGOS_URL.toString()))
             .andExpect(jsonPath("$.formURL").value(DEFAULT_FORM_URL.toString()))
-            .andExpect(jsonPath("$.challengersPool1URL").value(DEFAULT_CHALLENGERS_POOL_1_URL.toString()))
-            .andExpect(jsonPath("$.numberOfMatchesPerPool").value(DEFAULT_NUMBER_OF_MATCHES_PER_POOL))
-            .andExpect(jsonPath("$.matchesDescription").value(DEFAULT_MATCHES_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.open").value(DEFAULT_OPEN.booleanValue()));
+            .andExpect(jsonPath("$.open").value(DEFAULT_OPEN.booleanValue()))
+            .andExpect(jsonPath("$.challengerPools.length()").value(1));
     }
 
     @Test
@@ -492,15 +413,6 @@ class SurveyResourceIT {
             .photoURL(UPDATED_PHOTO_URL)
             .logosURL(UPDATED_LOGOS_URL)
             .formURL(UPDATED_FORM_URL)
-            .challengersPool1URL(UPDATED_CHALLENGERS_POOL_1_URL)
-            .challengersPool2URL(UPDATED_CHALLENGERS_POOL_2_URL)
-            .challengersPool3URL(UPDATED_CHALLENGERS_POOL_3_URL)
-            .numberOfMatchesPerPool(UPDATED_NUMBER_OF_MATCHES_PER_POOL)
-            .numberOfMatchesPerPool2(UPDATED_NUMBER_OF_MATCHES_PER_POOL_2)
-            .numberOfMatchesPerPool3(UPDATED_NUMBER_OF_MATCHES_PER_POOL_3)
-            .matchesDescription(UPDATED_MATCHES_DESCRIPTION)
-            .matchesDescriptionPool2(UPDATED_MATCHES_DESCRIPTION_POOL_2)
-            .matchesDescriptionPool3(UPDATED_MATCHES_DESCRIPTION_POOL_3)
             .open(UPDATED_OPEN)
             .language(UPDATED_LANGUAGE)
             .uniqueChallengers(UPDATED_UNIQUE_CHALLENGERS);
@@ -596,9 +508,6 @@ class SurveyResourceIT {
             .surveyDescription(UPDATED_SURVEY_DESCRIPTION)
             .contactsDescription(UPDATED_CONTACTS_DESCRIPTION)
             .photoURL(UPDATED_PHOTO_URL)
-            .challengersPool2URL(UPDATED_CHALLENGERS_POOL_2_URL)
-            .challengersPool3URL(UPDATED_CHALLENGERS_POOL_3_URL)
-            .numberOfMatchesPerPool2(UPDATED_NUMBER_OF_MATCHES_PER_POOL_2)
             .open(UPDATED_OPEN)
             .language(UPDATED_LANGUAGE);
 
@@ -637,15 +546,6 @@ class SurveyResourceIT {
             .photoURL(UPDATED_PHOTO_URL)
             .logosURL(UPDATED_LOGOS_URL)
             .formURL(UPDATED_FORM_URL)
-            .challengersPool1URL(UPDATED_CHALLENGERS_POOL_1_URL)
-            .challengersPool2URL(UPDATED_CHALLENGERS_POOL_2_URL)
-            .challengersPool3URL(UPDATED_CHALLENGERS_POOL_3_URL)
-            .numberOfMatchesPerPool(UPDATED_NUMBER_OF_MATCHES_PER_POOL)
-            .numberOfMatchesPerPool2(UPDATED_NUMBER_OF_MATCHES_PER_POOL_2)
-            .numberOfMatchesPerPool3(UPDATED_NUMBER_OF_MATCHES_PER_POOL_3)
-            .matchesDescription(UPDATED_MATCHES_DESCRIPTION)
-            .matchesDescriptionPool2(UPDATED_MATCHES_DESCRIPTION_POOL_2)
-            .matchesDescriptionPool3(UPDATED_MATCHES_DESCRIPTION_POOL_3)
             .open(UPDATED_OPEN)
             .language(UPDATED_LANGUAGE)
             .uniqueChallengers(UPDATED_UNIQUE_CHALLENGERS);
@@ -784,5 +684,129 @@ class SurveyResourceIT {
 
     protected void assertPersistedSurveyToMatchUpdatableProperties(Survey expectedSurvey) {
         assertSurveyAllUpdatablePropertiesEquals(expectedSurvey, getPersistedSurvey(expectedSurvey));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
+    void createSurveyWithMultiplePools() throws Exception {
+        // Create a survey with 3 pools
+        Survey surveyWithPools = new Survey()
+            .surveyName("Multi Pool Survey")
+            .surveyDescription("Survey with multiple pools")
+            .contactsDescription("Contact info")
+            .friendlyURL("multi-pool-survey")
+            .photoURL("https://example.com/photo.jpg")
+            .logosURL("https://example.com/logo.jpg")
+            .formURL("https://example.com/form")
+            .open(true)
+            .language(Language.EN)
+            .uniqueChallengers(true);
+
+        ChallengerPool pool1 = new ChallengerPool()
+            .poolOrder(1)
+            .challengersURL("https://api.flickr.com/pool1")
+            .numberOfMatches(10)
+            .matchesDescription("First pool");
+        surveyWithPools.addChallengerPool(pool1);
+
+        ChallengerPool pool2 = new ChallengerPool()
+            .poolOrder(2)
+            .challengersURL("https://api.flickr.com/pool2")
+            .numberOfMatches(15)
+            .matchesDescription("Second pool");
+        surveyWithPools.addChallengerPool(pool2);
+
+        ChallengerPool pool3 = new ChallengerPool()
+            .poolOrder(3)
+            .challengersURL("https://api.flickr.com/pool3")
+            .numberOfMatches(20)
+            .matchesDescription("Third pool");
+        surveyWithPools.addChallengerPool(pool3);
+
+        long databaseSizeBeforeCreate = getRepositoryCount();
+
+        // Create the Survey with multiple pools
+        SurveyDTO surveyDTO = surveyMapper.toDto(surveyWithPools);
+        var returnedSurveyDTO = om.readValue(
+            restSurveyMockMvc
+                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(surveyDTO)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.challengerPools.length()").value(3))
+                .andReturn()
+                .getResponse()
+                .getContentAsString(),
+            SurveyDTO.class
+        );
+
+        // Validate the Survey in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
+        var returnedSurvey = surveyMapper.toEntity(returnedSurveyDTO);
+        assertThat(returnedSurvey.getChallengerPools()).hasSize(3);
+
+        insertedSurvey = returnedSurvey;
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
+    void updateSurveyPools() throws Exception {
+        // Initialize the database with a survey with one pool
+        insertedSurvey = surveyRepository.saveAndFlush(survey);
+        assertThat(getPersistedSurvey(survey).getChallengerPools()).hasSize(1);
+
+        // Update the survey to add another pool
+        Survey updatedSurvey = surveyRepository.findById(survey.getId()).orElseThrow();
+        em.detach(updatedSurvey);
+
+        ChallengerPool newPool = new ChallengerPool()
+            .poolOrder(2)
+            .challengersURL("https://api.flickr.com/pool2")
+            .numberOfMatches(15)
+            .matchesDescription("New pool");
+        updatedSurvey.addChallengerPool(newPool);
+
+        SurveyDTO surveyDTO = surveyMapper.toDto(updatedSurvey);
+
+        restSurveyMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, surveyDTO.getId()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(surveyDTO))
+            )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.challengerPools.length()").value(2));
+
+        // Validate the Survey has 2 pools now
+        Survey persistedSurvey = getPersistedSurvey(updatedSurvey);
+        assertThat(persistedSurvey.getChallengerPools()).hasSize(2);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
+    void deleteSurveyCascadesDeletePools() throws Exception {
+        // Create a survey with multiple pools
+        ChallengerPool pool2 = new ChallengerPool()
+            .poolOrder(2)
+            .challengersURL("https://api.flickr.com/pool2")
+            .numberOfMatches(15)
+            .matchesDescription("Second pool");
+        survey.addChallengerPool(pool2);
+
+        // Initialize the database
+        insertedSurvey = surveyRepository.saveAndFlush(survey);
+        assertThat(getPersistedSurvey(survey).getChallengerPools()).hasSize(2);
+
+        long databaseSizeBeforeDelete = getRepositoryCount();
+
+        // Delete the survey
+        restSurveyMockMvc
+            .perform(delete(ENTITY_API_URL_ID, survey.getId()).accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+
+        // Validate the survey and its pools have been deleted
+        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
+
+        // Verify the survey no longer exists
+        assertThat(surveyRepository.findById(survey.getId())).isEmpty();
     }
 }

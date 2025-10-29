@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Survey} and its DTO {@link SurveyDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { ChallengerPoolMapper.class })
 public interface SurveyMapper extends EntityMapper<SurveyDTO, Survey> {}
