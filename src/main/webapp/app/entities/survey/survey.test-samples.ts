@@ -12,7 +12,7 @@ export const sampleWithRequiredData: ISurvey = {
     {
       id: 1,
       poolOrder: 1,
-      challengersURL: 'https://api.flickr.com/pool1',
+      challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-1/',
       numberOfMatches: 10,
       matchesDescription: '../fake-data/blob/hipster.txt',
     },
@@ -32,14 +32,14 @@ export const sampleWithPartialData: ISurvey = {
     {
       id: 2,
       poolOrder: 1,
-      challengersURL: 'https://api.flickr.com/pool1',
+      challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-1/',
       numberOfMatches: 15,
       matchesDescription: '../fake-data/blob/hipster.txt',
     },
     {
       id: 3,
       poolOrder: 2,
-      challengersURL: 'https://api.flickr.com/pool2',
+      challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-2/',
       numberOfMatches: 20,
       matchesDescription: '../fake-data/blob/hipster.txt',
     },
@@ -62,21 +62,21 @@ export const sampleWithFullData: ISurvey = {
     {
       id: 4,
       poolOrder: 1,
-      challengersURL: 'https://api.flickr.com/pool1',
+      challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-1/',
       numberOfMatches: 10,
       matchesDescription: '../fake-data/blob/hipster.txt',
     },
     {
       id: 5,
       poolOrder: 2,
-      challengersURL: 'https://api.flickr.com/pool2',
+      challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-2/',
       numberOfMatches: 15,
       matchesDescription: '../fake-data/blob/hipster.txt',
     },
     {
       id: 6,
       poolOrder: 3,
-      challengersURL: 'https://api.flickr.com/pool3',
+      challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-3/',
       numberOfMatches: 20,
       matchesDescription: '../fake-data/blob/hipster.txt',
     },
@@ -93,7 +93,7 @@ export const sampleWithNewData: NewSurvey = {
   challengerPools: [
     {
       poolOrder: 1,
-      challengersURL: 'https://api.flickr.com/pool1',
+      challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-1/',
       numberOfMatches: 10,
       matchesDescription: '../fake-data/blob/hipster.txt',
     },

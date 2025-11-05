@@ -12,20 +12,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { HttpClient } from '@angular/common/http';
 import SharedModule from 'app/shared/shared.module';
 
-interface FlickrPhotoset {
-  photo: {
-    id: string;
-    secret: string;
-    server: string;
-    farm: number;
-    title: string;
-  }[];
-}
-
-interface FlickrResponse {
-  photoset: FlickrPhotoset;
-  stat: string;
-  message: string;
+interface S3ImageListResponse {
+  imageUrls: string[];
 }
 
 @Component({
@@ -74,8 +62,11 @@ export class SurveyAnswerComponent implements OnInit {
 
     sortedPools.forEach((pool, index) => {
       if (pool.challengersURL) {
+        // Call backend endpoint to list images from S3
         this.http
-          .get<FlickrResponse>(pool.challengersURL)
+          .get<S3ImageListResponse>('/api/s3/list-images', {
+            params: { folderUrl: pool.challengersURL },
+          })
           .pipe(
             tap(response => this.onGetChallengersSuccess(response, index)),
             catchError(error => {
@@ -88,19 +79,22 @@ export class SurveyAnswerComponent implements OnInit {
     });
   }
 
-  onGetChallengersSuccess(response: FlickrResponse, poolIndex: number): void {
-    // console.debug(JSON.stringify(response));
+  onGetChallengersSuccess(response: S3ImageListResponse, poolIndex: number): void {
+    // Process the list of image URLs returned by the backend
+    const challengersPool: Challenger[] = [];
 
-    if (response.stat === 'fail') {
-      this.onError('Failed to retrieve challengers: ' + response.message);
-      return;
+    for (const imageUrl of response.imageUrls) {
+      // Extract filename from URL for the challenger ID
+      const urlParts = imageUrl.split('/');
+      const filename = urlParts[urlParts.length - 1];
+      // Remove file extension for cleaner ID
+      const id = filename.replace(/\.[^/.]+$/, '');
+      challengersPool.push(new Challenger(id, imageUrl));
     }
 
-    const photoset = response.photoset;
-    const challengersPool: Challenger[] = [];
-    for (const photo of photoset.photo) {
-      const photoUrl = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
-      challengersPool.push(new Challenger(photo.title, photoUrl));
+    if (challengersPool.length === 0) {
+      this.onError(`No images found in Pool ${poolIndex + 1}`);
+      return;
     }
 
     // Update the challengerPools array

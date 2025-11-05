@@ -21,7 +21,7 @@ public class SurveyTestSamples {
         // Add one challenger pool
         ChallengerPool pool1 = new ChallengerPool()
             .poolOrder(1)
-            .challengersURL("challengersPool1URL1")
+            .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-1/pool-1/")
             .numberOfMatches(10)
             .matchesDescription("matchesDescription1");
         survey.addChallengerPool(pool1);
@@ -41,14 +41,14 @@ public class SurveyTestSamples {
         // Add two challenger pools
         ChallengerPool pool1 = new ChallengerPool()
             .poolOrder(1)
-            .challengersURL("challengersPool1URL2")
+            .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-2/pool-1/")
             .numberOfMatches(15)
             .matchesDescription("matchesDescription2-1");
         survey.addChallengerPool(pool1);
 
         ChallengerPool pool2 = new ChallengerPool()
             .poolOrder(2)
-            .challengersURL("challengersPool2URL2")
+            .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-2/pool-2/")
             .numberOfMatches(20)
             .matchesDescription("matchesDescription2-2");
         survey.addChallengerPool(pool2);
@@ -92,7 +92,7 @@ public class SurveyTestSamples {
         for (int i = 1; i <= 5; i++) {
             ChallengerPool pool = new ChallengerPool()
                 .poolOrder(i)
-                .challengersURL("challengersPoolURL" + i)
+                .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-3/pool-" + i + "/")
                 .numberOfMatches(10 + i)
                 .matchesDescription("matchesDescription" + i);
             survey.addChallengerPool(pool);

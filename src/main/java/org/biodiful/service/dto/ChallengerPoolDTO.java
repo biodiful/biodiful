@@ -16,6 +16,10 @@ public class ChallengerPoolDTO implements Serializable {
     @NotNull
     private Integer poolOrder;
 
+    /**
+     * The URL to the S3 folder containing challenger images.
+     * Format: https://bucket-name.s3.region.amazonaws.com/path/to/folder/
+     */
     @NotNull
     private String challengersURL;
 

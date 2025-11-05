@@ -165,7 +165,7 @@
               <div class="card-body">
                 <!-- Challengers URL -->
                 @let challengersURLRef = poolFormGroup.get('challengersURL')!;
-                <div class="mb-3" ngbTooltip="URL de l'appel a l'API Flickr pour obtenir les photos à afficher lors des matches">
+                <div class="mb-3" ngbTooltip="URL du dossier S3 contenant les images à afficher lors des matches">
                   <label
                     class="form-label"
                     [attr.for]="'field_challengersURL_' + poolIndex"
@@ -173,6 +173,10 @@
                   >
                     Challengers URL
                   </label>
+                  <div class="alert alert-info" role="alert">
+                    URL du dossier S3 contenant les images à afficher lors des matches. Format:
+                    https://bucket-name.s3.region.provider.com/folder/
+                  </div>
                   <input
                     type="text"
                     class="form-control"
@@ -180,6 +184,7 @@
                     [attr.id]="'field_challengersURL_' + poolIndex"
                     [attr.data-cy]="'challengersURL-' + poolIndex"
                     formControlName="challengersURL"
+                    placeholder="https://my-bucket.s3.fr-par.scw.cloud/survey-1/pool-1/"
                   />
                   @if (challengersURLRef.invalid && (challengersURLRef.dirty || challengersURLRef.touched)) {
                     <div>

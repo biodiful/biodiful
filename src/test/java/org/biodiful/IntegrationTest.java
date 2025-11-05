@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 import org.biodiful.config.AsyncSyncConfiguration;
 import org.biodiful.config.EmbeddedSQL;
 import org.biodiful.config.JacksonConfiguration;
+import org.biodiful.config.S3TestConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -14,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest(classes = { BiodifulApp.class, JacksonConfiguration.class, AsyncSyncConfiguration.class })
+@SpringBootTest(classes = { BiodifulApp.class, JacksonConfiguration.class, AsyncSyncConfiguration.class, S3TestConfiguration.class })
 @EmbeddedSQL
 public @interface IntegrationTest {
 }

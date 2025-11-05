@@ -8,7 +8,7 @@ import { Challenger } from 'app/shared/model/challenger.model';
   styleUrl: './survey-answer-match.scss',
 })
 export class SurveyAnswerMatchComponent {
-  // Show loader while retrieving images from Flickr
+  // Show loader while retrieving images from S3
   challengerOne = input<Challenger | undefined, Challenger | undefined>(undefined, {
     transform: value => value ?? new Challenger('UNDEFINED_1', '/content/images/loader.gif'),
   });

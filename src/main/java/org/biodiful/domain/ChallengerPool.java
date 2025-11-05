@@ -27,6 +27,11 @@ public class ChallengerPool implements Serializable {
     @Column(name = "pool_order", nullable = false)
     private Integer poolOrder;
 
+    /**
+     * The URL to the S3 folder containing challenger images.
+     * Format: https://bucket-name.s3.region.amazonaws.com/path/to/folder/
+     * Example: https://my-bucket.s3.us-east-1.amazonaws.com/survey-1/pool-1/
+     */
     @NotNull
     @Column(name = "challengers_url", nullable = false)
     private String challengersURL;

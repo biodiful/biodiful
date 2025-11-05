@@ -15,7 +15,7 @@ public class ChallengerPoolTestSamples {
         return new ChallengerPool()
             .id(1L)
             .poolOrder(1)
-            .challengersURL("challengersURL1")
+            .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-1/pool-1/")
             .numberOfMatches(1)
             .matchesDescription("matchesDescription1");
     }
@@ -24,7 +24,7 @@ public class ChallengerPoolTestSamples {
         return new ChallengerPool()
             .id(2L)
             .poolOrder(2)
-            .challengersURL("challengersURL2")
+            .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-1/pool-2/")
             .numberOfMatches(2)
             .matchesDescription("matchesDescription2");
     }
