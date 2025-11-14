@@ -251,6 +251,25 @@
                     </div>
                   }
                 </div>
+
+                <!-- Introduction Message -->
+                <div class="mb-3" ngbTooltip="Message d'introduction à afficher avant que l'utilisateur commence à répondre à cette Pool">
+                  <label
+                    class="form-label"
+                    [attr.for]="'field_introductionMessage_' + poolIndex"
+                    jhiTranslate="biodifulApp.survey.challengersPools.introductionMessage"
+                  >
+                    Introduction Message
+                  </label>
+                  <angular-editor
+                    [config]="angularEditorConfig"
+                    class="form-control"
+                    [attr.name]="'introductionMessage_' + poolIndex"
+                    [attr.id]="'field_introductionMessage_' + poolIndex"
+                    [attr.data-cy]="'introductionMessage-' + poolIndex"
+                    formControlName="introductionMessage"
+                  ></angular-editor>
+                </div>
               </div>
             </div>
           }

@@ -102,5 +102,51 @@ describe('Survey Form Service', () => {
         expect(formGroup.controls.id.disabled).toBe(true);
       });
     });
+
+    describe('createChallengerPoolFormGroup', () => {
+      it('should create a challenger pool form group with all fields', () => {
+        const poolFormGroup = service.createChallengerPoolFormGroup();
+
+        expect(poolFormGroup.controls).toEqual(
+          expect.objectContaining({
+            id: expect.any(Object),
+            poolOrder: expect.any(Object),
+            challengersURL: expect.any(Object),
+            numberOfMatches: expect.any(Object),
+            matchesDescription: expect.any(Object),
+            introductionMessage: expect.any(Object),
+          }),
+        );
+      });
+
+      it('should populate form with pool data including introductionMessage', () => {
+        const poolData = {
+          id: 1,
+          poolOrder: 1,
+          challengersURL: 'https://test.s3.amazonaws.com/pool-1/',
+          numberOfMatches: 10,
+          matchesDescription: 'Test description',
+          introductionMessage: 'Welcome to pool 1',
+        };
+
+        const poolFormGroup = service.createChallengerPoolFormGroup(poolData);
+
+        expect(poolFormGroup.value).toEqual(poolData);
+      });
+
+      it('should handle undefined introductionMessage', () => {
+        const poolData = {
+          id: 1,
+          poolOrder: 1,
+          challengersURL: 'https://test.s3.amazonaws.com/pool-1/',
+          numberOfMatches: 10,
+          matchesDescription: 'Test description',
+        };
+
+        const poolFormGroup = service.createChallengerPoolFormGroup(poolData);
+
+        expect(poolFormGroup.value.introductionMessage).toBeNull();
+      });
+    });
   });
 });

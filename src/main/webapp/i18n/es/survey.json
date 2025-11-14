@@ -34,7 +34,11 @@
         "description": "Description",
         "noPoolsYet": "No pools added yet. Click \"Add Pool\" to create the first challenger pool.",
         "addPool": "Add Pool",
-        "removePool": "Remove"
+        "removePool": "Remove",
+        "introductionMessage": "Mensaje introductorio"
+      },
+      "poolIntro": {
+        "start": "Para empezar"
       },
       "poolCount": "Pools Count",
       "noPools": "No pools definidos",

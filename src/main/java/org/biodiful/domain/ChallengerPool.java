@@ -44,6 +44,10 @@ public class ChallengerPool implements Serializable {
     @Column(name = "matches_description", nullable = false)
     private String matchesDescription;
 
+    @Lob
+    @Column(name = "introduction_message")
+    private String introductionMessage;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "challengerPools" }, allowSetters = true)
     private Survey survey;
@@ -115,6 +119,19 @@ public class ChallengerPool implements Serializable {
         this.matchesDescription = matchesDescription;
     }
 
+    public String getIntroductionMessage() {
+        return this.introductionMessage;
+    }
+
+    public ChallengerPool introductionMessage(String introductionMessage) {
+        this.setIntroductionMessage(introductionMessage);
+        return this;
+    }
+
+    public void setIntroductionMessage(String introductionMessage) {
+        this.introductionMessage = introductionMessage;
+    }
+
     public Survey getSurvey() {
         return this.survey;
     }
@@ -156,6 +173,7 @@ public class ChallengerPool implements Serializable {
             ", challengersURL='" + getChallengersURL() + "'" +
             ", numberOfMatches=" + getNumberOfMatches() +
             ", matchesDescription='" + getMatchesDescription() + "'" +
+            ", introductionMessage='" + getIntroductionMessage() + "'" +
             "}";
     }
 }

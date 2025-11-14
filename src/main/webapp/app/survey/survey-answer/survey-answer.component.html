@@ -8,6 +8,12 @@
     </iframe> -->
     <img src="/content/images/loader.gif" />
   </div>
+} @else if (showPoolIntroduction()) {
+  <jhi-survey-answer-pool-intro
+    [poolNumber]="currentPoolIndex + 1"
+    [introductionMessage]="getIntroductionForCurrentPool()"
+    (startPool)="onPoolIntroductionStart()"
+  ></jhi-survey-answer-pool-intro>
 } @else {
   <div [innerHTML]="getDescriptionForCurrentPool()"></div>
 

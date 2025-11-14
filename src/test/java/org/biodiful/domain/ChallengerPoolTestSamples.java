@@ -17,7 +17,8 @@ public class ChallengerPoolTestSamples {
             .poolOrder(1)
             .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-1/pool-1/")
             .numberOfMatches(1)
-            .matchesDescription("matchesDescription1");
+            .matchesDescription("matchesDescription1")
+            .introductionMessage("introductionMessage1");
     }
 
     public static ChallengerPool getChallengerPoolSample2() {
@@ -26,7 +27,8 @@ public class ChallengerPoolTestSamples {
             .poolOrder(2)
             .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-1/pool-2/")
             .numberOfMatches(2)
-            .matchesDescription("matchesDescription2");
+            .matchesDescription("matchesDescription2")
+            .introductionMessage("introductionMessage2");
     }
 
     public static ChallengerPool getChallengerPoolRandomSampleGenerator() {
@@ -35,6 +37,7 @@ public class ChallengerPoolTestSamples {
             .poolOrder(intCount.incrementAndGet())
             .challengersURL(UUID.randomUUID().toString())
             .numberOfMatches(intCount.incrementAndGet())
-            .matchesDescription(UUID.randomUUID().toString());
+            .matchesDescription(UUID.randomUUID().toString())
+            .introductionMessage(UUID.randomUUID().toString());
     }
 }

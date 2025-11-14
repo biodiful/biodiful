@@ -23,7 +23,8 @@ public class SurveyTestSamples {
             .poolOrder(1)
             .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-1/pool-1/")
             .numberOfMatches(10)
-            .matchesDescription("matchesDescription1");
+            .matchesDescription("matchesDescription1")
+            .introductionMessage("introductionMessage1");
         survey.addChallengerPool(pool1);
 
         return survey;
@@ -43,14 +44,16 @@ public class SurveyTestSamples {
             .poolOrder(1)
             .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-2/pool-1/")
             .numberOfMatches(15)
-            .matchesDescription("matchesDescription2-1");
+            .matchesDescription("matchesDescription2-1")
+            .introductionMessage("introductionMessage2-1");
         survey.addChallengerPool(pool1);
 
         ChallengerPool pool2 = new ChallengerPool()
             .poolOrder(2)
             .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-2/pool-2/")
             .numberOfMatches(20)
-            .matchesDescription("matchesDescription2-2");
+            .matchesDescription("matchesDescription2-2")
+            .introductionMessage("introductionMessage2-2");
         survey.addChallengerPool(pool2);
 
         return survey;
@@ -72,7 +75,8 @@ public class SurveyTestSamples {
                 .poolOrder(i + 1)
                 .challengersURL(UUID.randomUUID().toString())
                 .numberOfMatches(random.nextInt(50) + 1)
-                .matchesDescription(UUID.randomUUID().toString());
+                .matchesDescription(UUID.randomUUID().toString())
+                .introductionMessage(UUID.randomUUID().toString());
             survey.addChallengerPool(pool);
         }
 
@@ -94,7 +98,8 @@ public class SurveyTestSamples {
                 .poolOrder(i)
                 .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-3/pool-" + i + "/")
                 .numberOfMatches(10 + i)
-                .matchesDescription("matchesDescription" + i);
+                .matchesDescription("matchesDescription" + i)
+                .introductionMessage("introductionMessage" + i);
             survey.addChallengerPool(pool);
         }
 

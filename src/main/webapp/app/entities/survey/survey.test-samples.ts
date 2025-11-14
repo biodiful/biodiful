@@ -15,6 +15,7 @@ export const sampleWithRequiredData: ISurvey = {
       challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-1/',
       numberOfMatches: 10,
       matchesDescription: '../fake-data/blob/hipster.txt',
+      introductionMessage: '../fake-data/blob/hipster.txt',
     },
   ],
 };
@@ -35,6 +36,7 @@ export const sampleWithPartialData: ISurvey = {
       challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-1/',
       numberOfMatches: 15,
       matchesDescription: '../fake-data/blob/hipster.txt',
+      introductionMessage: '../fake-data/blob/hipster.txt',
     },
     {
       id: 3,
@@ -42,6 +44,7 @@ export const sampleWithPartialData: ISurvey = {
       challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-2/',
       numberOfMatches: 20,
       matchesDescription: '../fake-data/blob/hipster.txt',
+      introductionMessage: '../fake-data/blob/hipster.txt',
     },
   ],
 };
@@ -65,6 +68,7 @@ export const sampleWithFullData: ISurvey = {
       challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-1/',
       numberOfMatches: 10,
       matchesDescription: '../fake-data/blob/hipster.txt',
+      introductionMessage: '../fake-data/blob/hipster.txt',
     },
     {
       id: 5,
@@ -72,6 +76,7 @@ export const sampleWithFullData: ISurvey = {
       challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-2/',
       numberOfMatches: 15,
       matchesDescription: '../fake-data/blob/hipster.txt',
+      introductionMessage: '../fake-data/blob/hipster.txt',
     },
     {
       id: 6,
@@ -79,6 +84,7 @@ export const sampleWithFullData: ISurvey = {
       challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-3/',
       numberOfMatches: 20,
       matchesDescription: '../fake-data/blob/hipster.txt',
+      introductionMessage: '../fake-data/blob/hipster.txt',
     },
   ],
 };
@@ -96,6 +102,7 @@ export const sampleWithNewData: NewSurvey = {
       challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-1/',
       numberOfMatches: 10,
       matchesDescription: '../fake-data/blob/hipster.txt',
+      introductionMessage: '../fake-data/blob/hipster.txt',
     },
   ],
   id: null,

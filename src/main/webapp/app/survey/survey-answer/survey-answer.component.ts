@@ -7,6 +7,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ISurvey } from 'app/entities/survey/survey.model';
 import dayjs from 'dayjs/esm';
 import { SurveyAnswerMatchComponent } from 'app/survey/survey-answer-match/survey-answer-match.component';
+import { SurveyAnswerPoolIntroComponent } from 'app/survey/survey-answer-pool-intro/survey-answer-pool-intro.component';
 import { AnswerService } from 'app/entities/answer/service/answer.service';
 import { v4 as uuidv4 } from 'uuid';
 import { HttpClient } from '@angular/common/http';
@@ -21,7 +22,7 @@ interface S3ImageListResponse {
   templateUrl: './survey-answer.component.html',
   styles: [],
   standalone: true,
-  imports: [SharedModule, SurveyAnswerMatchComponent],
+  imports: [SharedModule, SurveyAnswerMatchComponent, SurveyAnswerPoolIntroComponent],
 })
 export class SurveyAnswerComponent implements OnInit {
   survey!: ISurvey;
@@ -34,6 +35,8 @@ export class SurveyAnswerComponent implements OnInit {
   challengerOne = signal<Challenger | undefined>(undefined);
   challengerTwo = signal<Challenger | undefined>(undefined);
   isAllMatchesCompleted = signal(false);
+  showPoolIntroduction = signal(false);
+  poolIntroductionShown = new Set<number>();
   matchStarts!: dayjs.Dayjs;
   socialFormUrl!: SafeResourceUrl;
 
@@ -128,6 +131,12 @@ export class SurveyAnswerComponent implements OnInit {
   initNextMatch(): void {
     // Determine the current pool index based on how many answers have been recorded
     this.updateCurrentPoolIndex();
+
+    // Check if we should show the pool introduction
+    if (this.shouldShowPoolIntroduction()) {
+      this.showPoolIntroduction.set(true);
+      return;
+    }
 
     // Load 2 random challengers from the current pool
     const currentPool = this.challengerPools()[this.currentPoolIndex];
@@ -226,6 +235,33 @@ export class SurveyAnswerComponent implements OnInit {
     const sortedPools = [...(this.survey.challengerPools ?? [])].sort((a, b) => (a.poolOrder ?? 0) - (b.poolOrder ?? 0));
     const currentPool = sortedPools[this.currentPoolIndex];
     return currentPool.matchesDescription ?? '';
+  }
+
+  getIntroductionForCurrentPool(): string {
+    const sortedPools = [...(this.survey.challengerPools ?? [])].sort((a, b) => (a.poolOrder ?? 0) - (b.poolOrder ?? 0));
+    const currentPool = sortedPools[this.currentPoolIndex];
+    return currentPool.introductionMessage ?? '';
+  }
+
+  shouldShowPoolIntroduction(): boolean {
+    const sortedPools = [...(this.survey.challengerPools ?? [])].sort((a, b) => (a.poolOrder ?? 0) - (b.poolOrder ?? 0));
+    const currentPool = sortedPools[this.currentPoolIndex];
+
+    // Show introduction if:
+    // 1. Current pool has an introduction message
+    // 2. We haven't shown the introduction for this pool yet
+    return !!currentPool.introductionMessage && !this.poolIntroductionShown.has(this.currentPoolIndex);
+  }
+
+  onPoolIntroductionStart(): void {
+    // Mark this pool's introduction as shown
+    this.poolIntroductionShown.add(this.currentPoolIndex);
+    this.showPoolIntroduction.set(false);
+
+    // Now start the first match for this pool
+    const currentPool = this.challengerPools()[this.currentPoolIndex];
+    this.initNextChallengers(currentPool);
+    this.matchStarts = dayjs();
   }
 
   getPercentAdvancement(): number {

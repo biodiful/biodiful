@@ -6,6 +6,7 @@ export const sampleWithRequiredData: IChallengerPool = {
   challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-1/',
   numberOfMatches: 10,
   matchesDescription: 'Test pool description',
+  introductionMessage: 'Welcome to this pool',
 };
 
 export const sampleWithPartialData: IChallengerPool = {
@@ -14,6 +15,7 @@ export const sampleWithPartialData: IChallengerPool = {
   challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-2/',
   numberOfMatches: 15,
   matchesDescription: 'Another pool description',
+  introductionMessage: 'Pool 2 introduction',
   surveyId: 100,
 };
 
@@ -23,6 +25,7 @@ export const sampleWithFullData: IChallengerPool = {
   challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/pool-3/',
   numberOfMatches: 20,
   matchesDescription: 'Full pool description with all fields',
+  introductionMessage: 'Complete introduction message with HTML',
   surveyId: 200,
 };
 
@@ -31,6 +34,7 @@ export const sampleWithNewData: IChallengerPool = {
   challengersURL: 'https://test-bucket.s3.us-east-1.amazonaws.com/new-pool/',
   numberOfMatches: 5,
   matchesDescription: 'New pool description',
+  introductionMessage: 'New pool introduction',
 };
 
 Object.freeze(sampleWithNewData);

@@ -29,6 +29,9 @@ public class ChallengerPoolDTO implements Serializable {
     @Lob
     private String matchesDescription;
 
+    @Lob
+    private String introductionMessage;
+
     private Long surveyId;
 
     public Long getId() {
@@ -71,6 +74,14 @@ public class ChallengerPoolDTO implements Serializable {
         this.matchesDescription = matchesDescription;
     }
 
+    public String getIntroductionMessage() {
+        return introductionMessage;
+    }
+
+    public void setIntroductionMessage(String introductionMessage) {
+        this.introductionMessage = introductionMessage;
+    }
+
     public Long getSurveyId() {
         return surveyId;
     }
@@ -109,6 +120,7 @@ public class ChallengerPoolDTO implements Serializable {
             ", challengersURL='" + getChallengersURL() + "'" +
             ", numberOfMatches=" + getNumberOfMatches() +
             ", matchesDescription='" + getMatchesDescription() + "'" +
+            ", introductionMessage='" + getIntroductionMessage() + "'" +
             ", surveyId=" + getSurveyId() +
             "}";
     }

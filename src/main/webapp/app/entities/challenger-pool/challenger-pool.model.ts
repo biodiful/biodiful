@@ -5,6 +5,7 @@ export interface IChallengerPool {
   challengersURL?: string;
   numberOfMatches?: number;
   matchesDescription?: string;
+  introductionMessage?: string;
   surveyId?: number | null;
 }
 

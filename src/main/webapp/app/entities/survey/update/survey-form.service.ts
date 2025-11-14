@@ -23,6 +23,7 @@ type ChallengerPoolFormGroupContent = {
   challengersURL: FormControl<string | null>;
   numberOfMatches: FormControl<number | null>;
   matchesDescription: FormControl<string | null>;
+  introductionMessage: FormControl<string | null>;
 };
 
 type SurveyFormGroupContent = {
@@ -101,6 +102,7 @@ export class SurveyFormService {
       matchesDescription: new FormControl(pool?.matchesDescription ?? null, {
         validators: [Validators.required],
       }),
+      introductionMessage: new FormControl(pool?.introductionMessage ?? null),
     });
   }
 
