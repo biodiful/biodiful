@@ -16,4 +16,7 @@ public interface ChallengerPoolMapper extends EntityMapper<ChallengerPoolDTO, Ch
 
     @Mapping(target = "survey", ignore = true)
     ChallengerPool toEntity(ChallengerPoolDTO challengerPoolDTO);
+
+    @Mapping(target = "survey", ignore = true)
+    void partialUpdate(@MappingTarget ChallengerPool entity, ChallengerPoolDTO dto);
 }
