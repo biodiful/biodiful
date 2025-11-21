@@ -1,11 +1,10 @@
 import { Component, input, output } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import SharedModule from 'app/shared/shared.module';
 
 @Component({
   selector: 'jhi-survey-answer-pool-intro',
   standalone: true,
-  imports: [TranslateModule, FontAwesomeModule],
+  imports: [SharedModule],
   templateUrl: './survey-answer-pool-intro.component.html',
   styleUrl: './survey-answer-pool-intro.component.scss',
 })
