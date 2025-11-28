@@ -48,7 +48,7 @@ class S3ServiceTest {
         when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(response);
 
         // When
-        List<String> imageUrls = s3Service.listImages(folderUrl);
+        List<String> imageUrls = s3Service.listMediaFiles(folderUrl);
 
         // Then
         assertThat(imageUrls).hasSize(2);
@@ -77,7 +77,7 @@ class S3ServiceTest {
         when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(response);
 
         // When
-        List<String> imageUrls = s3Service.listImages(folderUrl);
+        List<String> imageUrls = s3Service.listMediaFiles(folderUrl);
 
         // Then
         assertThat(imageUrls).hasSize(5);
@@ -93,7 +93,7 @@ class S3ServiceTest {
         when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(response);
 
         // When
-        List<String> imageUrls = s3Service.listImages(folderUrl);
+        List<String> imageUrls = s3Service.listMediaFiles(folderUrl);
 
         // Then
         assertThat(imageUrls).isEmpty();
@@ -105,7 +105,7 @@ class S3ServiceTest {
         String invalidUrl = "not-a-valid-url";
 
         // When/Then
-        assertThatThrownBy(() -> s3Service.listImages(invalidUrl)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> s3Service.listMediaFiles(invalidUrl)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -114,7 +114,7 @@ class S3ServiceTest {
         String nonS3Url = "https://example.com/folder/";
 
         // When/Then
-        assertThatThrownBy(() -> s3Service.listImages(nonS3Url)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> s3Service.listMediaFiles(nonS3Url)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -129,9 +129,9 @@ class S3ServiceTest {
         );
 
         // When/Then
-        assertThatThrownBy(() -> s3Service.listImages(folderUrl))
+        assertThatThrownBy(() -> s3Service.listMediaFiles(folderUrl))
             .isInstanceOf(RuntimeException.class)
-            .hasMessageContaining("Failed to list images from S3");
+            .hasMessageContaining("Failed to list media files from S3");
     }
 
     @Test
@@ -146,7 +146,7 @@ class S3ServiceTest {
         when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(response);
 
         // When
-        List<String> imageUrls = s3Service.listImages(folderUrl);
+        List<String> imageUrls = s3Service.listMediaFiles(folderUrl);
 
         // Then
         assertThat(imageUrls).hasSize(1);
@@ -166,7 +166,7 @@ class S3ServiceTest {
         when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(response);
 
         // When
-        List<String> imageUrls = s3Service.listImages(folderUrl);
+        List<String> imageUrls = s3Service.listMediaFiles(folderUrl);
 
         // Then
         assertThat(imageUrls).hasSize(1);
@@ -185,7 +185,7 @@ class S3ServiceTest {
         when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(response);
 
         // When
-        List<String> imageUrls = s3Service.listImages(folderUrl);
+        List<String> imageUrls = s3Service.listMediaFiles(folderUrl);
 
         // Then
         assertThat(imageUrls).hasSize(1);
@@ -204,7 +204,7 @@ class S3ServiceTest {
         when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(response);
 
         // When
-        List<String> imageUrls = s3Service.listImages(folderUrl);
+        List<String> imageUrls = s3Service.listMediaFiles(folderUrl);
 
         // Then
         assertThat(imageUrls).hasSize(1);

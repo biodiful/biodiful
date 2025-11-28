@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Challenger } from 'app/shared/model/challenger.model';
+import { Challenger, MediaType } from 'app/shared/model/challenger.model';
 import { catchError, tap } from 'rxjs';
 import { NewAnswer } from 'app/entities/answer/answer.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -13,9 +13,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { HttpClient } from '@angular/common/http';
 import SharedModule from 'app/shared/shared.module';
 
-interface S3ImageListResponse {
-  imageUrls: string[];
+interface S3MediaListResponse {
+  mediaUrls: string[];
 }
+
+const VIDEO_EXTENSIONS = ['.mp4', '.webm', '.mov', '.avi'];
+const AUDIO_EXTENSIONS = ['.mp3', '.wav', '.ogg', '.m4a'];
 
 @Component({
   selector: 'jhi-survey-answer',
@@ -65,9 +68,9 @@ export class SurveyAnswerComponent implements OnInit {
 
     sortedPools.forEach((pool, index) => {
       if (pool.challengersURL) {
-        // Call backend endpoint to list images from S3
+        // Call backend endpoint to list media files from S3
         this.http
-          .get<S3ImageListResponse>('/api/s3/list-images', {
+          .get<S3MediaListResponse>('/api/s3/list-media', {
             params: { folderUrl: pool.challengersURL },
           })
           .pipe(
@@ -82,21 +85,24 @@ export class SurveyAnswerComponent implements OnInit {
     });
   }
 
-  onGetChallengersSuccess(response: S3ImageListResponse, poolIndex: number): void {
-    // Process the list of image URLs returned by the backend
+  onGetChallengersSuccess(response: S3MediaListResponse, poolIndex: number): void {
+    // Process the list of media URLs returned by the backend
     const challengersPool: Challenger[] = [];
 
-    for (const imageUrl of response.imageUrls) {
+    // Detect media type from first file
+    const mediaType = response.mediaUrls.length > 0 ? this.detectMediaType(response.mediaUrls[0]) : 'IMAGE';
+
+    for (const mediaUrl of response.mediaUrls) {
       // Extract filename from URL for the challenger ID
-      const urlParts = imageUrl.split('/');
+      const urlParts = mediaUrl.split('/');
       const filename = urlParts[urlParts.length - 1];
       // Remove file extension for cleaner ID
       const id = filename.replace(/\.[^/.]+$/, '');
-      challengersPool.push(new Challenger(id, imageUrl));
+      challengersPool.push(new Challenger(id, mediaUrl, mediaType));
     }
 
     if (challengersPool.length === 0) {
-      this.onError(`No images found in Pool ${poolIndex + 1}`);
+      this.onError(`No media files found in Pool ${poolIndex + 1}`);
       return;
     }
 
@@ -266,6 +272,18 @@ export class SurveyAnswerComponent implements OnInit {
 
   getPercentAdvancement(): number {
     return (this.getCurrentMatchNumber() * 100) / this.totalNbOfMatches;
+  }
+
+  private detectMediaType(url: string): MediaType {
+    const ext = url.substring(url.lastIndexOf('.')).toLowerCase();
+
+    if (VIDEO_EXTENSIONS.includes(ext)) {
+      return 'VIDEO';
+    }
+    if (AUDIO_EXTENSIONS.includes(ext)) {
+      return 'AUDIO';
+    }
+    return 'IMAGE';
   }
 
   private onError(errorMessage: string): void {

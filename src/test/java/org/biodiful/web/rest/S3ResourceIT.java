@@ -42,7 +42,7 @@ class S3ResourceIT {
     void shouldListImagesFromS3FolderWithAWSProvider() throws Exception {
         // Given
         String folderUrl = "https://test-bucket.s3.eu-central-1.amazonaws.com/test-folder/";
-        when(s3Service.listImages(anyString())).thenReturn(
+        when(s3Service.listMediaFiles(anyString())).thenReturn(
             Arrays.asList(
                 "https://test-bucket.s3.eu-central-1.amazonaws.com/test-folder/image1.jpg",
                 "https://test-bucket.s3.eu-central-1.amazonaws.com/test-folder/image2.png"
@@ -51,20 +51,20 @@ class S3ResourceIT {
 
         // When/Then
         restS3MockMvc
-            .perform(get("/api/s3/list-images").param("folderUrl", folderUrl).accept(MediaType.APPLICATION_JSON))
+            .perform(get("/api/s3/list-media").param("folderUrl", folderUrl).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.imageUrls").isArray())
-            .andExpect(jsonPath("$.imageUrls", hasSize(2)))
-            .andExpect(jsonPath("$.imageUrls[0]").value("https://test-bucket.s3.eu-central-1.amazonaws.com/test-folder/image1.jpg"))
-            .andExpect(jsonPath("$.imageUrls[1]").value("https://test-bucket.s3.eu-central-1.amazonaws.com/test-folder/image2.png"));
+            .andExpect(jsonPath("$.mediaUrls").isArray())
+            .andExpect(jsonPath("$.mediaUrls", hasSize(2)))
+            .andExpect(jsonPath("$.mediaUrls[0]").value("https://test-bucket.s3.eu-central-1.amazonaws.com/test-folder/image1.jpg"))
+            .andExpect(jsonPath("$.mediaUrls[1]").value("https://test-bucket.s3.eu-central-1.amazonaws.com/test-folder/image2.png"));
     }
 
     @Test
     void shouldListImagesFromS3FolderWithScalewayProvider() throws Exception {
         // Given
         String folderUrl = "https://test-bucket.s3.fr-par.scw.cloud/test-folder/";
-        when(s3Service.listImages(anyString())).thenReturn(
+        when(s3Service.listMediaFiles(anyString())).thenReturn(
             Arrays.asList(
                 "https://test-bucket.s3.fr-par.scw.cloud/test-folder/image1.jpg",
                 "https://test-bucket.s3.fr-par.scw.cloud/test-folder/image2.png"
@@ -73,39 +73,39 @@ class S3ResourceIT {
 
         // When/Then
         restS3MockMvc
-            .perform(get("/api/s3/list-images").param("folderUrl", folderUrl).accept(MediaType.APPLICATION_JSON))
+            .perform(get("/api/s3/list-media").param("folderUrl", folderUrl).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.imageUrls").isArray())
-            .andExpect(jsonPath("$.imageUrls", hasSize(2)))
-            .andExpect(jsonPath("$.imageUrls[0]").value("https://test-bucket.s3.fr-par.scw.cloud/test-folder/image1.jpg"))
-            .andExpect(jsonPath("$.imageUrls[1]").value("https://test-bucket.s3.fr-par.scw.cloud/test-folder/image2.png"));
+            .andExpect(jsonPath("$.mediaUrls").isArray())
+            .andExpect(jsonPath("$.mediaUrls", hasSize(2)))
+            .andExpect(jsonPath("$.mediaUrls[0]").value("https://test-bucket.s3.fr-par.scw.cloud/test-folder/image1.jpg"))
+            .andExpect(jsonPath("$.mediaUrls[1]").value("https://test-bucket.s3.fr-par.scw.cloud/test-folder/image2.png"));
     }
 
     @Test
     void shouldReturnEmptyListWhenNoImagesFound() throws Exception {
         // Given
         String folderUrl = "https://test-bucket.s3.eu-central-1.amazonaws.com/empty-folder/";
-        when(s3Service.listImages(anyString())).thenReturn(Collections.emptyList());
+        when(s3Service.listMediaFiles(anyString())).thenReturn(Collections.emptyList());
 
         // When/Then
         restS3MockMvc
-            .perform(get("/api/s3/list-images").param("folderUrl", folderUrl).accept(MediaType.APPLICATION_JSON))
+            .perform(get("/api/s3/list-media").param("folderUrl", folderUrl).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.imageUrls").isArray())
-            .andExpect(jsonPath("$.imageUrls", hasSize(0)));
+            .andExpect(jsonPath("$.mediaUrls").isArray())
+            .andExpect(jsonPath("$.mediaUrls", hasSize(0)));
     }
 
     @Test
     void shouldReturnBadRequestForInvalidUrl() throws Exception {
         // Given
         String invalidUrl = "not-a-valid-url";
-        when(s3Service.listImages(anyString())).thenThrow(new IllegalArgumentException("Invalid S3 folder URL"));
+        when(s3Service.listMediaFiles(anyString())).thenThrow(new IllegalArgumentException("Invalid S3 folder URL"));
 
         // When/Then
         restS3MockMvc
-            .perform(get("/api/s3/list-images").param("folderUrl", invalidUrl).accept(MediaType.APPLICATION_JSON))
+            .perform(get("/api/s3/list-media").param("folderUrl", invalidUrl).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest());
     }
 
@@ -113,11 +113,11 @@ class S3ResourceIT {
     void shouldReturnInternalServerErrorOnS3Exception() throws Exception {
         // Given
         String folderUrl = "https://test-bucket.s3.eu-central-1.amazonaws.com/test-folder/";
-        when(s3Service.listImages(anyString())).thenThrow(new RuntimeException("Failed to list images from S3"));
+        when(s3Service.listMediaFiles(anyString())).thenThrow(new RuntimeException("Failed to list media files from S3"));
 
         // When/Then
         restS3MockMvc
-            .perform(get("/api/s3/list-images").param("folderUrl", folderUrl).accept(MediaType.APPLICATION_JSON))
+            .perform(get("/api/s3/list-media").param("folderUrl", folderUrl).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isInternalServerError());
     }
 }

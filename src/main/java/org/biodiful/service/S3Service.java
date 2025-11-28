@@ -15,7 +15,8 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.services.s3.model.S3Object;
 
 /**
- * Service for interacting with AWS S3 to list and manage image files.
+ * Service for interacting with S3-compatible storage to list and manage media files.
+ * Supports images, videos, and audio files.
  */
 @Service
 public class S3Service {
@@ -23,6 +24,8 @@ public class S3Service {
     private static final Logger LOG = LoggerFactory.getLogger(S3Service.class);
 
     private static final List<String> IMAGE_EXTENSIONS = Arrays.asList(".jpg", ".jpeg", ".png", ".gif", ".webp");
+    private static final List<String> VIDEO_EXTENSIONS = Arrays.asList(".mp4", ".webm", ".mov", ".avi");
+    private static final List<String> AUDIO_EXTENSIONS = Arrays.asList(".mp3", ".wav", ".ogg", ".m4a");
 
     private final S3Client s3Client;
 
@@ -31,15 +34,15 @@ public class S3Service {
     }
 
     /**
-     * Lists all image files in an S3 folder given its URL.
+     * Lists all media files (images, videos, audio) in an S3 folder given its URL.
      *
      * @param folderUrl the S3 folder URL (e.g., https://bucket-name.s3.region.provider/folder/)
-     * @return list of full S3 URLs to image files
+     * @return list of full S3 URLs to media files
      * @throws IllegalArgumentException if the folder URL is invalid
      * @throws S3Exception if there's an error communicating with S3
      */
-    public List<String> listImages(String folderUrl) {
-        LOG.debug("Listing images from S3 folder: {}", folderUrl);
+    public List<String> listMediaFiles(String folderUrl) {
+        LOG.debug("Listing media files from S3 folder: {}", folderUrl);
 
         // Parse the folder URL to extract bucket and prefix
         S3FolderInfo folderInfo = parseS3FolderUrl(folderUrl);
@@ -54,21 +57,21 @@ public class S3Service {
             // Execute the request
             ListObjectsV2Response listResponse = s3Client.listObjectsV2(listRequest);
 
-            // Filter for image files and build full URLs
-            List<String> imageUrls = new ArrayList<>();
+            // Filter for media files (images, videos, audio) and build full URLs
+            List<String> mediaUrls = new ArrayList<>();
             for (S3Object s3Object : listResponse.contents()) {
                 String key = s3Object.key();
-                if (isImageFile(key)) {
-                    String imageUrl = buildImageUrl(folderInfo.bucketName, folderInfo.region, folderInfo.providerDomain, key);
-                    imageUrls.add(imageUrl);
+                if (isMediaFile(key)) {
+                    String mediaUrl = buildMediaUrl(folderInfo.bucketName, folderInfo.region, folderInfo.providerDomain, key);
+                    mediaUrls.add(mediaUrl);
                 }
             }
 
-            LOG.debug("Found {} images in S3 folder: {}", imageUrls.size(), folderUrl);
-            return imageUrls;
+            LOG.debug("Found {} media files in S3 folder: {}", mediaUrls.size(), folderUrl);
+            return mediaUrls;
         } catch (S3Exception e) {
             LOG.error("Error listing S3 objects in bucket {} with prefix {}: {}", folderInfo.bucketName, folderInfo.prefix, e.getMessage());
-            throw new RuntimeException("Failed to list images from S3: " + e.awsErrorDetails().errorMessage(), e);
+            throw new RuntimeException("Failed to list media files from S3: " + e.awsErrorDetails().errorMessage(), e);
         }
     }
 
@@ -125,6 +128,16 @@ public class S3Service {
     }
 
     /**
+     * Checks if a file key represents a media file (image, video, or audio) based on its extension.
+     *
+     * @param key the S3 object key
+     * @return true if the file is a supported media type
+     */
+    private boolean isMediaFile(String key) {
+        return isImageFile(key) || isVideoFile(key) || isAudioFile(key);
+    }
+
+    /**
      * Checks if a file key represents an image file based on its extension.
      *
      * @param key the S3 object key
@@ -136,7 +149,29 @@ public class S3Service {
     }
 
     /**
-     * Builds a full S3 URL for an object.
+     * Checks if a file key represents a video file based on its extension.
+     *
+     * @param key the S3 object key
+     * @return true if the file is a video
+     */
+    private boolean isVideoFile(String key) {
+        String lowerKey = key.toLowerCase();
+        return VIDEO_EXTENSIONS.stream().anyMatch(lowerKey::endsWith);
+    }
+
+    /**
+     * Checks if a file key represents an audio file based on its extension.
+     *
+     * @param key the S3 object key
+     * @return true if the file is audio
+     */
+    private boolean isAudioFile(String key) {
+        String lowerKey = key.toLowerCase();
+        return AUDIO_EXTENSIONS.stream().anyMatch(lowerKey::endsWith);
+    }
+
+    /**
+     * Builds a full S3 URL for a media object.
      *
      * @param bucketName the bucket name
      * @param region the region
@@ -144,7 +179,7 @@ public class S3Service {
      * @param key the object key
      * @return the full S3 URL
      */
-    private String buildImageUrl(String bucketName, String region, String providerDomain, String key) {
+    private String buildMediaUrl(String bucketName, String region, String providerDomain, String key) {
         return String.format("https://%s.s3.%s.%s/%s", bucketName, region, providerDomain, key);
     }
 
