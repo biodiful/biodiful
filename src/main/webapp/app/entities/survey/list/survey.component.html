@@ -54,37 +54,9 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="contactsDescription">
-              <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.contactsDescription">Contacts Description</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="friendlyURL">
               <div class="d-flex">
                 <span jhiTranslate="biodifulApp.survey.friendlyURL">Friendly URL</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="photoURL">
-              <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.photoURL">Photo URL</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="logosURL">
-              <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.logosURL">Logos URL</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="formURL">
-              <div class="d-flex">
-                <span jhiTranslate="biodifulApp.survey.formURL">Form URL</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -131,12 +103,8 @@
                 <a [routerLink]="['/survey', survey.id, 'view']">{{ survey.id }}</a>
               </td>
               <td>{{ survey.surveyName }}</td>
-              <td>{{ survey.surveyDescription }}</td>
-              <td>{{ survey.contactsDescription }}</td>
+              <td class="survey-description-cell">{{ survey.surveyDescription }}</td>
               <td>{{ survey.friendlyURL }}</td>
-              <td>{{ survey.photoURL }}</td>
-              <td>{{ survey.logosURL }}</td>
-              <td>{{ survey.formURL }}</td>
               <td>{{ survey.challengerPools?.length || 0 }}</td>
               <td>{{ survey.open }}</td>
               <td [jhiTranslate]="'biodifulApp.Language.' + (survey.language ?? 'null')">

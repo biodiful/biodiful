@@ -20,6 +20,7 @@ import { ISurvey } from '../survey.model';
 @Component({
   selector: 'jhi-survey',
   templateUrl: './survey.component.html',
+  styleUrl: './survey.component.scss',
   imports: [RouterModule, FormsModule, SharedModule, SortDirective, SortByDirective, InfiniteScrollDirective],
 })
 export class SurveyComponent implements OnInit {
