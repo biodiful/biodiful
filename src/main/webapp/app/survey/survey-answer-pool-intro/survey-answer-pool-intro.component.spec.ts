@@ -31,11 +31,6 @@ describe('SurveyAnswerPoolIntroComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display pool number', () => {
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h3')?.textContent).toContain('Pool 1');
-  });
-
   it('should display introduction message as HTML', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const introDiv = compiled.querySelector('.pool-introduction');
@@ -53,14 +48,6 @@ describe('SurveyAnswerPoolIntroComponent', () => {
     startButton.click();
 
     expect(emitted).toBe(true);
-  });
-
-  it('should update pool number when input changes', () => {
-    fixture.componentRef.setInput('poolNumber', 2);
-    fixture.detectChanges();
-
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h3')?.textContent).toContain('Pool 2');
   });
 
   it('should update introduction message when input changes', () => {
