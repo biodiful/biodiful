@@ -31,7 +31,6 @@
     "cleanup": "rimraf build/",
     "docker:db:down": "docker compose -f src/main/docker/mysql.yml down -v",
     "docker:db:up": "docker compose -f src/main/docker/mysql.yml up --wait",
-    "heroku-postbuild": "echo Skip build on Heroku",
     "java:docker": "./gradlew bootJar -Pprod jibDockerBuild",
     "java:docker:arm64": "npm run java:docker -- -PjibArchitecture=arm64",
     "java:docker:dev": "npm run java:docker -- -Pdev,webapp",
