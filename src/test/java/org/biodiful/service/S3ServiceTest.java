@@ -3,8 +3,11 @@ package org.biodiful.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,10 +17,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
 @ExtendWith(MockitoExtension.class)
 class S3ServiceTest {
@@ -25,11 +32,31 @@ class S3ServiceTest {
     @Mock
     private S3Client s3Client;
 
+    @Mock
+    private S3Presigner s3Presigner;
+
     private S3Service s3Service;
 
     @BeforeEach
-    void setUp() {
-        s3Service = new S3Service(s3Client);
+    void setUp() throws Exception {
+        s3Service = new S3Service(s3Client, s3Presigner);
+
+        // Setup default presigner behavior to return presigned URLs (lenient for tests that don't need it)
+        lenient()
+            .when(s3Presigner.presignGetObject(any(GetObjectPresignRequest.class)))
+            .thenAnswer(invocation -> {
+                GetObjectPresignRequest request = invocation.getArgument(0);
+                GetObjectRequest getObjectRequest = request.getObjectRequest();
+                String presignedUrl = String.format(
+                    "https://%s.s3.test.com/%s?X-Amz-Signature=test",
+                    getObjectRequest.bucket(),
+                    getObjectRequest.key()
+                );
+                // Create mock PresignedGetObjectRequest
+                PresignedGetObjectRequest presigned = mock(PresignedGetObjectRequest.class);
+                when(presigned.url()).thenReturn(new URL(presignedUrl));
+                return presigned;
+            });
     }
 
     @Test
@@ -52,9 +79,9 @@ class S3ServiceTest {
 
         // Then
         assertThat(imageUrls).hasSize(2);
-        assertThat(imageUrls).contains("https://test-bucket.s3.fr-par.scw.cloud/test-folder/image1.jpg");
-        assertThat(imageUrls).contains("https://test-bucket.s3.fr-par.scw.cloud/test-folder/image2.png");
-        assertThat(imageUrls).doesNotContain("https://test-bucket.s3.fr-par.scw.cloud/test-folder/readme.txt");
+        // URLs should be presigned (contain signature parameter)
+        assertThat(imageUrls.get(0)).contains("test-bucket").contains("test-folder/image1.jpg").contains("X-Amz-Signature");
+        assertThat(imageUrls.get(1)).contains("test-bucket").contains("test-folder/image2.png").contains("X-Amz-Signature");
     }
 
     @Test
@@ -150,8 +177,7 @@ class S3ServiceTest {
 
         // Then
         assertThat(imageUrls).hasSize(1);
-        // Default region should be us-east-1 when not specified
-        assertThat(imageUrls.get(0)).isEqualTo("https://test-bucket.s3.us-east-1.scw.cloud/folder/image.jpg");
+        assertThat(imageUrls.get(0)).contains("test-bucket").contains("folder/image.jpg").contains("X-Amz-Signature");
     }
 
     @Test
@@ -170,7 +196,7 @@ class S3ServiceTest {
 
         // Then
         assertThat(imageUrls).hasSize(1);
-        assertThat(imageUrls.get(0)).isEqualTo("https://my-bucket.s3.eu-west-1.amazonaws.com/photos/vacation.jpg");
+        assertThat(imageUrls.get(0)).contains("my-bucket").contains("photos/vacation.jpg").contains("X-Amz-Signature");
     }
 
     @Test
@@ -189,7 +215,7 @@ class S3ServiceTest {
 
         // Then
         assertThat(imageUrls).hasSize(1);
-        assertThat(imageUrls.get(0)).isEqualTo("https://my-bucket.s3.fr-par.scw.cloud/images/photo.png");
+        assertThat(imageUrls.get(0)).contains("my-bucket").contains("images/photo.png").contains("X-Amz-Signature");
     }
 
     @Test
@@ -208,6 +234,6 @@ class S3ServiceTest {
 
         // Then
         assertThat(imageUrls).hasSize(1);
-        assertThat(imageUrls.get(0)).isEqualTo("https://my-space.s3.nyc3.digitaloceanspaces.com/uploads/image.jpg");
+        assertThat(imageUrls.get(0)).contains("my-space").contains("uploads/image.jpg").contains("X-Amz-Signature");
     }
 }

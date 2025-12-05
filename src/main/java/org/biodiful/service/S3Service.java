@@ -2,6 +2,7 @@ package org.biodiful.service;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,10 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
 /**
  * Service for interacting with S3-compatible storage to list and manage media files.
@@ -28,9 +33,11 @@ public class S3Service {
     private static final List<String> AUDIO_EXTENSIONS = Arrays.asList(".mp3", ".wav", ".ogg", ".m4a");
 
     private final S3Client s3Client;
+    private final S3Presigner s3Presigner;
 
-    public S3Service(S3Client s3Client) {
+    public S3Service(S3Client s3Client, S3Presigner s3Presigner) {
         this.s3Client = s3Client;
+        this.s3Presigner = s3Presigner;
     }
 
     /**
@@ -57,13 +64,13 @@ public class S3Service {
             // Execute the request
             ListObjectsV2Response listResponse = s3Client.listObjectsV2(listRequest);
 
-            // Filter for media files (images, videos, audio) and build full URLs
+            // Filter for media files (images, videos, audio) and build presigned URLs
             List<String> mediaUrls = new ArrayList<>();
             for (S3Object s3Object : listResponse.contents()) {
                 String key = s3Object.key();
                 if (isMediaFile(key)) {
-                    String mediaUrl = buildMediaUrl(folderInfo.bucketName, folderInfo.region, folderInfo.providerDomain, key);
-                    mediaUrls.add(mediaUrl);
+                    String presignedUrl = generatePresignedUrl(folderInfo.bucketName, key);
+                    mediaUrls.add(presignedUrl);
                 }
             }
 
@@ -171,16 +178,27 @@ public class S3Service {
     }
 
     /**
-     * Builds a full S3 URL for a media object.
+     * Generates a presigned URL for an S3 object that is valid for 1 hour.
      *
      * @param bucketName the bucket name
-     * @param region the region
-     * @param providerDomain the S3 provider domain (e.g., amazonaws.com, scw.cloud)
      * @param key the object key
-     * @return the full S3 URL
+     * @return the presigned URL valid for 1 hour
      */
-    private String buildMediaUrl(String bucketName, String region, String providerDomain, String key) {
-        return String.format("https://%s.s3.%s.%s/%s", bucketName, region, providerDomain, key);
+    private String generatePresignedUrl(String bucketName, String key) {
+        try {
+            GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(key).build();
+
+            GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                .signatureDuration(Duration.ofHours(1))
+                .getObjectRequest(getObjectRequest)
+                .build();
+
+            PresignedGetObjectRequest presignedRequest = s3Presigner.presignGetObject(presignRequest);
+            return presignedRequest.url().toString();
+        } catch (Exception e) {
+            LOG.error("Error generating presigned URL for {}/{}: {}", bucketName, key, e.getMessage());
+            throw new RuntimeException("Failed to generate presigned URL", e);
+        }
     }
 
     /**

@@ -275,7 +275,9 @@ export class SurveyAnswerComponent implements OnInit {
   }
 
   private detectMediaType(url: string): MediaType {
-    const ext = url.substring(url.lastIndexOf('.')).toLowerCase();
+    // Remove query parameters (for presigned URLs)
+    const urlWithoutQuery = url.split('?')[0];
+    const ext = urlWithoutQuery.substring(urlWithoutQuery.lastIndexOf('.')).toLowerCase();
 
     if (VIDEO_EXTENSIONS.includes(ext)) {
       return 'VIDEO';

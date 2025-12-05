@@ -10,6 +10,7 @@ import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
 /**
  * Configuration for S3-compatible client (AWS S3, Scaleway, etc.).
@@ -61,5 +62,33 @@ public class S3Configuration {
         }
 
         return clientBuilder.build();
+    }
+
+    /**
+     * Creates an S3Presigner bean for generating presigned URLs.
+     * Uses the same configuration as the S3Client.
+     *
+     * @return configured S3Presigner
+     */
+    @Bean
+    @ConditionalOnProperty(prefix = "application.s3", name = { "access-key-id", "secret-access-key" })
+    public S3Presigner s3Presigner() {
+        ApplicationProperties.S3 s3Config = applicationProperties.getS3();
+
+        LOG.info("Initializing S3Presigner with region: {} and endpoint: {}", s3Config.getRegion(), s3Config.getEndpoint());
+
+        AwsBasicCredentials awsCredentials = AwsBasicCredentials.create(s3Config.getAccessKeyId(), s3Config.getSecretAccessKey());
+
+        S3Presigner.Builder presignerBuilder = S3Presigner.builder()
+            .region(Region.of(s3Config.getRegion()))
+            .credentialsProvider(StaticCredentialsProvider.create(awsCredentials));
+
+        // If a custom endpoint is specified, configure it (for non-AWS S3-compatible services)
+        if (s3Config.getEndpoint() != null && !s3Config.getEndpoint().isEmpty()) {
+            LOG.info("Using custom S3 endpoint for presigner: {}", s3Config.getEndpoint());
+            presignerBuilder.endpointOverride(URI.create(s3Config.getEndpoint()));
+        }
+
+        return presignerBuilder.build();
     }
 }
