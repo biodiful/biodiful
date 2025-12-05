@@ -2,28 +2,18 @@
   @case ('IMAGE') {
     <!-- Existing image display with click handlers -->
     <div class="row">
-      <div class="col-6 col-md-6">
-        <img
-          class="challenger mb-2 mr-2"
-          [src]="challengerOne()!.url"
-          [alt]="challengerOne()!.id"
-          (click)="challengerClicked(challengerOne()!)"
-        />
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
+        <img class="challenger" [src]="challengerOne()!.url" [alt]="challengerOne()!.id" (click)="challengerClicked(challengerOne()!)" />
       </div>
-      <div class="col-6 col-md-6">
-        <img
-          class="challenger mb-2"
-          [src]="challengerTwo()!.url"
-          [alt]="challengerTwo()!.id"
-          (click)="challengerClicked(challengerTwo()!)"
-        />
+      <div class="col-12 col-md-6">
+        <img class="challenger" [src]="challengerTwo()!.url" [alt]="challengerTwo()!.id" (click)="challengerClicked(challengerTwo()!)" />
       </div>
     </div>
   }
 
   @case ('VIDEO') {
     <div class="row">
-      <div class="col-6 col-md-6">
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
         <video
           [src]="challengerOne()!.url"
           controls
@@ -40,7 +30,7 @@
           Choose this video
         </button>
       </div>
-      <div class="col-6 col-md-6">
+      <div class="col-12 col-md-6">
         <video
           [src]="challengerTwo()!.url"
           controls
@@ -62,7 +52,7 @@
 
   @case ('AUDIO') {
     <div class="row">
-      <div class="col-6 col-md-6 text-center">
+      <div class="col-12 col-md-6 mb-3 mb-md-0 text-center">
         <div class="audio-placeholder mb-3">
           <i class="fas fa-music fa-5x"></i>
           <p class="mt-2">{{ challengerOne()!.id }}</p>
@@ -83,7 +73,7 @@
           Choose this audio
         </button>
       </div>
-      <div class="col-6 col-md-6 text-center">
+      <div class="col-12 col-md-6 text-center">
         <div class="audio-placeholder mb-3">
           <i class="fas fa-music fa-5x"></i>
           <p class="mt-2">{{ challengerTwo()!.id }}</p>
