@@ -1,11 +1,16 @@
 package org.biodiful.service;
 
+import jakarta.annotation.PreDestroy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,10 +39,16 @@ public class S3Service {
 
     private final S3Client s3Client;
     private final S3Presigner s3Presigner;
+    private final ExecutorService executorService;
 
     public S3Service(S3Client s3Client, S3Presigner s3Presigner) {
         this.s3Client = s3Client;
         this.s3Presigner = s3Presigner;
+        // Create a thread pool for parallel presigned URL generation
+        // Use min(availableProcessors, 5) to adapt to the environment (good for Heroku)
+        int poolSize = Math.min(Runtime.getRuntime().availableProcessors(), 5);
+        LOG.info("Creating S3Service executor pool with {} threads", poolSize);
+        this.executorService = Executors.newFixedThreadPool(poolSize);
     }
 
     /**
@@ -64,15 +75,22 @@ public class S3Service {
             // Execute the request
             ListObjectsV2Response listResponse = s3Client.listObjectsV2(listRequest);
 
-            // Filter for media files (images, videos, audio) and build presigned URLs
-            List<String> mediaUrls = new ArrayList<>();
-            for (S3Object s3Object : listResponse.contents()) {
-                String key = s3Object.key();
-                if (isMediaFile(key)) {
-                    String presignedUrl = generatePresignedUrl(folderInfo.bucketName, key);
-                    mediaUrls.add(presignedUrl);
-                }
-            }
+            // Filter for media files and collect their keys
+            List<String> mediaKeys = listResponse
+                .contents()
+                .stream()
+                .map(S3Object::key)
+                .filter(this::isMediaFile)
+                .collect(Collectors.toList());
+
+            // Generate presigned URLs in parallel
+            List<CompletableFuture<String>> futures = mediaKeys
+                .stream()
+                .map(key -> CompletableFuture.supplyAsync(() -> generatePresignedUrl(folderInfo.bucketName, key), executorService))
+                .collect(Collectors.toList());
+
+            // Wait for all futures to complete and collect results
+            List<String> mediaUrls = futures.stream().map(CompletableFuture::join).collect(Collectors.toList());
 
             LOG.debug("Found {} media files in S3 folder: {}", mediaUrls.size(), folderUrl);
             return mediaUrls;
@@ -198,6 +216,24 @@ public class S3Service {
         } catch (Exception e) {
             LOG.error("Error generating presigned URL for {}/{}: {}", bucketName, key, e.getMessage());
             throw new RuntimeException("Failed to generate presigned URL", e);
+        }
+    }
+
+    /**
+     * Cleanup method called when the service is destroyed.
+     * Shuts down the executor service gracefully.
+     */
+    @PreDestroy
+    public void cleanup() {
+        LOG.info("Shutting down S3Service executor service");
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+            Thread.currentThread().interrupt();
         }
     }
 
