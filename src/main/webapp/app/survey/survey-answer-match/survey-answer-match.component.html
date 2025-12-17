@@ -17,6 +17,7 @@
         <video
           [src]="challengerOne()!.url"
           controls
+          playsinline
           [autoplay]="randomPlayOrder() === 'LEFT'"
           (timeupdate)="onLeftTimeUpdate($event)"
           class="w-100 video-player"
@@ -34,6 +35,7 @@
         <video
           [src]="challengerTwo()!.url"
           controls
+          playsinline
           [autoplay]="randomPlayOrder() === 'RIGHT'"
           (timeupdate)="onRightTimeUpdate($event)"
           class="w-100 video-player"
