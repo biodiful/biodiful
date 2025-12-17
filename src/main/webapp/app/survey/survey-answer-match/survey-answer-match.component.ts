@@ -1,11 +1,13 @@
 import { Component, computed, effect, input, output, signal } from '@angular/core';
 import { Challenger } from 'app/shared/model/challenger.model';
+import SharedModule from 'app/shared/shared.module';
 
 @Component({
   selector: 'jhi-survey-answer-match',
   templateUrl: './survey-answer-match.component.html',
   standalone: true,
   styleUrl: './survey-answer-match.scss',
+  imports: [SharedModule],
 })
 export class SurveyAnswerMatchComponent {
   // Show loader while retrieving media from S3
