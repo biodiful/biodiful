@@ -57,14 +57,16 @@
   @case ('AUDIO') {
     <div class="row">
       <div class="col-12 col-md-6 mb-3 mb-md-0 text-center">
-        <div class="audio-placeholder mb-3">
-          <fa-icon icon="headphones"></fa-icon>
+        <div class="audio-placeholder mb-1 hand" (click)="toggleLeftAudio(leftAudio)">
+          <fa-icon [icon]="leftAudioPlaying() ? 'pause' : 'play'"></fa-icon>
         </div>
         <audio
+          #leftAudio
           [src]="challengerOne()!.url"
           controls
-          [autoplay]="randomPlayOrder() === 'LEFT'"
           (timeupdate)="onLeftTimeUpdate($event)"
+          (play)="onLeftAudioPlay()"
+          (pause)="onLeftAudioPause()"
           class="w-100"
         ></audio>
         <button
@@ -77,14 +79,16 @@
         </button>
       </div>
       <div class="col-12 col-md-6 text-center">
-        <div class="audio-placeholder mb-3">
-          <fa-icon icon="headphones"></fa-icon>
+        <div class="audio-placeholder mb-1 hand" (click)="toggleRightAudio(rightAudio)">
+          <fa-icon [icon]="rightAudioPlaying() ? 'pause' : 'play'"></fa-icon>
         </div>
         <audio
+          #rightAudio
           [src]="challengerTwo()!.url"
           controls
-          [autoplay]="randomPlayOrder() === 'RIGHT'"
           (timeupdate)="onRightTimeUpdate($event)"
+          (play)="onRightAudioPlay()"
+          (pause)="onRightAudioPause()"
           class="w-100"
         ></audio>
         <button

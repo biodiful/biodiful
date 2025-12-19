@@ -28,6 +28,10 @@ export class SurveyAnswerMatchComponent {
   rightPlayed90Percent = signal(false);
   randomPlayOrder = signal<'LEFT' | 'RIGHT'>('LEFT');
 
+  // Audio playback state
+  leftAudioPlaying = signal(false);
+  rightAudioPlaying = signal(false);
+
   // Computed: detect media type from first challenger
   mediaType = computed(() => this.challengerOne()?.type ?? 'IMAGE');
 
@@ -51,6 +55,8 @@ export class SurveyAnswerMatchComponent {
       this.rightPlaybackProgress.set(0);
       this.leftPlayed90Percent.set(false);
       this.rightPlayed90Percent.set(false);
+      this.leftAudioPlaying.set(false);
+      this.rightAudioPlaying.set(false);
 
       // Randomly decide which media plays first for this match
       this.randomPlayOrder.set(Math.random() < 0.5 ? 'LEFT' : 'RIGHT');
@@ -103,5 +109,43 @@ export class SurveyAnswerMatchComponent {
     if (progress >= 90) {
       this.rightPlayed90Percent.set(true);
     }
+  }
+
+  // Audio play/pause control methods
+  toggleLeftAudio(audioElement: HTMLAudioElement): void {
+    if (this.leftAudioPlaying()) {
+      audioElement.pause();
+      this.leftAudioPlaying.set(false);
+    } else {
+      audioElement.play();
+      this.leftAudioPlaying.set(true);
+    }
+  }
+
+  toggleRightAudio(audioElement: HTMLAudioElement): void {
+    if (this.rightAudioPlaying()) {
+      audioElement.pause();
+      this.rightAudioPlaying.set(false);
+    } else {
+      audioElement.play();
+      this.rightAudioPlaying.set(true);
+    }
+  }
+
+  // Update playing state when audio events fire
+  onLeftAudioPlay(): void {
+    this.leftAudioPlaying.set(true);
+  }
+
+  onLeftAudioPause(): void {
+    this.leftAudioPlaying.set(false);
+  }
+
+  onRightAudioPlay(): void {
+    this.rightAudioPlaying.set(true);
+  }
+
+  onRightAudioPause(): void {
+    this.rightAudioPlaying.set(false);
   }
 }
