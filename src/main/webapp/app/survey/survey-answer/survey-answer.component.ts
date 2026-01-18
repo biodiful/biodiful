@@ -1,55 +1,45 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Challenger } from 'app/shared/model/challenger.model';
+import { Challenger, MediaType } from 'app/shared/model/challenger.model';
 import { catchError, tap } from 'rxjs';
 import { NewAnswer } from 'app/entities/answer/answer.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ISurvey } from 'app/entities/survey/survey.model';
 import dayjs from 'dayjs/esm';
 import { SurveyAnswerMatchComponent } from 'app/survey/survey-answer-match/survey-answer-match.component';
+import { SurveyAnswerPoolIntroComponent } from 'app/survey/survey-answer-pool-intro/survey-answer-pool-intro.component';
 import { AnswerService } from 'app/entities/answer/service/answer.service';
 import { v4 as uuidv4 } from 'uuid';
 import { HttpClient } from '@angular/common/http';
 import SharedModule from 'app/shared/shared.module';
 
-interface FlickrPhotoset {
-  photo: {
-    id: string;
-    secret: string;
-    server: string;
-    farm: number;
-    title: string;
-  }[];
+interface S3MediaListResponse {
+  mediaUrls: string[];
 }
 
-interface FlickrResponse {
-  photoset: FlickrPhotoset;
-  stat: string;
-  message: string;
-}
+const VIDEO_EXTENSIONS = ['.mp4', '.webm', '.mov', '.avi'];
+const AUDIO_EXTENSIONS = ['.mp3', '.wav', '.ogg', '.m4a'];
 
 @Component({
   selector: 'jhi-survey-answer',
   templateUrl: './survey-answer.component.html',
   styles: [],
   standalone: true,
-  imports: [SharedModule, SurveyAnswerMatchComponent],
+  imports: [SharedModule, SurveyAnswerMatchComponent, SurveyAnswerPoolIntroComponent],
 })
 export class SurveyAnswerComponent implements OnInit {
   survey!: ISurvey;
-  totalNbOfMatches!: number;
+  totalNbOfMatches = 0;
   judgeId = signal('');
   answers = signal<NewAnswer[]>([]);
-  // 2 dimensions array containing the pools of challengers:
-  challengers = signal<Challenger[][]>([]);
-  challengersPool1 = signal<Challenger[]>([]);
-  challengersPool2 = signal<Challenger[]>([]);
-  challengersPool3 = signal<Challenger[]>([]);
-  currentPool = 1;
-  totalNbOfPools = 1;
+  // Array containing the pools of challengers:
+  challengerPools = signal<Challenger[][]>([]);
+  currentPoolIndex = 0;
   challengerOne = signal<Challenger | undefined>(undefined);
   challengerTwo = signal<Challenger | undefined>(undefined);
   isAllMatchesCompleted = signal(false);
+  showPoolIntroduction = signal(false);
+  poolIntroductionShown = new Set<number>();
   matchStarts!: dayjs.Dayjs;
   socialFormUrl!: SafeResourceUrl;
 
@@ -73,62 +63,53 @@ export class SurveyAnswerComponent implements OnInit {
   }
 
   initChallengers(): void {
-    if (this.survey.challengersPool1URL) {
-      this.http
-        .get<FlickrResponse>(this.survey.challengersPool1URL)
-        .pipe(
-          tap(response => this.onGetChallengersSuccess(response, this.challengersPool1(), 0)),
-          catchError(error => {
-            this.onError(`Failed to retrieve challengers for Pool 1 - ${error.message ?? 'Unknown error'}`);
-            throw error;
-          }),
-        )
-        .subscribe();
-    }
+    // Sort pools by poolOrder and fetch challengers for each
+    const sortedPools = [...(this.survey.challengerPools ?? [])].sort((a, b) => (a.poolOrder ?? 0) - (b.poolOrder ?? 0));
 
-    if (this.survey.challengersPool2URL) {
-      this.http
-        .get<FlickrResponse>(this.survey.challengersPool2URL)
-        .pipe(
-          tap(response => this.onGetChallengersSuccess(response, this.challengersPool2(), 1)),
-          catchError(error => {
-            this.onError(`Failed to retrieve challengers for Pool 2 -  ${error.message ?? 'Unknown error'}`);
-            throw error;
-          }),
-        )
-        .subscribe();
-    }
-
-    if (this.survey.challengersPool3URL) {
-      this.http
-        .get<FlickrResponse>(this.survey.challengersPool3URL)
-        .pipe(
-          tap(response => this.onGetChallengersSuccess(response, this.challengersPool3(), 2)),
-          catchError(error => {
-            this.onError(`Failed to retrieve challengers for Pool 3 -  ${error.message ?? 'Unknown error'}`);
-            throw error;
-          }),
-        )
-        .subscribe();
-    }
+    sortedPools.forEach((pool, index) => {
+      if (pool.challengersURL) {
+        // Call backend endpoint to list media files from S3
+        this.http
+          .get<S3MediaListResponse>('/api/s3/list-media', {
+            params: { folderUrl: pool.challengersURL },
+          })
+          .pipe(
+            tap(response => this.onGetChallengersSuccess(response, index)),
+            catchError(error => {
+              this.onError(`Failed to retrieve challengers for Pool ${index + 1} - ${error.message ?? 'Unknown error'}`);
+              throw error;
+            }),
+          )
+          .subscribe();
+      }
+    });
   }
 
-  onGetChallengersSuccess(response: FlickrResponse, challengersPool: Challenger[], poolIndex: number): void {
-    // console.debug(JSON.stringify(response));
+  onGetChallengersSuccess(response: S3MediaListResponse, poolIndex: number): void {
+    // Process the list of media URLs returned by the backend
+    const challengersPool: Challenger[] = [];
 
-    if (response.stat === 'fail') {
-      this.onError('Failed to retrieve challengers: ' + response.message);
+    // Detect media type from first file
+    const mediaType = response.mediaUrls.length > 0 ? this.detectMediaType(response.mediaUrls[0]) : 'IMAGE';
+
+    for (const mediaUrl of response.mediaUrls) {
+      // Extract filename from URL for the challenger ID
+      const urlParts = mediaUrl.split('/');
+      const filename = urlParts[urlParts.length - 1];
+      // Remove file extension for cleaner ID
+      const id = filename.replace(/\.[^/.]+$/, '');
+      challengersPool.push(new Challenger(id, mediaUrl, mediaType));
+    }
+
+    if (challengersPool.length === 0) {
+      this.onError(`No media files found in Pool ${poolIndex + 1}`);
       return;
     }
 
-    const photoset = response.photoset;
-    for (const photo of photoset.photo) {
-      const photoUrl = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
-      challengersPool.push(new Challenger(photo.title, photoUrl));
-    }
-
-    // this.challengers().push(challengersPool);
-    this.challengers()[poolIndex] = challengersPool;
+    // Update the challengerPools array
+    const currentPools = this.challengerPools();
+    currentPools[poolIndex] = challengersPool;
+    this.challengerPools.set(currentPools);
 
     this.initNbOfMatches();
 
@@ -136,15 +117,13 @@ export class SurveyAnswerComponent implements OnInit {
   }
 
   initNbOfMatches(): void {
-    this.totalNbOfMatches = this.survey.numberOfMatchesPerPool ?? 0;
-    if (this.challengersPool2.length > 0 && this.survey.numberOfMatchesPerPool2 && this.survey.numberOfMatchesPerPool2 > 0) {
-      this.totalNbOfMatches += this.survey.numberOfMatchesPerPool2 ?? 0;
-      this.totalNbOfPools = 2;
-    }
-    if (this.challengersPool3.length > 0 && this.survey.numberOfMatchesPerPool3 && this.survey.numberOfMatchesPerPool3 > 0) {
-      this.totalNbOfMatches += this.survey.numberOfMatchesPerPool3 ?? 0;
-      this.totalNbOfPools = 3;
-    }
+    // Calculate total number of matches across all pools
+    this.totalNbOfMatches = 0;
+    const sortedPools = [...(this.survey.challengerPools ?? [])].sort((a, b) => (a.poolOrder ?? 0) - (b.poolOrder ?? 0));
+
+    sortedPools.forEach(pool => {
+      this.totalNbOfMatches += pool.numberOfMatches ?? 0;
+    });
 
     if (this.totalNbOfMatches < 1) {
       this.totalNbOfMatches = 10;
@@ -156,11 +135,18 @@ export class SurveyAnswerComponent implements OnInit {
   }
 
   initNextMatch(): void {
-    // Determine the current pool based on how many answers have been recorded
-    // this.currentPool = Math.floor(this.answers().length / (this.survey.numberOfMatchesPerPool ?? 0)) + 1;
+    // Determine the current pool index based on how many answers have been recorded
+    this.updateCurrentPoolIndex();
 
-    // Load 2 random challengers from the right pool
-    this.initNextChallengers(this.challengers()[this.currentPool - 1]);
+    // Check if we should show the pool introduction
+    if (this.shouldShowPoolIntroduction()) {
+      this.showPoolIntroduction.set(true);
+      return;
+    }
+
+    // Load 2 random challengers from the current pool
+    const currentPool = this.challengerPools()[this.currentPoolIndex];
+    this.initNextChallengers(currentPool);
 
     this.matchStarts = dayjs();
   }
@@ -201,7 +187,7 @@ export class SurveyAnswerComponent implements OnInit {
       winner: winner.id,
       startTime: this.matchStarts,
       endTime: matchEnds,
-      poolNumber: this.currentPool,
+      poolNumber: this.currentPoolIndex + 1, // Pool number is 1-indexed
       survey: { id: this.survey.id },
     };
 
@@ -209,7 +195,6 @@ export class SurveyAnswerComponent implements OnInit {
 
     // Determine whether to display next challengers
     if (this.answers().length < this.totalNbOfMatches) {
-      this.updateCurrentPool();
       this.initNextMatch();
     } else {
       // If we've got enough winners, save the answers and display socio-pro questions
@@ -231,35 +216,76 @@ export class SurveyAnswerComponent implements OnInit {
     }
   }
 
-  updateCurrentPool(): void {
-    // Determine which pool we're on
-    if (this.currentPool === 1 && this.totalNbOfPools > 1 && this.answers().length >= (this.survey.numberOfMatchesPerPool ?? 0)) {
-      this.currentPool = 2;
-    } else if (
-      this.currentPool === 2 &&
-      this.totalNbOfPools > 2 &&
-      this.answers().length >= (this.survey.numberOfMatchesPerPool ?? 0) + (this.survey.numberOfMatchesPerPool2 ?? 0)
-    ) {
-      this.currentPool = 3;
+  updateCurrentPoolIndex(): void {
+    // Determine which pool we're on based on how many answers have been recorded
+    const sortedPools = [...(this.survey.challengerPools ?? [])].sort((a, b) => (a.poolOrder ?? 0) - (b.poolOrder ?? 0));
+
+    let cumulativeMatches = 0;
+    for (let i = 0; i < sortedPools.length; i++) {
+      cumulativeMatches += sortedPools[i].numberOfMatches ?? 0;
+      if (this.answers().length < cumulativeMatches) {
+        this.currentPoolIndex = i;
+        return;
+      }
     }
+
+    // Default to the last pool if we're somehow beyond all pools
+    this.currentPoolIndex = Math.max(0, sortedPools.length - 1);
   }
 
   getCurrentMatchNumber(): number {
     return this.answers().length + 1;
   }
 
-  getDescriptionForCurrentPool(): any {
-    if (this.currentPool === 2 && this.survey.matchesDescriptionPool2) {
-      return this.survey.matchesDescriptionPool2;
-    } else if (this.currentPool === 3 && this.survey.matchesDescriptionPool3) {
-      return this.survey.matchesDescriptionPool3;
-    }
+  getDescriptionForCurrentPool(): string {
+    const sortedPools = [...(this.survey.challengerPools ?? [])].sort((a, b) => (a.poolOrder ?? 0) - (b.poolOrder ?? 0));
+    const currentPool = sortedPools[this.currentPoolIndex];
+    return currentPool.matchesDescription ?? '';
+  }
 
-    return this.survey.matchesDescription;
+  getIntroductionForCurrentPool(): string {
+    const sortedPools = [...(this.survey.challengerPools ?? [])].sort((a, b) => (a.poolOrder ?? 0) - (b.poolOrder ?? 0));
+    const currentPool = sortedPools[this.currentPoolIndex];
+    return currentPool.introductionMessage ?? '';
+  }
+
+  shouldShowPoolIntroduction(): boolean {
+    const sortedPools = [...(this.survey.challengerPools ?? [])].sort((a, b) => (a.poolOrder ?? 0) - (b.poolOrder ?? 0));
+    const currentPool = sortedPools[this.currentPoolIndex];
+
+    // Show introduction if:
+    // 1. Current pool has an introduction message
+    // 2. We haven't shown the introduction for this pool yet
+    return !!currentPool.introductionMessage && !this.poolIntroductionShown.has(this.currentPoolIndex);
+  }
+
+  onPoolIntroductionStart(): void {
+    // Mark this pool's introduction as shown
+    this.poolIntroductionShown.add(this.currentPoolIndex);
+    this.showPoolIntroduction.set(false);
+
+    // Now start the first match for this pool
+    const currentPool = this.challengerPools()[this.currentPoolIndex];
+    this.initNextChallengers(currentPool);
+    this.matchStarts = dayjs();
   }
 
   getPercentAdvancement(): number {
     return (this.getCurrentMatchNumber() * 100) / this.totalNbOfMatches;
+  }
+
+  private detectMediaType(url: string): MediaType {
+    // Remove query parameters (for presigned URLs)
+    const urlWithoutQuery = url.split('?')[0];
+    const ext = urlWithoutQuery.substring(urlWithoutQuery.lastIndexOf('.')).toLowerCase();
+
+    if (VIDEO_EXTENSIONS.includes(ext)) {
+      return 'VIDEO';
+    }
+    if (AUDIO_EXTENSIONS.includes(ext)) {
+      return 'AUDIO';
+    }
+    return 'IMAGE';
   }
 
   private onError(errorMessage: string): void {

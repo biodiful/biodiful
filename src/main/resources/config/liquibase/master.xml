@@ -21,6 +21,9 @@
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181126171055_added_entity_Survey.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181126171056_added_entity_Answer.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20251029163653_added_entity_ChallengerPool.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20251029163654_migrate_existing_pools_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20251114153943_add_introduction_message_to_challenger_pool.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20181126171056_added_entity_constraints_Answer.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->

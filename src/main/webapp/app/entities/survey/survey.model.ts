@@ -1,4 +1,5 @@
 import { Language } from 'app/entities/enumerations/language.model';
+import { IChallengerPool } from 'app/entities/challenger-pool/challenger-pool.model';
 
 export interface ISurvey {
   id: number;
@@ -9,15 +10,7 @@ export interface ISurvey {
   photoURL?: string | null;
   logosURL?: string | null;
   formURL?: string | null;
-  challengersPool1URL?: string | null;
-  challengersPool2URL?: string | null;
-  challengersPool3URL?: string | null;
-  numberOfMatchesPerPool?: number | null;
-  numberOfMatchesPerPool2?: number | null;
-  numberOfMatchesPerPool3?: number | null;
-  matchesDescription?: string | null;
-  matchesDescriptionPool2?: string | null;
-  matchesDescriptionPool3?: string | null;
+  challengerPools?: IChallengerPool[] | null;
   open?: boolean | null;
   language?: keyof typeof Language | null;
   uniqueChallengers?: boolean | null;

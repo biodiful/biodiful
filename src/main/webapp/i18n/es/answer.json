@@ -25,7 +25,11 @@
       "startTime": "Start Time",
       "endTime": "End Time",
       "poolNumber": "Pool Number",
-      "survey": "Survey"
+      "survey": "Survey",
+      "match": {
+        "chooseVideo": "Elige este vídeo",
+        "chooseAudio": "Elige este audio"
+      }
     }
   }
 }

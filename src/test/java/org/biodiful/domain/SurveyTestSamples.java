@@ -2,60 +2,107 @@ package org.biodiful.domain;
 
 import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class SurveyTestSamples {
 
     private static final Random random = new Random();
     private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
-    private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
 
     public static Survey getSurveySample1() {
-        return new Survey()
+        Survey survey = new Survey()
             .id(1L)
             .surveyName("surveyName1")
             .friendlyURL("friendlyURL1")
             .photoURL("photoURL1")
             .logosURL("logosURL1")
-            .formURL("formURL1")
-            .challengersPool1URL("challengersPool1URL1")
-            .challengersPool2URL("challengersPool2URL1")
-            .challengersPool3URL("challengersPool3URL1")
-            .numberOfMatchesPerPool(1)
-            .numberOfMatchesPerPool2(1)
-            .numberOfMatchesPerPool3(1);
+            .formURL("formURL1");
+
+        // Add one challenger pool
+        ChallengerPool pool1 = new ChallengerPool()
+            .poolOrder(1)
+            .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-1/pool-1/")
+            .numberOfMatches(10)
+            .matchesDescription("matchesDescription1")
+            .introductionMessage("introductionMessage1");
+        survey.addChallengerPool(pool1);
+
+        return survey;
     }
 
     public static Survey getSurveySample2() {
-        return new Survey()
+        Survey survey = new Survey()
             .id(2L)
             .surveyName("surveyName2")
             .friendlyURL("friendlyURL2")
             .photoURL("photoURL2")
             .logosURL("logosURL2")
-            .formURL("formURL2")
-            .challengersPool1URL("challengersPool1URL2")
-            .challengersPool2URL("challengersPool2URL2")
-            .challengersPool3URL("challengersPool3URL2")
-            .numberOfMatchesPerPool(2)
-            .numberOfMatchesPerPool2(2)
-            .numberOfMatchesPerPool3(2);
+            .formURL("formURL2");
+
+        // Add two challenger pools
+        ChallengerPool pool1 = new ChallengerPool()
+            .poolOrder(1)
+            .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-2/pool-1/")
+            .numberOfMatches(15)
+            .matchesDescription("matchesDescription2-1")
+            .introductionMessage("introductionMessage2-1");
+        survey.addChallengerPool(pool1);
+
+        ChallengerPool pool2 = new ChallengerPool()
+            .poolOrder(2)
+            .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-2/pool-2/")
+            .numberOfMatches(20)
+            .matchesDescription("matchesDescription2-2")
+            .introductionMessage("introductionMessage2-2");
+        survey.addChallengerPool(pool2);
+
+        return survey;
     }
 
     public static Survey getSurveyRandomSampleGenerator() {
-        return new Survey()
+        Survey survey = new Survey()
             .id(longCount.incrementAndGet())
             .surveyName(UUID.randomUUID().toString())
             .friendlyURL(UUID.randomUUID().toString())
             .photoURL(UUID.randomUUID().toString())
             .logosURL(UUID.randomUUID().toString())
-            .formURL(UUID.randomUUID().toString())
-            .challengersPool1URL(UUID.randomUUID().toString())
-            .challengersPool2URL(UUID.randomUUID().toString())
-            .challengersPool3URL(UUID.randomUUID().toString())
-            .numberOfMatchesPerPool(intCount.incrementAndGet())
-            .numberOfMatchesPerPool2(intCount.incrementAndGet())
-            .numberOfMatchesPerPool3(intCount.incrementAndGet());
+            .formURL(UUID.randomUUID().toString());
+
+        // Add random number of pools (1-3)
+        int poolCount = random.nextInt(3) + 1;
+        for (int i = 0; i < poolCount; i++) {
+            ChallengerPool pool = new ChallengerPool()
+                .poolOrder(i + 1)
+                .challengersURL(UUID.randomUUID().toString())
+                .numberOfMatches(random.nextInt(50) + 1)
+                .matchesDescription(UUID.randomUUID().toString())
+                .introductionMessage(UUID.randomUUID().toString());
+            survey.addChallengerPool(pool);
+        }
+
+        return survey;
+    }
+
+    public static Survey getSurveyWithMultiplePools() {
+        Survey survey = new Survey()
+            .id(3L)
+            .surveyName("surveyName3")
+            .friendlyURL("friendlyURL3")
+            .photoURL("photoURL3")
+            .logosURL("logosURL3")
+            .formURL("formURL3");
+
+        // Add 5 challenger pools
+        for (int i = 1; i <= 5; i++) {
+            ChallengerPool pool = new ChallengerPool()
+                .poolOrder(i)
+                .challengersURL("https://test-bucket.s3.us-east-1.amazonaws.com/survey-3/pool-" + i + "/")
+                .numberOfMatches(10 + i)
+                .matchesDescription("matchesDescription" + i)
+                .introductionMessage("introductionMessage" + i);
+            survey.addChallengerPool(pool);
+        }
+
+        return survey;
     }
 }

@@ -26,3 +26,12 @@ spring:
       maximumPoolSize: 8
 server:
   port: ${PORT:8080}
+
+# S3 configuration for HDrive addon
+# HDrive provides S3_ACCESS_KEY_ID and S3_SECRET_ACCESS_KEY environment variables
+application:
+  s3:
+    access-key-id: ${S3_ACCESS_KEY_ID}
+    secret-access-key: ${S3_SECRET_ACCESS_KEY}
+    region: ${S3_REGION:fr-par}
+    endpoint: ${S3_ENDPOINT:https://s3.fr-par.scw.cloud}

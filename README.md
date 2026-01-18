@@ -22,6 +22,21 @@ In the project root, JHipster generates configuration files for tools like git, 
 
 ## Development
 
+### Quick Start
+
+**1. Configure S3 credentials:**
+
+Copy the example environment file and fill in your credentials:
+
+```bash
+cp .env.example.properties .env.properties
+# Edit .env.properties with your S3 credentials
+```
+
+The `.env.properties` file is **automatically loaded** by Spring Boot on startup. No need to export or source environment variables manually!
+
+**2. Start the application:**
+
 The build system will install automatically the recommended version of Node and npm.
 
 We provide a wrapper to launch npm.
@@ -159,6 +174,26 @@ Unit tests are run by [Jest][]. They're located near components and can be run w
 
 ```
 ./npmw test
+```
+
+## Deploying to Heroku
+
+First, you need to define the database and S3 environment variables in your Heroku application settings.
+
+```
+heroku config:set DATABASE_URL=your-db-url
+heroku config:set S3_ACCESS_KEY_ID=your-access-key-id
+heroku config:set S3_SECRET_ACCESS_KEY=your-secret-access-key
+heroku config:set S3_REGION=your-region
+heroku config:set S3_ENDPOINT=https://s3.fr-par.scw.cloud
+heroku config:set GRADLE_TASK="stage -Pprod"
+```
+
+Then, you can deploy your application to Heroku simply by adding a new git remote and pushing to it:
+
+```
+git remote add heroku https://git.heroku.com/your-heroku-app.git
+git push heroku main
 ```
 
 ## Others

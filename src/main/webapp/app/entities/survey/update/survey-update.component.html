@@ -128,168 +128,151 @@
           }
         </div>
 
-        @let challengersPool1URLRef = editForm.get('challengersPool1URL')!;
-        <div class="mb-3" ngbTooltip="URL de l'appel a l'API Flickr pour obtenir les photos de la 1ere Pool à afficher lors des matches">
-          <label class="form-label" for="field_challengersPool1URL" jhiTranslate="biodifulApp.survey.challengersPool1URL"
-            >Challengers Pool 1 URL</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="challengersPool1URL"
-            id="field_challengersPool1URL"
-            data-cy="challengersPool1URL"
-            formControlName="challengersPool1URL"
-          />
-          @if (challengersPool1URLRef.invalid && (challengersPool1URLRef.dirty || challengersPool1URLRef.touched)) {
-            <div>
-              @if (editForm.get('challengersPool1URL')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3" ngbTooltip="URL de l'appel a l'API Flickr pour obtenir les photos de la 2eme Pool à afficher lors des matches">
-          <label class="form-label" for="field_challengersPool2URL" jhiTranslate="biodifulApp.survey.challengersPool2URL"
-            >Challengers Pool 2 URL</label
-          >
-          <div class="alert alert-warning">
-            Si ce paramètre est renseigné, les paramètres indiquant le nombre de matches a effectuer (Number Of Matches Per Pool 2) et la
-            description des matches pour cette pool (Matches Description Pool 2) doivent également être renseignés
+        <!-- Challenger Pools - Dynamic FormArray -->
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4>Challenger Pools</h4>
+            <button type="button" class="btn btn-success" (click)="addChallengerPool()" data-cy="addPoolButton">
+              <fa-icon icon="plus"></fa-icon> <span jhiTranslate="biodifulApp.survey.challengersPools.addPool">Add Pool</span>
+            </button>
           </div>
-          <input
-            type="text"
-            class="form-control"
-            name="challengersPool2URL"
-            id="field_challengersPool2URL"
-            data-cy="challengersPool2URL"
-            formControlName="challengersPool2URL"
-          />
-        </div>
 
-        <div class="mb-3" ngbTooltip="URL de l'appel a l'API Flickr pour obtenir les photos de la 3eme Pool à afficher lors des matches">
-          <label class="form-label" for="field_challengersPool3URL" jhiTranslate="biodifulApp.survey.challengersPool3URL"
-            >Challengers Pool 3 URL</label
-          >
-          <div class="alert alert-warning">
-            Si ce paramètre est renseigné, les paramètres indiquant le nombre de matches a effectuer (Number Of Matches Per Pool 3) et la
-            description des matches pour cette pool (Matches Description Pool 3) doivent également être renseignés
-          </div>
-          <input
-            type="text"
-            class="form-control"
-            name="challengersPool3URL"
-            id="field_challengersPool3URL"
-            data-cy="challengersPool3URL"
-            formControlName="challengersPool3URL"
-          />
-        </div>
-
-        @let numberOfMatchesPerPoolRef = editForm.get('numberOfMatchesPerPool')!;
-        <div class="mb-3" ngbTooltip="Nombre de matches à effectuer pour la 1ere Pool d'images">
-          <label class="form-label" for="field_numberOfMatchesPerPool" jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool"
-            >Number Of Matches Per Pool 1</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            name="numberOfMatchesPerPool"
-            id="field_numberOfMatchesPerPool"
-            data-cy="numberOfMatchesPerPool"
-            formControlName="numberOfMatchesPerPool"
-          />
-          @if (numberOfMatchesPerPoolRef.invalid && (numberOfMatchesPerPoolRef.dirty || numberOfMatchesPerPoolRef.touched)) {
-            <div>
-              @if (editForm.get('numberOfMatchesPerPool')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('numberOfMatchesPerPool')?.errors?.number"
-                jhiTranslate="entity.validation.number"
-                >This field should be a number.</small
-              >
+          @if (challengerPoolsFormArray.controls.length === 0) {
+            <div class="alert alert-info" jhiTranslate="biodifulApp.survey.challengersPools.noPoolsYet">
+              No pools added yet. Click "Add Pool" to create the first challenger pool.
             </div>
           }
-        </div>
 
-        <div class="mb-3" ngbTooltip="Nombre de matches à effectuer pour la 2eme Pool d'images">
-          <label class="form-label" for="field_numberOfMatchesPerPool2" jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool2"
-            >Number Of Matches Per Pool 2</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            name="numberOfMatchesPerPool2"
-            id="field_numberOfMatchesPerPool2"
-            data-cy="numberOfMatchesPerPool2"
-            formControlName="numberOfMatchesPerPool2"
-          />
-        </div>
+          @for (poolControl of challengerPoolsFormArray.controls; track $index) {
+            @let poolIndex = $index;
+            @let poolFormGroup = poolControl;
+            <div class="card mb-3" [formGroup]="poolFormGroup">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Pool {{ poolIndex + 1 }}</h5>
+                @if (challengerPoolsFormArray.controls.length > 1) {
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-sm"
+                    (click)="removeChallengerPool(poolIndex)"
+                    [attr.data-cy]="'removePoolButton-' + poolIndex"
+                  >
+                    <fa-icon icon="trash-alt"></fa-icon>&nbsp;<span jhiTranslate="biodifulApp.survey.challengersPools.removePool"
+                      >Remove</span
+                    >
+                  </button>
+                }
+              </div>
+              <div class="card-body">
+                <!-- Challengers URL -->
+                @let challengersURLRef = poolFormGroup.get('challengersURL')!;
+                <div class="mb-3" ngbTooltip="URL du dossier S3 contenant les images à afficher lors des matches">
+                  <label
+                    class="form-label"
+                    [attr.for]="'field_challengersURL_' + poolIndex"
+                    jhiTranslate="biodifulApp.survey.challengersPools.url"
+                  >
+                    Challengers URL
+                  </label>
+                  <div class="alert alert-info" role="alert">
+                    URL du dossier S3 contenant les images à afficher lors des matches. Format:
+                    https://bucket-name.s3.region.provider.com/folder/
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [attr.name]="'challengersURL_' + poolIndex"
+                    [attr.id]="'field_challengersURL_' + poolIndex"
+                    [attr.data-cy]="'challengersURL-' + poolIndex"
+                    formControlName="challengersURL"
+                    placeholder="https://my-bucket.s3.fr-par.scw.cloud/survey-1/pool-1/"
+                  />
+                  @if (challengersURLRef.invalid && (challengersURLRef.dirty || challengersURLRef.touched)) {
+                    <div>
+                      @if (challengersURLRef.errors?.required) {
+                        <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+                      }
+                    </div>
+                  }
+                </div>
 
-        <div class="mb-3" ngbTooltip="Nombre de matches à effectuer pour la 3eme Pool d'images">
-          <label class="form-label" for="field_numberOfMatchesPerPool3" jhiTranslate="biodifulApp.survey.numberOfMatchesPerPool3"
-            >Number Of Matches Per Pool 3</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            name="numberOfMatchesPerPool3"
-            id="field_numberOfMatchesPerPool3"
-            data-cy="numberOfMatchesPerPool3"
-            formControlName="numberOfMatchesPerPool3"
-          />
-        </div>
+                <!-- Number of Matches -->
+                @let numberOfMatchesRef = poolFormGroup.get('numberOfMatches')!;
+                <div class="mb-3" ngbTooltip="Nombre de matches à effectuer pour cette Pool d'images">
+                  <label
+                    class="form-label"
+                    [attr.for]="'field_numberOfMatches_' + poolIndex"
+                    jhiTranslate="biodifulApp.survey.challengersPools.numberOfMatches"
+                  >
+                    Number Of Matches
+                  </label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [attr.name]="'numberOfMatches_' + poolIndex"
+                    [attr.id]="'field_numberOfMatches_' + poolIndex"
+                    [attr.data-cy]="'numberOfMatches-' + poolIndex"
+                    formControlName="numberOfMatches"
+                  />
+                  @if (numberOfMatchesRef.invalid && (numberOfMatchesRef.dirty || numberOfMatchesRef.touched)) {
+                    <div>
+                      @if (numberOfMatchesRef.errors?.required) {
+                        <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+                      }
+                      @if (numberOfMatchesRef.errors?.number) {
+                        <small class="form-text text-danger" jhiTranslate="entity.validation.number">This field should be a number.</small>
+                      }
+                    </div>
+                  }
+                </div>
 
-        @let matchesDescriptionRef = editForm.get('matchesDescription')!;
-        <div class="mb-3" ngbTooltip="Description à afficher au dessus des deux photos lors d’un match pour la 1ere Pool">
-          <label class="form-label" for="field_matchesDescription" jhiTranslate="biodifulApp.survey.matchesDescription"
-            >Matches Description Pool 1</label
-          >
-          <angular-editor
-            [config]="angularEditorConfig"
-            class="form-control"
-            name="matchesDescription"
-            id="field_matchesDescription"
-            data-cy="matchesDescription"
-            formControlName="matchesDescription"
-          ></angular-editor>
-          @if (matchesDescriptionRef.invalid && (matchesDescriptionRef.dirty || matchesDescriptionRef.touched)) {
-            <div>
-              @if (editForm.get('matchesDescription')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
-              }
+                <!-- Matches Description -->
+                @let matchesDescriptionRef = poolFormGroup.get('matchesDescription')!;
+                <div class="mb-3" ngbTooltip="Description à afficher au dessus des deux photos lors d'un match pour cette Pool">
+                  <label
+                    class="form-label"
+                    [attr.for]="'field_matchesDescription_' + poolIndex"
+                    jhiTranslate="biodifulApp.survey.challengersPools.description"
+                  >
+                    Matches Description
+                  </label>
+                  <angular-editor
+                    [config]="angularEditorConfig"
+                    class="form-control"
+                    [attr.name]="'matchesDescription_' + poolIndex"
+                    [attr.id]="'field_matchesDescription_' + poolIndex"
+                    [attr.data-cy]="'matchesDescription-' + poolIndex"
+                    formControlName="matchesDescription"
+                  ></angular-editor>
+                  @if (matchesDescriptionRef.invalid && (matchesDescriptionRef.dirty || matchesDescriptionRef.touched)) {
+                    <div>
+                      @if (matchesDescriptionRef.errors?.required) {
+                        <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <!-- Introduction Message -->
+                <div class="mb-3" ngbTooltip="Message d'introduction à afficher avant que l'utilisateur commence à répondre à cette Pool">
+                  <label
+                    class="form-label"
+                    [attr.for]="'field_introductionMessage_' + poolIndex"
+                    jhiTranslate="biodifulApp.survey.challengersPools.introductionMessage"
+                  >
+                    Introduction Message
+                  </label>
+                  <angular-editor
+                    [config]="angularEditorConfig"
+                    class="form-control"
+                    [attr.name]="'introductionMessage_' + poolIndex"
+                    [attr.id]="'field_introductionMessage_' + poolIndex"
+                    [attr.data-cy]="'introductionMessage-' + poolIndex"
+                    formControlName="introductionMessage"
+                  ></angular-editor>
+                </div>
+              </div>
             </div>
           }
-        </div>
-
-        <div class="mb-3" ngbTooltip="Description à afficher au dessus des deux photos lors d’un match pour la 2eme Pool">
-          <label class="form-label" for="field_matchesDescriptionPool2" jhiTranslate="biodifulApp.survey.matchesDescriptionPool2"
-            >Matches Description Pool 2</label
-          >
-          <angular-editor
-            [config]="angularEditorConfig"
-            class="form-control"
-            name="matchesDescriptionPool2"
-            id="field_matchesDescriptionPool2"
-            data-cy="matchesDescriptionPool2"
-            formControlName="matchesDescriptionPool2"
-          ></angular-editor>
-        </div>
-
-        <div class="mb-3" ngbTooltip="Description à afficher au dessus des deux photos lors d’un match pour la 3eme Pool">
-          <label class="form-label" for="field_matchesDescriptionPool3" jhiTranslate="biodifulApp.survey.matchesDescriptionPool3"
-            >Matches Description Pool 3</label
-          >
-          <angular-editor
-            [config]="angularEditorConfig"
-            class="form-control"
-            name="matchesDescriptionPool3"
-            id="field_matchesDescriptionPool3"
-            data-cy="matchesDescriptionPool3"
-            formControlName="matchesDescriptionPool3"
-          ></angular-editor>
         </div>
 
         @let openRef = editForm.get('open')!;

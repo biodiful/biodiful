@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!--
+        Migrate existing pool data from Survey to ChallengerPool table.
+    -->
+    <changeSet id="20251029163654-1" author="jhipster">
+        <comment>Migrate pool 1 data from survey table to challenger_pool table</comment>
+        <sql>
+            INSERT INTO challenger_pool (pool_order, challengers_url, number_of_matches, matches_description, survey_id)
+            SELECT 1, challengers_pool_1_url, number_of_matches_per_pool, matches_description, id
+            FROM survey
+            WHERE challengers_pool_1_url IS NOT NULL
+        </sql>
+    </changeSet>
+
+    <changeSet id="20251029163654-2" author="jhipster">
+        <comment>Migrate pool 2 data from survey table to challenger_pool table</comment>
+        <sql>
+            INSERT INTO challenger_pool (pool_order, challengers_url, number_of_matches, matches_description, survey_id)
+            SELECT 2, challengers_pool_2_url, number_of_matches_per_pool_2, matches_description_pool_2, id
+            FROM survey
+            WHERE challengers_pool_2_url IS NOT NULL AND challengers_pool_2_url != ''
+        </sql>
+    </changeSet>
+
+    <changeSet id="20251029163654-3" author="jhipster">
+        <comment>Migrate pool 3 data from survey table to challenger_pool table</comment>
+        <sql>
+            INSERT INTO challenger_pool (pool_order, challengers_url, number_of_matches, matches_description, survey_id)
+            SELECT 3, challengers_pool_3_url, number_of_matches_per_pool_3, matches_description_pool_3, id
+            FROM survey
+            WHERE challengers_pool_3_url IS NOT NULL AND challengers_pool_3_url != ''
+        </sql>
+    </changeSet>
+
+    <changeSet id="20251029163654-4" author="jhipster">
+        <comment>Drop old pool columns from survey table</comment>
+        <dropColumn tableName="survey" columnName="challengers_pool_1_url"/>
+        <dropColumn tableName="survey" columnName="challengers_pool_2_url"/>
+        <dropColumn tableName="survey" columnName="challengers_pool_3_url"/>
+        <dropColumn tableName="survey" columnName="number_of_matches_per_pool"/>
+        <dropColumn tableName="survey" columnName="number_of_matches_per_pool_2"/>
+        <dropColumn tableName="survey" columnName="number_of_matches_per_pool_3"/>
+        <dropColumn tableName="survey" columnName="matches_description"/>
+        <dropColumn tableName="survey" columnName="matches_description_pool_2"/>
+        <dropColumn tableName="survey" columnName="matches_description_pool_3"/>
+    </changeSet>
+
+</databaseChangeLog>

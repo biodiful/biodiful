@@ -1,14 +1,11 @@
 <jhi-alert-error></jhi-alert-error>
-@if (isAllMatchesCompleted()) {
-  <div>
-    <!-- <div *ngSwitchCase="true" class="embed-responsive embed-responsive-1by1"> -->
-    <!-- <iframe class="embed-responsive-item" id="google-form" src="https://docs.google.com/forms/d/e/1FAIpQLScUQE1qz9s7lpc4D2np7xbPRUnJCXhIG76V5lqxxpR28pF5zw/viewform?embedded=true" scrolling="yes" > -->
-    <!-- <iframe class="embed-responsive-item" id="google-form" [src]="this.socialFormUrl" frameborder="0" marginheight="0" marginwidth="0" onLoad="parent.scrollTo(0,0);" scrolling="yes">
-        Loading...
-    </iframe> -->
-    <img src="/content/images/loader.gif" />
-  </div>
-} @else {
+@if (showPoolIntroduction()) {
+  <jhi-survey-answer-pool-intro
+    [poolNumber]="currentPoolIndex + 1"
+    [introductionMessage]="getIntroductionForCurrentPool()"
+    (startPool)="onPoolIntroductionStart()"
+  ></jhi-survey-answer-pool-intro>
+} @else if (challengerOne() && challengerTwo() && !isAllMatchesCompleted()) {
   <div [innerHTML]="getDescriptionForCurrentPool()"></div>
 
   <jhi-survey-answer-match
@@ -28,5 +25,9 @@
     >
       {{ getCurrentMatchNumber() }} / {{ totalNbOfMatches }}
     </div>
+  </div>
+} @else {
+  <div class="d-flex justify-content-center">
+    <img src="/content/images/loader.gif" />
   </div>
 }

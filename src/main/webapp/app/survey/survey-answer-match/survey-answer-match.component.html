@@ -1,27 +1,105 @@
-<!-- <div class="mx-auto">
-  <img
-    class="challenger mb-2 mr-2"
-    [src]="challengerOne()!.url"
-    [alt]="challengerOne()!.id"
-    (click)="challengerClicked(challengerOne()!)"
-  />
-  <img class="challenger mb-2" [src]="challengerTwo()!.url" [alt]="challengerTwo()!.id" (click)="challengerClicked(challengerTwo()!)" />
-</div> -->
+@switch (mediaType()) {
+  @case ('IMAGE') {
+    <!-- Existing image display with click handlers -->
+    <div class="row">
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
+        <img class="challenger" [src]="challengerOne()!.url" [alt]="challengerOne()!.id" (click)="challengerClicked(challengerOne()!)" />
+      </div>
+      <div class="col-12 col-md-6">
+        <img class="challenger" [src]="challengerTwo()!.url" [alt]="challengerTwo()!.id" (click)="challengerClicked(challengerTwo()!)" />
+      </div>
+    </div>
+  }
 
-<!-- Pour que les challenger prennent toute la place (mieux pour la version mobile) -->
+  @case ('VIDEO') {
+    <div class="row">
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
+        <video
+          [src]="challengerOne()!.url"
+          controls
+          playsinline
+          poster="/content/images/video.png"
+          [autoplay]="randomPlayOrder() === 'LEFT'"
+          (timeupdate)="onLeftTimeUpdate($event)"
+          class="w-100 video-player"
+        ></video>
+        <button
+          class="btn btn-primary w-100 mt-2"
+          [disabled]="!canSubmit()"
+          (click)="selectLeft()"
+          jhiTranslate="biodifulApp.answer.match.chooseVideo"
+        >
+          Choose this video
+        </button>
+      </div>
+      <div class="col-12 col-md-6">
+        <video
+          [src]="challengerTwo()!.url"
+          controls
+          playsinline
+          poster="/content/images/video.png"
+          [autoplay]="randomPlayOrder() === 'RIGHT'"
+          (timeupdate)="onRightTimeUpdate($event)"
+          class="w-100 video-player"
+        ></video>
+        <button
+          class="btn btn-primary w-100 mt-2"
+          [disabled]="!canSubmit()"
+          (click)="selectRight()"
+          jhiTranslate="biodifulApp.answer.match.chooseVideo"
+        >
+          Choose this video
+        </button>
+      </div>
+    </div>
+  }
 
-<div class="row">
-  <div class="col-6 col-md-6">
-    <img
-      class="challenger mb-2 mr-2"
-      [src]="challengerOne()!.url"
-      [alt]="challengerOne()!.id"
-      (click)="challengerClicked(challengerOne()!)"
-    />
-  </div>
-  <div class="col-6 col-md-6">
-    <img class="challenger mb-2" [src]="challengerTwo()!.url" [alt]="challengerTwo()!.id" (click)="challengerClicked(challengerTwo()!)" />
-  </div>
-</div>
-
-<!-- .challenger style width: 100%; -->
+  @case ('AUDIO') {
+    <div class="row">
+      <div class="col-12 col-md-6 mb-3 mb-md-0 text-center">
+        <div class="audio-placeholder mb-1 hand" (click)="toggleLeftAudio(leftAudio)">
+          <fa-icon [icon]="leftAudioPlaying() ? 'pause' : 'play'"></fa-icon>
+        </div>
+        <audio
+          #leftAudio
+          [src]="challengerOne()!.url"
+          controls
+          (timeupdate)="onLeftTimeUpdate($event)"
+          (play)="onLeftAudioPlay()"
+          (pause)="onLeftAudioPause()"
+          class="w-100"
+        ></audio>
+        <button
+          class="btn btn-primary w-100 mt-2"
+          [disabled]="!canSubmit()"
+          (click)="selectLeft()"
+          jhiTranslate="biodifulApp.answer.match.chooseAudio"
+        >
+          Choose this audio
+        </button>
+      </div>
+      <div class="col-12 col-md-6 text-center">
+        <div class="audio-placeholder mb-1 hand" (click)="toggleRightAudio(rightAudio)">
+          <fa-icon [icon]="rightAudioPlaying() ? 'pause' : 'play'"></fa-icon>
+        </div>
+        <audio
+          #rightAudio
+          [src]="challengerTwo()!.url"
+          controls
+          (timeupdate)="onRightTimeUpdate($event)"
+          (play)="onRightAudioPlay()"
+          (pause)="onRightAudioPause()"
+          class="w-100"
+        ></audio>
+        <button
+          class="btn btn-primary w-100 mt-2"
+          [disabled]="!canSubmit()"
+          (click)="selectRight()"
+          jhiTranslate="biodifulApp.answer.match.chooseAudio"
+        >
+          Choose this audio
+        </button>
+      </div>
+    </div>
+  }
+}

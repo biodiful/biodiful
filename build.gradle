@@ -19,8 +19,10 @@ version = "0.0.1-SNAPSHOT"
 
 description = ""
 
-sourceCompatibility=17
-targetCompatibility=17
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 assert System.properties["java.specification.version"] == "17" || "21" || "24"
 
 ext {
@@ -90,7 +92,7 @@ test {
     // see https://github.com/jhipster/generator-jhipster/pull/2771 and https://github.com/jhipster/generator-jhipster/pull/4484
     // ignoreFailures true
     reports.html.required = false
-    testLogging.exceptionFormat "full"
+    testLogging.exceptionFormat = "full"
 }
 
 check.dependsOn integrationTest
@@ -167,6 +169,9 @@ dependencies {
     annotationProcessor "org.glassfish.jaxb:jaxb-runtime"
     annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen"
     developmentOnly "org.springframework.boot:spring-boot-docker-compose"
+    // AWS SDK for S3
+    implementation platform("software.amazon.awssdk:bom:2.29.45")
+    implementation "software.amazon.awssdk:s3"
     // jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 

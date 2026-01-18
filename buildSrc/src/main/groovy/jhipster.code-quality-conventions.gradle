@@ -46,8 +46,8 @@ modernizer {
 }
 
 checkstyle {
-    toolVersion "${libs.versions.checkstyle.get()}"
-    configFile file("checkstyle.xml")
+    toolVersion = "${libs.versions.checkstyle.get()}"
+    configFile = file("checkstyle.xml")
     checkstyleTest.enabled = false
 }
 

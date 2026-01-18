@@ -1,0 +1,12 @@
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-body">
+      <div class="pool-introduction" [innerHTML]="introductionMessage()"></div>
+    </div>
+    <div class="card-footer text-center">
+      <button type="button" class="btn btn-primary btn-lg" (click)="onStart()" data-cy="startPoolButton">
+        <fa-icon icon="play"></fa-icon>&nbsp;<span jhiTranslate="biodifulApp.survey.poolIntro.start">Start</span>
+      </button>
+    </div>
+  </div>
+</div>

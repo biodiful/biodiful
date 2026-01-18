@@ -4,4 +4,50 @@
   border: 1px solid #dee2e6;
   border-radius: 0.25rem; */
   width: 100%;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.video-player {
+  max-height: 400px;
+  object-fit: contain;
+  background-color: #000;
+}
+
+audio {
+  width: 100%;
+}
+
+.audio-placeholder {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #6c757d;
+
+  fa-icon {
+    font-size: 5rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: #495057;
+    margin: 0;
+    word-break: break-word;
+    padding: 0 1rem;
+  }
+}
+
+button {
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
