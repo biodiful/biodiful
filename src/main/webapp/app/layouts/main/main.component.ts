@@ -9,7 +9,7 @@ import PageRibbonComponent from '../profiles/page-ribbon.component';
 import { filter } from 'rxjs/operators';
 import { SurveyAnswerComponent } from 'app/survey/survey-answer/survey-answer.component';
 import { SurveyPresentationComponent } from 'app/survey/survey-presentation/survey-presentation.component';
-import HomeComponent from 'app/home/home.component';
+import HomeComponent from 'app/home/home.component1';
 import { SurveyComponent } from 'app/entities/survey/list/survey.component';
 
 @Component({

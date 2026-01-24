@@ -12,7 +12,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { SurveyService } from 'app/entities/survey/service/survey.service';
 
-import HomeComponent from './home.component';
+import HomeComponent from './home.component1';
 import { AlertService } from 'app/core/util/alert.service';
 
 describe('Home Component', () => {

@@ -1,0 +1,59 @@
+<div class="row justify-content-center">
+  <h1 class="display-4" jhiTranslate="home.title">BIODIFUL.ORG</h1>
+</div>
+<div class="row justify-content-center">
+  <p class="lead" jhiTranslate="home.subtitle">Un site dédié à l'étude de la perception humaine de la nature</p>
+</div>
+
+<div class="row">
+  <div class="col-md-7">
+    <p jhiTranslate="home.survey.open">Campagnes en cours :</p>
+
+    <ul>
+      @for (survey of openSurveys(); track survey.id) {
+      <li>
+        <a [routerLink]="['/survey', survey.id, 'present']">{{ survey.surveyName }}</a>
+      </li>
+      }
+    </ul>
+
+    <div>
+      @if (account() !== null) {
+      <div class="alert alert-success">
+        @if (account(); as accountRef) {
+        <span id="home-logged-message" jhiTranslate="home.logged.message" [translateValues]="{ username: accountRef.login }">
+          You are logged in as user "{{ accountRef.login }}".
+        </span>
+        }
+
+        <p jhiTranslate="home.survey.closed">Campagnes fermées:</p>
+
+        <ul>
+          @for (survey of closedSurveys(); track survey.id) {
+          <li>
+            <a [routerLink]="['/survey', survey.id, 'present']">{{ survey.surveyName }}</a>
+          </li>
+          }
+        </ul>
+      </div>
+      } @else {
+      <!--                <div class="alert alert-warning">-->
+      <!--                  <span jhiTranslate="global.messages.info.authenticated.prefix">If you want to </span>-->
+      <!--                  <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">sign in</a><span jhiTranslate="global.messages.info.authenticated.suffix">, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>-->
+      <!--                </div>-->
+
+      <!--                <div class="alert alert-warning">-->
+      <!--                  <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>&nbsp;-->
+      <!--                  <a class="alert-link" routerLink="/account/register" jhiTranslate="global.messages.info.register.link">Register a new account</a>-->
+      <!--                </div>-->
+      }
+    </div>
+
+    <!-- <div *jhiHasAnyAuthority="'ROLE_ADMIN'">TODO - display list of closed survey for the admin?</div> -->
+
+    <a href="#" [routerLink]="['/about']" jhiTranslate="home.more">En savoir plus</a>
+  </div>
+  <div class="col-md-5">
+    <img src="/content/images/logo-biodiful.png" class="img-fluid rounded" />
+  </div>
+</div>

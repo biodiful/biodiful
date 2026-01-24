@@ -8,7 +8,7 @@ import SurveyResolve from './entities/survey/route/survey-routing-resolve.servic
 const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./home/home.component'),
+    loadComponent: () => import('./home/home.component1'),
     title: 'home.title',
   },
   {

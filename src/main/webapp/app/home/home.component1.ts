@@ -54,10 +54,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate(['/login']);
   }
 
-  trackSurveyById(index: number, survey: ISurvey): number | undefined {
-    return survey.id;
-  }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

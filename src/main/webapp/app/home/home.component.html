@@ -4,9 +4,7 @@
 
 <!-- Subtitle: preserves \n from JSON -->
 <div class="row justify-content-center">
-  <p class="lead text-center" style="white-space: pre-line" jhiTranslate="home.subtitle">
-    Biodiful
-  </p>
+  <p class="lead text-center" style="white-space: pre-line" jhiTranslate="home.subtitle">Biodiful</p>
 </div>
 
 <div class="row">
@@ -14,7 +12,7 @@
     <p jhiTranslate="home.survey.open">Campagnes en cours :</p>
 
     <ul>
-      <li *ngFor="let survey of openSurveys(); trackBy: trackSurveyById">
+      <li *ngFor="let survey of openSurveys()">
         <a [routerLink]="['/survey', survey.id, 'present']">{{ survey.surveyName }}</a>
       </li>
     </ul>
@@ -22,11 +20,7 @@
     <div *ngIf="account() !== null; else loggedOut">
       <div class="alert alert-success">
         <ng-container *ngIf="account() as accountRef">
-          <span
-            id="home-logged-message"
-            jhiTranslate="home.logged.message"
-            [translateValues]="{ username: accountRef.login }"
-          >
+          <span id="home-logged-message" jhiTranslate="home.logged.message" [translateValues]="{ username: accountRef.login }">
             You are logged in as user "{{ accountRef.login }}".
           </span>
         </ng-container>
@@ -34,7 +28,7 @@
         <p class="mt-3" jhiTranslate="home.survey.closed">Campagnes fermées:</p>
 
         <ul>
-          <li *ngFor="let survey of closedSurveys(); trackBy: trackSurveyById">
+          <li *ngFor="let survey of closedSurveys()">
             <a [routerLink]="['/survey', survey.id, 'present']">{{ survey.surveyName }}</a>
           </li>
         </ul>
@@ -60,21 +54,14 @@
   <div class="col-md-8 text-center">
     <h5 class="mb-2" jhiTranslate="home.coordination.title">Coordination scientifique</h5>
 
-    <div class="mb-1" jhiTranslate="home.coordination.name">
-      Nicolas Mouquet — Directeur de recherche au CNRS
-    </div>
+    <div class="mb-1" jhiTranslate="home.coordination.name">Nicolas Mouquet — Directeur de recherche au CNRS</div>
 
     <div class="mb-1">
       <a href="mailto:nicolas.mouquet&#64;cnrs.fr" jhiTranslate="home.coordination.email">email</a>
     </div>
 
     <div>
-      <a
-        href="http://nicolasmouquet.free.fr/"
-        target="_blank"
-        rel="noopener noreferrer"
-        jhiTranslate="home.coordination.website"
-      >
+      <a href="http://nicolasmouquet.free.fr/" target="_blank" rel="noopener noreferrer" jhiTranslate="home.coordination.website">
         http://nicolasmouquet.free.fr/
       </a>
     </div>
