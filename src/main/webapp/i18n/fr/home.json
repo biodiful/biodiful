@@ -1,7 +1,13 @@
 {
   "home": {
     "title": "BIODIFUL.ORG",
-    "subtitle": "Biodiful est une plateforme développée par un collectif de chercheurs et chercheuses travaillant sur la perception humaine de la biodiversité. Elle a pour vocation d’héberger et de diffuser des campagnes de recherche en ligne, à destination du grand public comme de la communauté scientifique.\n\nCes campagnes permettent d’explorer la manière dont les individus perçoivent, évaluent et interagissent avec la biodiversité, contribuant ainsi à une meilleure compréhension des relations entre humains et nature.\n\nPour toute information, collaboration ou question, vous pouvez nous contacter directement à :\n\nbiodiful@gmail.com",
+    "subtitle": "Biodiful est une plateforme développée par un collectif de chercheurs et chercheuses travaillant sur la perception humaine de la biodiversité. Elle a pour vocation d’héberger et de diffuser des campagnes de recherche en ligne, à destination du grand et de la communauté scientifique.\n",
+     "coordination": {
+      "title": "Coordination scientifique",
+      "name": "Nicolas Mouquet — Directeur de recherche au CNRS",
+      "email": "nicolas.mouquet@cnrs.fr",
+      "website": "http://nicolasmouquet.free.fr/"
+    },
     "survey.open": "Campagnes en cours :",
     "survey.closed": "Campagnes fermées :",
     "logged": {
