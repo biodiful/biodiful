@@ -2,7 +2,7 @@
   @case ('IMAGE') {
     <!-- Existing image display with click handlers -->
     <div class="row">
-      <div class="col-12 col-md-6 mb-3 mb-md-0 position-relative">
+      <div class="col-12 col-sm-6 mb-3 mb-sm-0 position-relative">
         <img
           class="challenger"
           [class.loading]="showLeftLoader()"
@@ -20,7 +20,7 @@
           </div>
         }
       </div>
-      <div class="col-12 col-md-6 position-relative">
+      <div class="col-12 col-sm-6 position-relative">
         <img
           class="challenger"
           [class.loading]="showRightLoader()"
@@ -43,7 +43,7 @@
 
   @case ('VIDEO') {
     <div class="row">
-      <div class="col-12 col-md-6 mb-3 mb-md-0">
+      <div class="col-12 col-sm-6 mb-3 mb-sm-0">
         <video
           [src]="challengerOne()!.url"
           controls
@@ -62,7 +62,7 @@
           Choose this video
         </button>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-sm-6">
         <video
           [src]="challengerTwo()!.url"
           controls
@@ -86,7 +86,7 @@
 
   @case ('AUDIO') {
     <div class="row">
-      <div class="col-12 col-md-6 mb-3 mb-md-0 text-center">
+      <div class="col-12 col-sm-6 mb-3 mb-sm-0 text-center">
         <div class="audio-placeholder mb-1 hand" (click)="toggleLeftAudio(leftAudio)">
           <fa-icon [icon]="leftAudioPlaying() ? 'pause' : 'play'"></fa-icon>
         </div>
@@ -108,7 +108,7 @@
           Choose this audio
         </button>
       </div>
-      <div class="col-12 col-md-6 text-center">
+      <div class="col-12 col-sm-6 text-center">
         <div class="audio-placeholder mb-1 hand" (click)="toggleRightAudio(rightAudio)">
           <fa-icon [icon]="rightAudioPlaying() ? 'pause' : 'play'"></fa-icon>
         </div>
