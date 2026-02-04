@@ -44,7 +44,7 @@ import {
   faEnvelope,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { faFacebook, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faBluesky, faFacebook, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 
 export const fontAwesomeIcons = [
   faArrowLeft,
@@ -92,4 +92,5 @@ export const fontAwesomeIcons = [
   faEnvelope,
   faFacebook,
   faXTwitter,
+  faBluesky,
 ];

@@ -123,6 +123,10 @@ export class SurveyPresentationComponent implements OnInit {
     this.surveyJudgesCount = response;
   }
 
+  getBlueskyUrl(): string {
+    return `https://bsky.app/intent/compose?text=${this.surveyAbsoluteUrlEncoded}`;
+  }
+
   getFacebookUrl(): string {
     return `https://www.facebook.com/sharer/sharer.php?u=${this.surveyAbsoluteUrlEncoded}&amp;src=sdkpreparse`;
   }

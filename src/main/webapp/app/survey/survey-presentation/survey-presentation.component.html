@@ -44,7 +44,9 @@
   <div class="col-md-6">
     <div class="share-survey" jhiTranslate="biodifulApp.survey.share">Aidez nous à faire circuler cette étude:</div>
     <div class="share-survey-links">
-      <!-- <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbiodiful.org%2F%23%2FRecifsCorail&amp;src=sdkpreparse" class="btn btn-social btn-facebook m-2"> -->
+      <a target="_blank" [href]="getBlueskyUrl()" class="btn btn-social btn-bluesky m-2">
+        <fa-icon [icon]="['fab', 'bluesky']"></fa-icon>&nbsp; BlueSky
+      </a>
       <a target="_blank" [href]="getFacebookUrl()" class="btn btn-social btn-facebook m-2">
         <fa-icon [icon]="['fab', 'facebook']"></fa-icon>&nbsp; Facebook
       </a>
