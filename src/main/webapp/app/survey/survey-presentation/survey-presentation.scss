@@ -121,3 +121,61 @@ fieldset[disabled] .btn-xsocial.focus {
 .btn-facebook {
   background-color: #343a41;
 }
+
+.btn-bluesky {
+  color: #fff;
+  background-color: #0085ff;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+.btn-bluesky:focus,
+.btn-bluesky.focus {
+  color: #fff;
+  background-color: #0070d9;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+.btn-bluesky:hover {
+  color: #fff;
+  background-color: #0070d9;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+.btn-bluesky:active,
+.btn-bluesky.active,
+.open > .dropdown-toggle.btn-bluesky {
+  color: #fff;
+  background-color: #0070d9;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+.btn-bluesky:active:hover,
+.btn-bluesky.active:hover,
+.open > .dropdown-toggle.btn-bluesky:hover,
+.btn-bluesky:active:focus,
+.btn-bluesky.active:focus,
+.open > .dropdown-toggle.btn-bluesky:focus,
+.btn-bluesky:active.focus,
+.btn-bluesky.active.focus,
+.open > .dropdown-toggle.btn-bluesky.focus {
+  color: #fff;
+  background-color: #005bb3;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+.btn-bluesky:active,
+.btn-bluesky.active,
+.open > .dropdown-toggle.btn-bluesky {
+  background-image: none;
+}
+.btn-bluesky.disabled:hover,
+.btn-bluesky[disabled]:hover,
+fieldset[disabled] .btn-bluesky:hover,
+.btn-bluesky.disabled:focus,
+.btn-bluesky[disabled]:focus,
+fieldset[disabled] .btn-bluesky:focus,
+.btn-bluesky.disabled.focus,
+.btn-bluesky[disabled].focus,
+fieldset[disabled] .btn-bluesky.focus {
+  background-color: #0085ff;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+.btn-bluesky .badge {
+  color: #0085ff;
+  background-color: #fff;
+}
