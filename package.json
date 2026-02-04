@@ -84,6 +84,7 @@
     "@angular/router": "19.2.9",
     "@fortawesome/angular-fontawesome": "1.0.0",
     "@fortawesome/fontawesome-svg-core": "6.7.2",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "6.7.2",
     "@kolkov/angular-editor": "^3.0.0-beta.2",
     "@ng-bootstrap/ng-bootstrap": "18.0.0",

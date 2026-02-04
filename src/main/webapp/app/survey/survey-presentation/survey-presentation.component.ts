@@ -128,7 +128,7 @@ export class SurveyPresentationComponent implements OnInit {
   }
 
   getTwitterUrl(): string {
-    return `https://twitter.com/intent/tweet?text=${this.surveyAbsoluteUrlEncoded}`;
+    return `https://x.com/intent/post?text=${this.surveyAbsoluteUrlEncoded}`;
   }
 
   getMailToHref(): string {
