@@ -35,6 +35,17 @@ export class SurveyAnswerMatchComponent {
   // Computed: detect media type from first challenger
   mediaType = computed(() => this.challengerOne()?.type ?? 'IMAGE');
 
+  // Computed: should show loading for each image
+  showLeftLoader = computed(() => {
+    const url = this.challengerOne()?.url;
+    return this.leftImageLoading() && url !== '/content/images/loader.gif';
+  });
+
+  showRightLoader = computed(() => {
+    const url = this.challengerTwo()?.url;
+    return this.rightImageLoading() && url !== '/content/images/loader.gif';
+  });
+
   // Computed: can submit when both have played 90% (or always for images)
   canSubmit = computed(() => {
     if (this.mediaType() === 'IMAGE') {
@@ -42,6 +53,12 @@ export class SurveyAnswerMatchComponent {
     }
     return this.leftPlayed90Percent() && this.rightPlayed90Percent();
   });
+
+  // Image loading state - track previous URLs to detect changes
+  leftImageLoading = signal(false);
+  rightImageLoading = signal(false);
+  private leftPreviousUrl = signal<string>('');
+  private rightPreviousUrl = signal<string>('');
 
   constructor() {
     // Reset playback state whenever challengers change (new match)
@@ -58,6 +75,20 @@ export class SurveyAnswerMatchComponent {
       this.leftAudioPlaying.set(false);
       this.rightAudioPlaying.set(false);
 
+      // Check if URLs have changed to trigger loading state
+      const leftUrl = left?.url ?? '';
+      const rightUrl = right?.url ?? '';
+
+      if (leftUrl !== this.leftPreviousUrl() && leftUrl !== '/content/images/loader.gif') {
+        this.leftImageLoading.set(true);
+        this.leftPreviousUrl.set(leftUrl);
+      }
+
+      if (rightUrl !== this.rightPreviousUrl() && rightUrl !== '/content/images/loader.gif') {
+        this.rightImageLoading.set(true);
+        this.rightPreviousUrl.set(rightUrl);
+      }
+
       // Randomly decide which media plays first for this match
       this.randomPlayOrder.set(Math.random() < 0.5 ? 'LEFT' : 'RIGHT');
     });
@@ -65,9 +96,27 @@ export class SurveyAnswerMatchComponent {
 
   // For images (existing behavior - direct click)
   challengerClicked(challenger: Challenger): void {
-    if (this.mediaType() === 'IMAGE') {
+    if (this.mediaType() === 'IMAGE' && !this.leftImageLoading() && !this.rightImageLoading()) {
       this.winnerSelected.emit(challenger);
     }
+  }
+
+  // Image load handlers
+  onLeftImageLoad(): void {
+    this.leftImageLoading.set(false);
+  }
+
+  onRightImageLoad(): void {
+    this.rightImageLoading.set(false);
+  }
+
+  // Image error handlers - also stop loading to prevent getting stuck
+  onLeftImageError(): void {
+    this.leftImageLoading.set(false);
+  }
+
+  onRightImageError(): void {
+    this.rightImageLoading.set(false);
   }
 
   // For videos/audio - button click
