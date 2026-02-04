@@ -46,12 +46,10 @@
     <div class="share-survey-links">
       <!-- <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbiodiful.org%2F%23%2FRecifsCorail&amp;src=sdkpreparse" class="btn btn-social btn-facebook m-2"> -->
       <a target="_blank" [href]="getFacebookUrl()" class="btn btn-social btn-facebook m-2">
-        <span class="fab fa-facebook"></span>
-        Facebook
+        <fa-icon [icon]="['fab', 'facebook']"></fa-icon>&nbsp; Facebook
       </a>
-      <a target="_blank" class="btn btn-social btn-twitter m-2" [href]="getTwitterUrl()">
-        <span class="fab fa-twitter"></span>
-        Twitter
+      <a target="_blank" class="btn btn-social btn-xsocial m-2" [href]="getTwitterUrl()">
+        <fa-icon [icon]="['fab', 'x-twitter']"></fa-icon>&nbsp; X (Twitter)
       </a>
       <a class="btn btn-primary m-2" [href]="getMailToHref()" target="_top">
         <fa-icon icon="envelope"></fa-icon>&nbsp;
