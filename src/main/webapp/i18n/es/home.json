@@ -2,6 +2,12 @@
   "home": {
     "title": "BIODIFUL.ORG",
     "subtitle": "Un sitio dedicado al estudio de la percepción humana de la naturaleza.",
+    "coordination": {
+      "title": "Coordinación científica",
+      "name": "Nicolas Mouquet — Director de Investigación del CNRS",
+      "email": "nicolas.mouquet&#64;cnrs.fr",
+      "website": "http://nicolasmouquet.free.fr/"
+    },
     "survey.open": "Encuestas abiertas :",
     "survey.closed": "Encuestas cerradas :",
     "logged": {
